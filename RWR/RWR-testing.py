@@ -1,19 +1,15 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import time
 
 
 def load_graph(path):
     G = nx.Graph()
     inputFile = open(path, 'r')
     for line in inputFile:
-        if line.strip() == "#":
-            break
+        #if line.strip() == "#":
+        #    break
         data = line.strip().split(" ")
-        #print(data)
-        for i in [0,1]:
-            if data[i] not in nx.nodes(G):
-                #print("new node:", data[i])
-                G.add_node(data[i])
         #print("new edge:", data[0], data[1], data[2])
         G.add_edge(data[0], data[1], confidence=data[2])
 
@@ -28,11 +24,27 @@ def load_graph(path):
 
 
 
-def main():
-    PPI_Graph = load_graph("test-graph-data.tsv")
 
+
+
+def main():
+
+    #Read data from input file to networkx graph format.
+    pathToData = "../test-graph-data.tsv"
+    startTime = time.time()
+    PPI_Graph = load_graph(pathToData)
+    endTime = time.time()
+    print("graph loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
+
+
+    #Visualize graph in matplotlib.
+    startTime = time.time()
     nx.draw(PPI_Graph, node_color='r', edge_color='b')
+    endTime = time.time()
+    print("graph visualized.\nTime elapsed:", endTime - startTime, "seconds.")
     plt.show()
+
+    
 
 
 if __name__ == '__main__':
