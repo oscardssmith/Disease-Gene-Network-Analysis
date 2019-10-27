@@ -3,7 +3,11 @@ import matplotlib.pyplot as plt
 import time
 
 
+
 def load_graph(path):
+    """
+    Loads data from TSV file pointed to by path into a networkx graph
+    """
     G = nx.Graph()
     inputFile = open(path, 'r')
     for line in inputFile:
@@ -16,7 +20,6 @@ def load_graph(path):
     inputFile.close()
 
     return G
-
 
 
 
@@ -43,8 +46,6 @@ def main():
     endTime = time.time()
     print("graph visualized.\nTime elapsed:", endTime - startTime, "seconds.")
     plt.show()
-
-    
 
 
 if __name__ == '__main__':

@@ -3,12 +3,9 @@ This script was used to create the test data file by taking the STRING data for 
 """
 
 
-import networkx as nx
-import matplotlib.pyplot as plt
 
 
-def load_graph(path):
-    G = nx.Graph()
+def create_file(path):
     inputFile = open(path, 'r')
     outputFile = open("test-graph-data.tsv", 'w')
     for line in inputFile:
@@ -27,27 +24,16 @@ def load_graph(path):
         data[0] == "568816.Acin_0010" or data[1] == "568816.Acin_0010"):
             outputFile.write(line)
 
-        #print(data)
-        for i in [0,1]:
-            if data[i] not in nx.nodes(G):
-                #print("new node:", data[i])
-                G.add_node(data[i])
-        #print("new edge:", data[0], data[1], data[2])
-        G.add_edge(data[0], data[1], confidence=data[2])
-
     inputFile.close()
     outputFile.close()
 
-    return G
 
 
 
 
 def main():
-    PPI_Graph = load_graph("test-graph-data-old.tsv")
+    create_file("test-graph-data-old.tsv")
 
-    nx.draw(PPI_Graph, node_color='r', edge_color='b')
-    plt.show()
 
 
 if __name__ == '__main__':
