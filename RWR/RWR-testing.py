@@ -48,5 +48,13 @@ def main():
     plt.show()
 
 
+    #export to graphML file
+    startTime = time.time()
+    nx.write_graphml(PPI_Graph, "PPI_Network.graphml")
+    endTime = time.time()
+    print("graph exported.\nTime elapsed:", endTime - startTime, "seconds.")
+
+
+
 if __name__ == '__main__':
     main()
