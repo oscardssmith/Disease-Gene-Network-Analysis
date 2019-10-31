@@ -32,11 +32,13 @@ def load_graph(path):
 
 def main():
 
-    #Read data from input file to networkx graph format.
     pathToData = "../test-graph-data.tsv"
+
+    #Read data from input file to networkx graph format.
     startTime = time.time()
     PPI_Graph = load_graph(pathToData)
     endTime = time.time()
+
     print("graph loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
 
 
@@ -44,6 +46,7 @@ def main():
     startTime = time.time()
     nx.draw(PPI_Graph, node_color='r', edge_color='b')
     endTime = time.time()
+
     print("graph visualized.\nTime elapsed:", endTime - startTime, "seconds.")
     plt.show()
 
@@ -52,6 +55,7 @@ def main():
     startTime = time.time()
     nx.write_graphml(PPI_Graph, "PPI_Network.graphml")
     endTime = time.time()
+    
     print("graph exported.\nTime elapsed:", endTime - startTime, "seconds.")
 
 
