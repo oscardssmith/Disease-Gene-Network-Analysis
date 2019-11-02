@@ -1,5 +1,6 @@
 import numpy as np
 
+# Calculates the euclidean distance between two vectors
 def difference(v1, v2):
     # v1 list of nodes
     # v2 list of nodes
@@ -9,8 +10,8 @@ def difference(v1, v2):
     magnitude = np.sqrt(magnitude)
     return magnitude
 
-# everything we need to do lin al on is just np.array type
-# Make sure to carefully set matrix, starting_vector, prior_bias, beta
+# Given a np.array matrix, starting vector, prior bias vector, and back
+# probability, calculate the rank of each node in the graph.
 def pagerank(matrix, starting_vector, prior_bias, beta, epsilon):
     # return all rankings
     d = float('inf')
