@@ -1,5 +1,9 @@
 import numpy as np
 
+
+# Note, This will probably be 10-100x slower than np.linalg.norm(v1-v2)
+# https://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.norm.html
+
 # Calculates the euclidean distance between two vectors
 def difference(v1, v2):
     # v1 list of nodes
@@ -17,6 +21,7 @@ def pagerank(matrix, starting_vector, prior_bias, beta, epsilon):
     d = float('inf')
     prev_vector = np.copy(starting_vector)
     iterations = 0
+    # Probably should use squared distance as cheaper (no sqrt needed), and compare to epsilon*epsilon
     while d > epsilon:
         result = (1 - beta) * np.matmul(matrix, prev_vector)
         result = np.add(result, beta*prior_bias)
