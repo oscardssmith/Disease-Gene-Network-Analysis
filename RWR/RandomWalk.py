@@ -1,3 +1,8 @@
+
+import sys
+sys.path.insert(1, '../Scripts/')
+import loader
+
 import networkx as nx
 import matplotlib.pyplot as plt
 import time
@@ -19,7 +24,6 @@ def load_graph(path):
     return G
     
 def main():
-
     pathToData = "../test-graph-data.tsv"
 
     #Read data from input file to networkx graph format.

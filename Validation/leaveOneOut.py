@@ -11,9 +11,9 @@ Each algorithm produces results in a 2 dimensional array where each item is a tu
 
 """
 import sys
-sys.path.insert(1, '../RWR')
-sys.path.insert(1, '../DiffusionKernel')
-sys.path.insert(1, '../PageRank')
+sys.path.insert(1, '../RWR/')
+sys.path.insert(1, '../DiffusionKernel/')
+sys.path.insert(1, '../PageRank/')
 import RandomWalk as rwr
 import DiffusionKernel as dk
 import PageRank as pr
