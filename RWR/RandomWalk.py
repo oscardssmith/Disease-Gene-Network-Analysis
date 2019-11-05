@@ -23,6 +23,7 @@ def difference(v1, v2):
     return magnitude
 
 
+
 # Runs Random Walk with Restart using a matrix implementation
 def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
 
@@ -99,6 +100,7 @@ def RandomWalk(graph, diseaseGeneList):
     output = [['diseasename1', 0.75]]
 
     return output
+
 
 
 
