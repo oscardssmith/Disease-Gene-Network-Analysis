@@ -1,43 +1,38 @@
 import gzip
 from time import time
 
+import networkx as nx
 import numpy as np
 from scipy.linalg import expm
 
-TEST_FILE = 'fake.tsv'
+#import ..RWR.RandomWalk import load_graph
 
-def diffusion_kernel(protein_adj_matrix, genes, B=1):
-    A = protein_adj_matrix
-    D = np.diag(A * np.ones(A.shape[1]))
-    L = D-A
+TEST_FILE = '../Data/fake.tsv'
+
+def diffusion_kernel(protein_graph, genes, B=1):
+    L = nx.laplacian_matrix(protein_graph)
     K = expm(-B * L)
     return K * genes
 
-def load_matrix(path, min_weight):
-    label_to_idx = {}
-    max_ind = 0
-    links = []
-    with open(path, 'rt') as edges:
-        edges.readline()
-        for line in edges:
-            protein1, protein2, weight = line.split()
-            for protein in (protein1, protein2):
-                if not protein in label_to_idx:
-                    label_to_idx[protein] = max_ind
-                    max_ind += 1
-            if int(weight) >= min_weight:
-                links.append((label_to_idx[protein1], label_to_idx[protein2]))
 
-    graph = np.zeros((max_ind, max_ind))
-    for x, y in links:
-        graph[x, y] = 1
-        graph[y, x] = 1
-    return graph, label_to_idx
+def load_graph(path):
+    """
+    Loads data from TSV file pointed to by path into a networkx graph
+    """
+    G = nx.Graph()
+    with open(path, 'r') as inputFile:
+        inputFile.readline()
+        for line in inputFile:
+            #if line.strip() == "#":
+            #    break
+            data = line.strip().split(" ")
+            #print("new edge:", data[0], data[1], data[2])
+            G.add_edge(data[0], data[1], confidence=data[2])
+    return G
 
 if __name__ == '__main__':
     t1 = time()
-    graph, label_to_idx = load_matrix(TEST_FILE, 0)
-    print(graph)
-    print(label_to_idx)
-    print(graph.size)
+    #graph, label_to_idx = load_matrix(TEST_FILE, 0)
+    graph = load_graph(TEST_FILE)
+    diffusion_kernel(graph, 1)
     print(time()-t1)
