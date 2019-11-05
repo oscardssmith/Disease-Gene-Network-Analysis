@@ -22,7 +22,7 @@ def load_graph(path):
             #print("new edge:", data[0], data[1], data[2])
             G.add_edge(data[0], data[1], confidence=data[2])
     return G
-    
+
 def main():
     pathToData = "../test-graph-data.tsv"
 
@@ -47,8 +47,23 @@ def main():
     startTime = time.time()
     nx.write_graphml(PPI_Graph, "PPI_Network.graphml")
     endTime = time.time()
-    
+
     print("graph exported.\nTime elapsed:", endTime - startTime, "seconds.")
+
+
+
+def RandomWalk(graph, diseaseGeneList):
+    """
+    This method can be called from anywhere (such as validation scripts) and does whatever it needs to do to produce a properly formatted output,
+    using only the given parameters.
+
+    @param graph: a networkx graph object containing the entire PPI network
+    @param diseaseGeneList: a python list object where each item is a string containing the name of a known disease gene
+
+    @returns: a nested list of tuples, in sorted order of probability, where each item contains the name of a gene, and its respective probability as determined by the algorithm
+    """
+
+    return [['9606.ENSP00000351407', 0.45], ['genename4', 0.36], ['genename3', 0.301], ['genename2', 0.23]]
 
 
 
