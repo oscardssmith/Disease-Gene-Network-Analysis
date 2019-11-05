@@ -26,7 +26,6 @@ def difference(v1, v2):
 # Runs Random Walk with Restart using a matrix implementation
 def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
 
-<<<<<<< HEAD
     print("STARTING RANDOM WALK")
     print("Start Vector:")
     for item in start_vector:
@@ -34,18 +33,13 @@ def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
             print(item)
 
 
-=======
->>>>>>> 38b327a58aa89be484b56404412d0807d0819f21
     previous_vector = np.copy(start_vector)
     iterations = 0
     diff = float('inf')
 
     while diff > norm_threshold and iterations < max_iterations:
-<<<<<<< HEAD
         print("iteration:", iterations)
 
-=======
->>>>>>> 38b327a58aa89be484b56404412d0807d0819f21
         #Perform one step of the walk
         new_vector = (1 - R) * np.matmul(matrix, previous_vector)
         new_vector = np.add(new_vector, R * start_vector)
@@ -68,10 +62,7 @@ def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
 
 
 def RandomWalk(graph, diseaseGeneList):
-<<<<<<< HEAD
     print("DOING RANDOM WALK")
-=======
->>>>>>> 38b327a58aa89be484b56404412d0807d0819f21
     """
     This method can be called from anywhere (such as validation scripts) and does whatever it needs to do to produce a properly formatted output,
     using only the given parameters.
@@ -88,7 +79,6 @@ def RandomWalk(graph, diseaseGeneList):
     matrix = np.array(nx.to_numpy_matrix(graph))
 
     #compute start vector from disease gene list
-<<<<<<< HEAD
     print("making start vector")
     start_vector = []
     numDiseaseGenes = len(diseaseGeneList)
@@ -99,30 +89,16 @@ def RandomWalk(graph, diseaseGeneList):
             start_vector.append(1/numDiseaseGenes)
         else:
             print('not')
-=======
-    start_vector = []
-    numDiseaseGenes = len(diseaseGeneList)
-    for node in graph.nodes():
-        if node in diseaseGeneList:
-            start_vector.append(1/numDiseaseGenes)
-        else:
->>>>>>> 38b327a58aa89be484b56404412d0807d0819f21
             start_vector.append(0)
     start_vector = np.array(start_vector)
 
 
     probabilityVector = randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold)
-<<<<<<< HEAD
 
     #format probabilityVector into usable output
     output = [['diseasename1', 0.75]]
 
     return output
-=======
-    print(probabilityVector)
-
-    return probabilityVector
->>>>>>> 38b327a58aa89be484b56404412d0807d0819f21
 
 
 
