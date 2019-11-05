@@ -11,19 +11,35 @@ import numpy as np
 
 
 
+# Calculates the euclidean distance between two vectors
+# Same function as in PageRank algorithm
+def difference(v1, v2):
+    # v1 list of nodes
+    # v2 list of nodes
+    magnitude = 0
+    for i in range(len(v1)):
+        magnitude += (v1[i] - v2[i])**2
+    magnitude = np.sqrt(magnitude)
+    return magnitude
 
+
+# Runs Random Walk with Restart using a matrix implementation
 def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
 
     previous_vector = np.copy(start_vector)
     iterations = 0
-    difference = float('inf')
+    diff = float('inf')
 
-    while difference > norm_threshold and iterations < max_iterations:
+    while diff > norm_threshold and iterations < max_iterations:
         #Perform one step of the walk
         new_vector = (1 - R) * np.matmul(matrix, previous_vector)
         new_vector = np.add(new_vector, R * start_vector)
 
-        difference = np.difference(new_vector, previous_vector)
+        print(new_vector)
+        print(previous_vector)
+
+
+        diff = difference(new_vector, previous_vector)
         previous_vector = new_vector
         iterations += 1
 
@@ -46,9 +62,27 @@ def RandomWalk(graph, diseaseGeneList):
 
     @returns: a nested list of tuples, in sorted order of probability, where each item contains the name of a gene, and its respective probability as determined by the algorithm
     """
+    # Set algorithm constants
+    R = 0.2
+    max_iterations = 500
+    norm_threshold = 10**(-6)
+    matrix = np.array(nx.to_numpy_matrix(graph))
+
+    #compute start vector from disease gene list
+    start_vector = []
+    numDiseaseGenes = len(diseaseGeneList)
+    for node in graph.nodes():
+        if node in diseaseGeneList:
+            start_vector.append(1/numDiseaseGenes)
+        else:
+            start_vector.append(0)
+    start_vector = np.array(start_vector)
 
 
-    return [['9606.ENSP00000351407', 0.45], ['genename4', 0.36], ['genename3', 0.301], ['genename2', 0.23]]
+    probabilityVector = randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold)
+    print(probabilityVector)
+
+    return probabilityVector
 
 
 
@@ -69,7 +103,7 @@ def main():
 
     #Read data from disease gene file into list
     startTime = time.time()
-    diseaseGeneList = load_disease_genes(pathToDiseaseGeneFile)
+    diseaseGeneList = loader.load_disease_genes(pathToDiseaseGeneFile)
     endTime = time.time()
 
     print("Disease genes loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
@@ -97,8 +131,7 @@ def main():
     #nx.write_graphml(PPI_Graph, "PPI_Network.graphml")
     #endTime = time.time()
 
-
-    print("graph exported.\nTime elapsed:", endTime - startTime, "seconds.")
+    #print("graph exported.\nTime elapsed:", endTime - startTime, "seconds.")
 
 
 
