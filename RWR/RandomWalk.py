@@ -28,11 +28,6 @@ def difference(v1, v2):
 def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
 
     print("STARTING RANDOM WALK")
-    print("Start Vector:")
-    for item in start_vector:
-        if item != 0:
-            print(item)
-
 
     previous_vector = np.copy(start_vector)
     iterations = 0
@@ -40,13 +35,14 @@ def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
 
     while diff > norm_threshold and iterations < max_iterations:
         print("iteration:", iterations)
+        print("starting with:")
+        print("matrix:", matrix)
+        print("previous_vector:", previous_vector)
+        print("1-R:", 1-R)
 
         #Perform one step of the walk
-        new_vector = (1 - R) * np.matmul(matrix, previous_vector)
+        new_vector = (1 - R) * np.dot(matrix, previous_vector)
         new_vector = np.add(new_vector, R * start_vector)
-
-        print(new_vector)
-        print(previous_vector)
 
 
         diff = difference(new_vector, previous_vector)
@@ -63,7 +59,8 @@ def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
 
 
 def RandomWalk(graph, diseaseGeneList):
-    print("DOING RANDOM WALK")
+    print("INITIALIZING RANDOM WALK")
+
     """
     This method can be called from anywhere (such as validation scripts) and does whatever it needs to do to produce a properly formatted output,
     using only the given parameters.
@@ -77,19 +74,18 @@ def RandomWalk(graph, diseaseGeneList):
     R = 0.2
     max_iterations = 500
     norm_threshold = 10**(-6)
-    matrix = np.array(nx.to_numpy_matrix(graph))
+    print("creating matrix")
+    matrix = nx.normalized_laplacian_matrix(graph)
+
 
     #compute start vector from disease gene list
-    print("making start vector")
+    print("creating start vector")
     start_vector = []
     numDiseaseGenes = len(diseaseGeneList)
     for node in graph.nodes():
-        print(node)
         if node in diseaseGeneList:
-            print("in diseaseGeneList")
             start_vector.append(1/numDiseaseGenes)
         else:
-            print('not')
             start_vector.append(0)
     start_vector = np.array(start_vector)
 
@@ -97,7 +93,8 @@ def RandomWalk(graph, diseaseGeneList):
     probabilityVector = randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold)
 
     #format probabilityVector into usable output
-    output = [['diseasename1', 0.75]]
+    output = zip(graph.nodes(), probabilityVector)
+    output.sort(key=lambda tup: tup[1], reverse=True)
 
     return output
 

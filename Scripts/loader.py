@@ -22,7 +22,5 @@ def load_disease_genes(path):
     Loads disease genes from TSV file and returns a python list of all names
     """
     with open(path, 'r') as inputFile:
-        list = []
-        for line in inputFile:
-            list.append(line)
+        list = inputFile.read().splitlines()
         return list
