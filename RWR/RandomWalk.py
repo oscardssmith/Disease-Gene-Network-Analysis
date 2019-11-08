@@ -104,7 +104,7 @@ def RandomWalk(graph, diseaseGeneList):
 
 
 def main():
-    pathToData = "../Data/test-graph-data.tsv"
+    pathToData = "../Data/protein.links.v11.0.txt"
     pathToDiseaseGeneFile = "../Data/EndometriosisProteins.tsv"
 
 
