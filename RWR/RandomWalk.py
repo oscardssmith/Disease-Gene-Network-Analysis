@@ -25,8 +25,8 @@ def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
     while diff > norm_threshold and iterations < max_iterations:
         print("iteration:", iterations)
         print("starting with:")
-        print("matrix size:", matrix.size)
-        print("previous_vector:", previous_vector.shape)
+        print("matrix shape:", matrix.shape)
+        print("previous_vector shape:", previous_vector.shape)
         print("1-R:", 1-R)
 
         #Perform one step of the walk
