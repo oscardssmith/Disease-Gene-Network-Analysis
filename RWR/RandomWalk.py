@@ -1,4 +1,3 @@
-
 import sys
 sys.path.insert(1, '../Scripts/')
 import loader
@@ -7,20 +6,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import time
 import numpy as np
+from scipy.spatial import distance
 
 
 
-
-# Calculates the euclidean distance between two vectors
-# Same function as in PageRank algorithm
-def difference(v1, v2):
-    # v1 list of nodes
-    # v2 list of nodes
-    magnitude = 0
-    for i in range(len(v1)):
-        magnitude += (v1[i] - v2[i])**2
-    magnitude = np.sqrt(magnitude)
-    return magnitude
 
 
 
@@ -45,7 +34,7 @@ def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
         new_vector = np.add(new_vector, R * start_vector)
 
 
-        diff = difference(new_vector, previous_vector)
+        diff = distance.sqeuclidean(new_vector, previous_vector)
         previous_vector = new_vector
         iterations += 1
 
