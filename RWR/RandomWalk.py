@@ -75,7 +75,6 @@ def RandomWalk(graph, diseaseGeneList):
         sqrt_d_inverse[i][i] = 1/math.sqrt(np.sum(adjacency_matrix[i]))
     sqrt_d_inverse = np.array(sqrt_d_inverse)
     matrix = np.matmul(np.matmul(sqrt_d_inverse, adjacency_matrix), sqrt_d_inverse)
-    #matrix = nx.normalized_laplacian_matrix(graph)
 
 
     #compute start vector from disease gene list
