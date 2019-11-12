@@ -5,6 +5,7 @@ import loader
 import networkx as nx
 import matplotlib.pyplot as plt
 import time
+import math
 import numpy as np
 from scipy.spatial import distance
 
@@ -71,7 +72,7 @@ def RandomWalk(graph, diseaseGeneList):
     N = len(adjacency_matrix)
     sqrt_d_inverse = np.zeros((N, N))
     for i in range(N):
-        sqrt_d_inverse[i][i] = 1/np.sqrt(sum(adjacency_matrix[i]))
+        sqrt_d_inverse[i][i] = 1/math.sqrt(sum(adjacency_matrix[i]))
     sqrt_d_inverse = np.array(sqrt_d_inverse)
     matrix = np.matmul(np.matmul(sqrt_d_inverse, adjacency_matrix), sqrt_d_inverse)
     #matrix = nx.normalized_laplacian_matrix(graph)
