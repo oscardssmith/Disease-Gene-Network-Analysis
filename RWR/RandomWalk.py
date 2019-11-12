@@ -33,6 +33,8 @@ def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
         new_vector = (1 - R) * np.matmul(matrix, previous_vector)
         new_vector = np.add(new_vector, R * start_vector)
 
+        print("NEW VECTOR:")
+        print(new_vector)
 
         diff = distance.sqeuclidean(new_vector, previous_vector)
         previous_vector = new_vector
@@ -64,7 +66,15 @@ def RandomWalk(graph, diseaseGeneList):
     max_iterations = 500
     norm_threshold = 10**(-6)
     print("creating matrix")
-    matrix = nx.normalized_laplacian_matrix(graph)
+
+    adjacency_matrix = nx.adjacency_matrix(graph)
+    N = len(adjacency_matrix)
+    sqrt_d_inverse = np.zeros((N, N))
+    for i in range(N):
+        sqrt_d_inverse[i][i] = 1/np.sqrt(sum(adjacency_matrix[i]))
+    sqrt_d_inverse = np.array(sqrt_d_inverse)
+    matrix = np.matmul(np.matmul(sqrt_d_inverse, adjacency_matrix), sqrt_d_inverse)
+    #matrix = nx.normalized_laplacian_matrix(graph)
 
 
     #compute start vector from disease gene list
