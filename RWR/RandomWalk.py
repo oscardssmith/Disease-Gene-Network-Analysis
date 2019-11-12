@@ -92,7 +92,7 @@ def RandomWalk(graph, diseaseGeneList):
     probabilityVector = randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold)
 
     #format probabilityVector into usable output
-    output = zip(graph.nodes(), probabilityVector)
+    output = list(zip(graph.nodes(), probabilityVector))
     output.sort(key=lambda tup: tup[1], reverse=True)
 
     return output
