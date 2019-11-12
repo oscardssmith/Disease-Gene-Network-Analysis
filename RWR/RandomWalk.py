@@ -30,7 +30,7 @@ def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
         print("1-R:", 1-R)
 
         #Perform one step of the walk
-        new_vector = (1 - R) * np.dot(matrix, previous_vector)
+        new_vector = (1 - R) * np.matmul(matrix, previous_vector)
         new_vector = np.add(new_vector, R * start_vector)
 
 
