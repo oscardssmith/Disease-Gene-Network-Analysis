@@ -94,8 +94,11 @@ def RandomWalk(graph, diseaseGeneList):
     #format probabilityVector into usable output
     output = list(zip(graph.nodes(), probabilityVector))
     output.sort(key=lambda tup: tup[1], reverse=True)
+    newOutput = []
+    for tuple in output:
+        newOutput.append((tuple[0], tuple[1][0][0]))
 
-    return output
+    return newOutput
 
 
 
