@@ -67,7 +67,7 @@ def RandomWalk(graph, diseaseGeneList):
     norm_threshold = 10**(-6)
     print("creating matrix")
 
-    adjacency_matrix = nx.adjacency_matrix(graph)
+    adjacency_matrix = nx.to_numpy_matrix(graph)
     N = len(adjacency_matrix)
     sqrt_d_inverse = np.zeros((N, N))
     for i in range(N):
