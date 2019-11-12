@@ -76,7 +76,7 @@ def RandomWalk(graph, diseaseGeneList):
             start_vector.append(1/numDiseaseGenes)
         else:
             start_vector.append(0)
-    start_vector = np.transpose(np.array(start_vector))
+    start_vector = np.transpose(np.matrix(np.array(start_vector)))
 
 
     probabilityVector = randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold)
