@@ -1,6 +1,7 @@
 import sys
 sys.path.insert(1, '../Scripts/')
 import loader
+from normalized_adjacency_matrix import normalize_adjacency_matrix
 
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -67,14 +68,7 @@ def RandomWalk(graph, diseaseGeneList):
     max_iterations = 500
     norm_threshold = 10**(-6)
     print("creating matrix")
-
-    adjacency_matrix = nx.to_numpy_matrix(graph)
-    N = len(adjacency_matrix)
-    sqrt_d_inverse = np.zeros((N, N))
-    for i in range(N):
-        sqrt_d_inverse[i][i] = 1/math.sqrt(np.sum(adjacency_matrix[i]))
-    sqrt_d_inverse = np.array(sqrt_d_inverse)
-    matrix = np.matmul(np.matmul(sqrt_d_inverse, adjacency_matrix), sqrt_d_inverse)
+    matrix = normalize_adjacency_matrix(nx.to_numpy_matrix(graph))
 
 
     #compute start vector from disease gene list

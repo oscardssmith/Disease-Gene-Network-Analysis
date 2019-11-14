@@ -1,3 +1,7 @@
+import sys
+sys.path.insert(1, '../Scripts/')
+from GraphUtils import normalize_adjacency_matrix
+
 import numpy as np
 from scipy.spatial import distance
 
@@ -6,13 +10,7 @@ EPSILON = 0.001
 # Given a np.array matrix, starting vector, prior bias vector, and back
 # probability, calculate the rank of each node in the graph.
 def pagerank(adjacency_matrix, starting_vector, prior_bias, beta):
-    N = len(adjacency_matrix)
-    sqrt_d_inverse = np.zeros((N, N))
-    for i in range(N):
-        sqrt_d_inverse[i][i] = 1/np.sqrt(sum(adjacency_matrix[i]))
-    sqrt_d_inverse = np.array(sqrt_d_inverse)
-    matrix = np.matmul(np.matmul(sqrt_d_inverse, adjacency_matrix), sqrt_d_inverse)
-
+    matrix = normalize_adjacency_matrix(adjacency_matrix)
     d = float('inf')
     prev_vector = np.copy(starting_vector)
     iterations = 0
