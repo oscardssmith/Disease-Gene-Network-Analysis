@@ -90,7 +90,7 @@ def RandomWalk(graph, diseaseGeneList):
     output.sort(key=lambda tup: tup[1], reverse=True)
     newOutput = []
     for tuple in output:
-        newOutput.append((tuple[0], tuple[1][0][0]))
+        newOutput.append((tuple[0], tuple[1].item(0,0)))
 
     return newOutput
 
