@@ -20,6 +20,7 @@ import RandomWalk as rwr
 #import DiffusionKernel as dk
 import PageRank as pr
 import loader
+import time
 
 
 
@@ -78,6 +79,9 @@ def load_PPI_Network(filePath):
 
 def main():
     # load the full PPI Network
+    totalStartTime = time.time()
+    print("Starting leave one out validation.")
+    print("Loading graph")
     PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
     print("Loaded graph")
 
@@ -90,7 +94,8 @@ def main():
     #result = leaveOneOut(pr.PageRank, 'diseaseGeneFile', PPI_Network)
     #print("Mean squared difference for PageRank:", result)
 
-
+    totalEndTime = time.time()
+    print("Finished leave one out validation!\nTotal time in hours:", (totalEndTime - totalStartTime)/3600)
 
 
 if __name__ == '__main__':
