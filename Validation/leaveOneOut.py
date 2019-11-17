@@ -78,7 +78,7 @@ def load_PPI_Network(filePath):
 
 def main():
     # load the full PPI Network
-    PPI_Network = load_PPI_Network('../Data/test-graph-data.tsv')
+    PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
     print("Loaded graph")
 
     result = leaveOneOut(rwr.RandomWalk, '../Data/EndometriosisProteins.tsv', PPI_Network)
