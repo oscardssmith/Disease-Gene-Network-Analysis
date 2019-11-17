@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(1, '../Scripts/')
 import loader
-from normalized_adjacency_matrix import normalize_adjacency_matrix
+from GraphUtils import normalize_adjacency_matrix
 
 import networkx as nx
 import matplotlib.pyplot as plt
