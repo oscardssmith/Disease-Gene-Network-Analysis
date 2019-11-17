@@ -9,6 +9,7 @@ import math
 import numpy as np
 from scipy.spatial import distance
 
+
 BETA = 0.3
 EPSILON = 0.001
 
