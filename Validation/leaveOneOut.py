@@ -25,13 +25,19 @@ import loader
 
 
 def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
+    print("Starting leaveOneOut function")
+
     diseaseGeneFile = open(diseaseGeneFilePath, 'r')
     allDiseaseGenes = diseaseGeneFile.read().splitlines()
     diseaseGeneFile.close()
 
     squaredDifferenceSum = 0
 
+    print("finished initialization, starting disease gene loop")
+
     for skipGene in allDiseaseGenes:
+        print("looping! skipping gene: ", skipGene)
+
         #create leave-one-out disease gene list
         diseaseGeneList = []
         for gene in allDiseaseGenes:
@@ -39,14 +45,23 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
                 diseaseGeneList.append(gene)
 
         #run algorithm using modified disease gene file
+        print("calling algorithm")
+        startTime = time.time()
         output = function(diseaseGeneList, PPI_Network)
+        endTime = time.time()
+        print("finished algorithm. Time elapsed:", endTime - startTime)
 
         #find the predicted probability of the omitted gene and add it to the current sum
+        print("finding skipgene predicted probability")
+        startTime = time.time()
         for pair in output:
             if pair[0] == skipGene:
                 predictedProbability = pair[1]
                 squaredDifferenceSum += (1 - predictedProbability)**2
                 break
+        endTime = time.time()
+        print("added skipGene predictedProbability to squaredDifferenceSum\nTime elapsed:", endTime - startTime)
+
 
 
     #Find average of all squared differences
@@ -64,15 +79,16 @@ def load_PPI_Network(filePath):
 def main():
     # load the full PPI Network
     PPI_Network = load_PPI_Network('../Data/test-graph-data.tsv')
+    print("Loaded graph")
 
     result = leaveOneOut(rwr.RandomWalk, '../Data/EndometriosisProteins.tsv', PPI_Network)
     print("Mean squared difference for RWR:", result)
 
-    result = leaveOneOut(dk.DiffusionKernel, 'diseaseGeneFile', PPI_Network)
-    print("Mean squared difference for Diffusion Kernel:", result)
+    #result = leaveOneOut(dk.DiffusionKernel, 'diseaseGeneFile', PPI_Network)
+    #print("Mean squared difference for Diffusion Kernel:", result)
 
-    result = leaveOneOut(pr.PageRank, 'diseaseGeneFile', PPI_Network)
-    print("Mean squared difference for PageRank:", result)
+    #result = leaveOneOut(pr.PageRank, 'diseaseGeneFile', PPI_Network)
+    #print("Mean squared difference for PageRank:", result)
 
 
 
