@@ -5,3 +5,15 @@ def normalize_adjacency_matrix(adjacency_matrix):
     diag = np.ravel(1/np.sqrt(np.sum(adjacency_matrix, axis=1)))
     sqrt_d_inverse = np.diag(diag)
     return np.matmul(np.matmul(sqrt_d_inverse, adjacency_matrix), sqrt_d_inverse)
+
+
+
+def format_output(graph, rawOutputVector):
+    #format probabilityVector into usable output
+    output = list(zip(graph.nodes(), rawOutputVector))
+    output.sort(key=lambda tup: tup[1], reverse=True)
+    newOutput = []
+    for tuple in output:
+        newOutput.append((tuple[0], tuple[1].item(0,0)))
+
+    return newOutput

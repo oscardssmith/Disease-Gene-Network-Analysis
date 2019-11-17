@@ -2,6 +2,7 @@ import sys
 sys.path.insert(1, '../Scripts/')
 import loader
 from GraphUtils import normalize_adjacency_matrix
+from GraphUtils import format_output
 
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -86,13 +87,7 @@ def RandomWalk(graph, diseaseGeneList):
     probabilityVector = randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold)
 
     #format probabilityVector into usable output
-    output = list(zip(graph.nodes(), probabilityVector))
-    output.sort(key=lambda tup: tup[1], reverse=True)
-    newOutput = []
-    for tuple in output:
-        newOutput.append((tuple[0], tuple[1].item(0,0)))
-
-    return newOutput
+    return format_output(graph, probabilityVector)
 
 
 
