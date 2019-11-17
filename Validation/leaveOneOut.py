@@ -48,7 +48,7 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
         #run algorithm using modified disease gene file
         print("calling algorithm")
         startTime = time.time()
-        output = function(diseaseGeneList, PPI_Network)
+        output = function(PPI_Network, diseaseGeneList)
         endTime = time.time()
         print("finished algorithm. Time elapsed:", endTime - startTime)
 
