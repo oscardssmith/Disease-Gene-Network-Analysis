@@ -27,17 +27,11 @@ def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
 
     while diff > norm_threshold and iterations < max_iterations:
         print("iteration:", iterations)
-        print("starting with:")
-        print("matrix shape:", matrix.shape)
-        print("previous_vector shape:", previous_vector.shape)
-        print("1-R:", 1-R)
 
         #Perform one step of the walk
         new_vector = (1 - R) * np.matmul(matrix, previous_vector)
         new_vector = np.add(new_vector, R * start_vector)
 
-        print("NEW VECTOR:")
-        print(new_vector)
 
         diff = distance.sqeuclidean(new_vector, previous_vector)
         previous_vector = new_vector
@@ -87,6 +81,7 @@ def RandomWalk(graph, diseaseGeneList):
     probabilityVector = randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold)
 
     #format probabilityVector into usable output
+    print("formatting output")
     return format_output(graph, probabilityVector)
 
 
