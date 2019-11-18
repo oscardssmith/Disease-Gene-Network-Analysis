@@ -64,7 +64,7 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
         print("added skipGene predictedProbability to squaredDifferenceSum\nTime elapsed:", endTime - startTime)
 
 
-
+    print("------------------------\nFinished running algorithm with all disease genes left out\nCalculating mean squared difference")
     #Find average of all squared differences
     meanSquaredDifference = squaredDifferenceSum/len(allDiseaseGenes)
     return meanSquaredDifference
