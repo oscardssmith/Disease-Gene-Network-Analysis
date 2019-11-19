@@ -42,7 +42,7 @@ def PageRank(graph, disease_gene_list):
             starting_vector.append(1/num_disease_genes)
         else:
             starting_vector.append(0)
-    starting_vector = np.array(starting_vector)
+    starting_vector = np.array(starting_vector, order='F')
     prior_bias = np.copy(starting_vector)
     return zip(graph.nodes(),rank_genes(adjacency_matrix, starting_vector, prior_bias, BETA))
 
@@ -71,7 +71,7 @@ def main():
     probabilityVector = PageRank(PPI_Graph, diseaseGeneList)
     endTime = time.time()
 
-    print("Random Walk matrix implementation finished running.\nTime elapsed:", endTime - startTime, "seconds.")
+    print("PageRank matrix implementation finished running.\nTime elapsed:", endTime - startTime, "seconds.")
     print(probabilityVector)
 
 
