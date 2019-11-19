@@ -42,7 +42,7 @@ def PageRank(graph, disease_gene_list):
             starting_vector.append(1/num_disease_genes)
         else:
             starting_vector.append(0)
-    starting_vector = np.array(starting_vector) # do not need np.transpose or np.matrix
+    starting_vector = np.array(starting_vector)
     prior_bias = np.copy(starting_vector)
     return zip(graph.nodes(),rank_genes(adjacency_matrix, starting_vector, prior_bias, BETA))
 
