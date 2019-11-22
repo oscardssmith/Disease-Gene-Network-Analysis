@@ -32,19 +32,10 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
     # zip prev_vector and gene names
     return prev_vector
 
-def PageRank(graph, disease_gene_list):
-    adjacency_matrix = np.adjacency_matrix(graph)
-    disease_gene_set = set(disease_gene_list)
-    starting_vector = []
-    num_disease_genes = len(disease_gene_list)
-    for node in graph.nodes():
-        if node in disease_gene_set:
-            starting_vector.append(1/num_disease_genes)
-        else:
-            starting_vector.append(0)
-    starting_vector = np.array(starting_vector, order='F')
-    prior_bias = np.copy(starting_vector)
-    return zip(graph.nodes(),rank_genes(adjacency_matrix, starting_vector, prior_bias, BETA))
+def PageRank(graph, start_vector):
+    adjacency_matrix = np.adjacency_matrix(graph
+    prior_bias = np.copy(start_vector)
+    return zip(graph.nodes(),rank_genes(adjacency_matrix, start_vector, prior_bias, BETA))
 
 def main():
     pathToData = "../Data/9606.protein.links.v11.0.txt"
@@ -61,14 +52,14 @@ def main():
 
     #Read data from disease gene file into list
     startTime = time.time()
-    diseaseGeneList = loader.load_disease_genes(pathToDiseaseGeneFile)
+    start_vector = loader.load_start_vector(pathToDiseaseGeneFile, PPI_Graph)
     endTime = time.time()
 
     print("Disease genes loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
 
 
     startTime = time.time()
-    probabilityVector = PageRank(PPI_Graph, diseaseGeneList)
+    probabilityVector = PageRank(PPI_Graph, start_vector)
     endTime = time.time()
 
     print("PageRank matrix implementation finished running.\nTime elapsed:", endTime - startTime, "seconds.")

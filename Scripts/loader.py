@@ -1,4 +1,5 @@
 import networkx as nx
+import numpy as np
 
 def load_graph(path):
     """
@@ -22,5 +23,13 @@ def load_disease_genes(path):
     Loads disease genes from TSV file and returns a python list of all names
     """
     with open(path, 'r') as inputFile:
-        list = inputFile.read().splitlines()
-        return list
+        return inputFile.read().splitlines()
+
+def load_start_vector(path, PPI_Graph):
+    diseaseGeneList = set(load_disease_genes(path))
+    start_vector = np.zeros(PPI_Graph.number_of_nodes())
+    numDiseaseGenes = len(diseaseGeneList)
+    for i, node in enumerate(PPI_Graph.nodes()):
+        if node in diseaseGeneList:
+            start_vector[i] = 1/numDiseaseGenes
+    return np.asarray(start_vector, order='F')
