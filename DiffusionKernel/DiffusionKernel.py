@@ -19,19 +19,21 @@ pathToDiseaseGeneFile = "../Data/EndometriosisProteins.tsv"
 def diffusion_kernel(PPI_Graph, genes, B=1):
     # np.asarray needed due to this bug https://github.com/scipy/scipy/issues/5546
     # Note that this bug is fixed, but not yet backported
-    L = np.asarray(nx.to_numpy_matrix(PPI_Graph))
-    return expm_multiply(-B*L, genes)
+    L = np.asarray(nx.laplacian_matrix(PPI_Graph, weight=-B).todense())
+    print(L)
+    return expm_multiply(L, genes)
     #K = expm(-B * L)
     #print(K.shape)
     #return np.matmul(K, genes)
 
 if __name__ == '__main__':
     t1 = time()
-    PPI_Graph = load_graph(REAL_FILE)
+    #PPI_Graph = load_graph(REAL_FILE)
     #nx.write_weighted_edgelist(PPI_Graph, 'graph.edgelist')
-    #PPI_Graph = nx.read_weighted_edgelist('graph.edgelist')
+    PPI_Graph = nx.read_weighted_edgelist('graph.edgelist')
     start_vector = load_start_vector(pathToDiseaseGeneFile, PPI_Graph)
     t2 = time()
     print(t2-t1)
-    diffusion_kernel(PPI_Graph, start_vector)
+    x = diffusion_kernel(PPI_Graph, start_vector)
+    print(x)
     print(time()-t2)
