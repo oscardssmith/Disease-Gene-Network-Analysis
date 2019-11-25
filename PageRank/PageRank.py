@@ -16,7 +16,11 @@ EPSILON = 0.001
 # Given a np.array matrix, starting vector, prior bias vector, and back
 # probability, calculate the rank of each node in the graph.
 def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
+    print("started ranking genes")
+    startTime = time.time()
     matrix = normalize_adjacency_matrix(adjacency_matrix)
+    endTime = time.time()
+    print("time elapsed for normalizing the adjacency matrix: ",endTime - startTime )
     d = float('inf')
     prev_vector = np.copy(starting_vector)
     iterations = 0
@@ -27,13 +31,13 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
         prev_vector = result
         iterations += 1
         print("iterations", iterations)
-        print(result)
-        print("difference", d)
+       # print(result)
+       # print("difference", d)
     # zip prev_vector and gene names
     return prev_vector
 
 def PageRank(graph, disease_gene_list):
-    adjacency_matrix = np.adjacency_matrix(graph)
+    adjacency_matrix = nx.to_numpy_matrix(graph)
     disease_gene_set = set(disease_gene_list)
     starting_vector = []
     num_disease_genes = len(disease_gene_list)
@@ -42,7 +46,7 @@ def PageRank(graph, disease_gene_list):
             starting_vector.append(1/num_disease_genes)
         else:
             starting_vector.append(0)
-    starting_vector = np.array(starting_vector, order='F')
+    starting_vector = np.transpose(np.matrix(np.array(starting_vector)))
     prior_bias = np.copy(starting_vector)
     return zip(graph.nodes(),rank_genes(adjacency_matrix, starting_vector, prior_bias, BETA))
 
@@ -73,6 +77,8 @@ def main():
 
     print("PageRank matrix implementation finished running.\nTime elapsed:", endTime - startTime, "seconds.")
     print(probabilityVector)
+    for name, p in probabilityVector:
+        print("gene name:", name, "probability", p)
 
 
 if __name__ == '__main__':
