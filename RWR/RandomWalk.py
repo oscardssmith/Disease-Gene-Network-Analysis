@@ -46,7 +46,7 @@ def randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold):
 
 
 
-def RandomWalk(graph, diseaseGeneList):
+def RandomWalk(graph, start_vector):
     print("INITIALIZING RANDOM WALK")
 
     """
@@ -64,19 +64,6 @@ def RandomWalk(graph, diseaseGeneList):
     norm_threshold = 10**(-6)
     print("creating matrix")
     matrix = normalize_adjacency_matrix(nx.to_numpy_matrix(graph))
-
-
-    #compute start vector from disease gene list
-    print("creating start vector")
-    start_vector = []
-    numDiseaseGenes = len(diseaseGeneList)
-    for node in graph.nodes():
-        if node in diseaseGeneList:
-            start_vector.append(1/numDiseaseGenes)
-        else:
-            start_vector.append(0)
-    start_vector = np.transpose(np.matrix(np.array(start_vector)))
-
 
     probabilityVector = randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold)
 
@@ -106,18 +93,18 @@ def main():
 
     #Read data from disease gene file into list
     startTime = time.time()
-    diseaseGeneList = loader.load_disease_genes(pathToDiseaseGeneFile)
+    start_vector = loader.load_start_vector(pathToDiseaseGeneFile, PPI_Graph)
     endTime = time.time()
 
     print("Disease genes loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
 
 
     startTime = time.time()
-    probabilityVector = RandomWalk(PPI_Graph, diseaseGeneList)
+    probabilityVector = RandomWalk(PPI_Graph, start_vector)
     endTime = time.time()
 
     print("Random Walk matrix implementation finished running.\nTime elapsed:", endTime - startTime, "seconds.")
-    print(probabilityVector)
+    print(probabilityVector, start_vector)
 
 
     #Visualize graph in matplotlib.
