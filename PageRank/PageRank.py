@@ -23,22 +23,25 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
     print("time elapsed for normalizing the adjacency matrix: ",endTime - startTime )
     d = float('inf')
     prev_vector = np.copy(starting_vector)
+    print("starting vector shape:", prev_vector.shape)
     iterations = 0
     while d > EPSILON:
         result = (1 - beta) * np.matmul(matrix, prev_vector)
+        print("shape of result vector after matmul:", result.shape)
         result = np.add(result, beta*prior_bias)
+        print("shape of result after np add:", result.shape)
         d = distance.sqeuclidean(result, prev_vector)
         prev_vector = result
         iterations += 1
-        print("iterations", iterations)
-       # print(result)
-       # print("difference", d)
-    # zip prev_vector and gene names
+        print("finished iterations", iterations)
+        print("shape of the previous vector:", prev_vector.shape)
     return prev_vector
 
 def PageRank(graph, start_vector):
-    adjacency_matrix = np.adjacency_matrix(graph
+    adjacency_matrix = nx.to_numpy_matrix(graph)
     prior_bias = np.copy(start_vector)
+    print("adjacency matrix shape:", adjacency_matrix.shape)
+    print("start vector shape:", start_vector.shape)
     return zip(graph.nodes(),rank_genes(adjacency_matrix, start_vector, prior_bias, BETA))
 
 def main():
@@ -68,7 +71,8 @@ def main():
 
     print("PageRank matrix implementation finished running.\nTime elapsed:", endTime - startTime, "seconds.")
     print(probabilityVector)
-    for name, p in probabilityVector:
+    sortedProbabilities = sorted(probabilityVector, key=lambda x: x[1])
+    for name, p in sortedProbabilities:
         print("gene name:", name, "probability", p)
 
 

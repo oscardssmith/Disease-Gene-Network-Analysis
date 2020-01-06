@@ -1,0 +1,12 @@
+Graph loaded from file.
+Time elapsed: 46.87949776649475 seconds.
+Disease genes loaded from file.
+Time elapsed: 0.004903316497802734 seconds.
+Traceback (most recent call last):
+  File "PageRank.py", line 77, in <module>
+    main()
+  File "PageRank.py", line 66, in main
+    probabilityVector = PageRank(PPI_Graph, start_vector)
+  File "PageRank.py", line 40, in PageRank
+    adjacency_matrix = np.to_numpy_matrix(graph)
+AttributeError: module 'numpy' has no attribute 'to_numpy_matrix'
