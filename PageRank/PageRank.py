@@ -19,22 +19,19 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
     print("started ranking genes")
     startTime = time.time()
     matrix = normalize_adjacency_matrix(adjacency_matrix)
+    matrix = np.asarray(matrix)
     endTime = time.time()
     print("time elapsed for normalizing the adjacency matrix: ",endTime - startTime )
     d = float('inf')
     prev_vector = np.copy(starting_vector)
-    print("starting vector shape:", prev_vector.shape)
     iterations = 0
     while d > EPSILON:
         result = (1 - beta) * np.matmul(matrix, prev_vector)
-        print("shape of result vector after matmul:", result.shape)
         result = np.add(result, beta*prior_bias)
-        print("shape of result after np add:", result.shape)
         d = distance.sqeuclidean(result, prev_vector)
         prev_vector = result
         iterations += 1
         print("finished iterations", iterations)
-        print("shape of the previous vector:", prev_vector.shape)
     return prev_vector
 
 def PageRank(graph, start_vector):
