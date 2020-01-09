@@ -69,8 +69,8 @@ def main():
     print("PageRank matrix implementation finished running.\nTime elapsed:", endTime - startTime, "seconds.")
     print(probabilityVector)
     sortedProbabilities = sorted(probabilityVector, key=lambda x: x[1])
-    for name, p in sortedProbabilities:
-        print("gene name:", name, "probability", p)
+    for i in range(50):
+        print("gene name: ", sortedProbabilities[i][0], "probability:", sortedProbabilities[i][1])
 
 
 if __name__ == '__main__':
