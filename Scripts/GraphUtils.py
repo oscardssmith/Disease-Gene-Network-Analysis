@@ -12,9 +12,5 @@ def format_output(graph, rawOutputVector):
     #format probabilityVector into usable output
     output = list(zip(graph.nodes(), rawOutputVector))
     output.sort(key=lambda tup: tup[1], reverse=True)
-    newOutput = []
-    print(output)
-    for tuple in output:
-        newOutput.append((tuple[0], tuple[1][0]))
-
-    return newOutput
+    
+    return output
