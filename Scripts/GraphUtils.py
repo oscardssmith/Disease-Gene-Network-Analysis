@@ -15,6 +15,6 @@ def format_output(graph, rawOutputVector):
     newOutput = []
     print(output)
     for tuple in output:
-        newOutput.append((tuple[0], tuple[1][0])
+        newOutput.append((tuple[0], tuple[1][0]))
 
     return newOutput
