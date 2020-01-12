@@ -68,7 +68,7 @@ def RandomWalk(graph, start_vector):
     print("creating matrix")
 
     # Load matrix from pickled object if exists to save time converting file.
-    if os.isfile("pickledmatrix"):
+    if os.path.isfile("pickledmatrix"):
         with open("pickledmatrix", 'r') as handle:
             matrix = pickle.load(handle)
     else:
