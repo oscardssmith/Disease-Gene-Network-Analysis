@@ -13,7 +13,8 @@ def format_output(graph, rawOutputVector):
     output = list(zip(graph.nodes(), rawOutputVector))
     output.sort(key=lambda tup: tup[1], reverse=True)
     newOutput = []
+    print(output)
     for tuple in output:
-        newOutput.append((tuple[0], tuple[1].item(0,0)))
+        newOutput.append((tuple[0], tuple[1][0])
 
     return newOutput
