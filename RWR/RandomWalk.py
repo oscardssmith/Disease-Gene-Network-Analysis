@@ -92,8 +92,8 @@ def main():
     pathToData = "../Data/9606.protein.links.v11.0.txt"
     pathToDiseaseGeneFile = "../Data/EndometriosisProteins.tsv"
 
-    print("Loading graph from file:", pathToData)
 
+    print("Loading graph from file:", pathToData)
 
     #Read data from input file to networkx graph format.
     startTime = time.time()
