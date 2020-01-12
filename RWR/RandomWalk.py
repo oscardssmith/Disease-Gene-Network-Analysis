@@ -63,7 +63,7 @@ def RandomWalk(graph, start_vector):
     max_iterations = 500
     norm_threshold = 10**(-6)
     print("creating matrix")
-    matrix = normalize_adjacency_matrix(nx.to_numpy_matrix(graph))
+    matrix = np.asarray(normalize_adjacency_matrix(nx.to_numpy_matrix(graph)))
 
     probabilityVector = randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold)
 
