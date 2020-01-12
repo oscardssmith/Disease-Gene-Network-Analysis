@@ -11,6 +11,9 @@ import math
 import numpy as np
 from scipy.spatial import distance
 
+import pickle
+import os
+
 
 
 
@@ -63,7 +66,16 @@ def RandomWalk(graph, start_vector):
     max_iterations = 500
     norm_threshold = 10**(-6)
     print("creating matrix")
-    matrix = np.asarray(normalize_adjacency_matrix(nx.to_numpy_matrix(graph)))
+
+    # Load matrix from pickled object if exists to save time converting file.
+    if os.isfile("pickledmatrix"):
+        with open("pickledmatrix", 'r') as handle:
+            matrix = pickle.load(handle)
+    else:
+        matrix = np.asarray(normalize_adjacency_matrix(nx.to_numpy_matrix(graph)))
+        with open("pickledmatrix", 'w') as handle:
+            pickle.dump(matrix, handle)
+
 
     probabilityVector = randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold)
 
