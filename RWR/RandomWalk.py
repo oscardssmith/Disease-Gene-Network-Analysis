@@ -15,7 +15,7 @@ try:
    import cPickle as pickle
 except:
    import pickle
-   
+
 import os
 
 
@@ -74,11 +74,11 @@ def RandomWalk(graph, start_vector):
     # Load matrix from pickled object if exists to save time converting file.
     if os.path.isfile("pickledmatrix"):
         with open("pickledmatrix", 'r') as handle:
-            matrix = pickle.load(handle)
+            matrix = pickle.loads(handle)
     else:
         matrix = np.asarray(normalize_adjacency_matrix(nx.to_numpy_matrix(graph)))
         with open("pickledmatrix", 'w') as handle:
-            pickle.dump(matrix, handle)
+            pickle.dumps(matrix, handle)
 
 
     probabilityVector = randomWalkMatrix(matrix, start_vector, R, max_iterations, norm_threshold)
