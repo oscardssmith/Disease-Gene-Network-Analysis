@@ -11,7 +11,11 @@ import math
 import numpy as np
 from scipy.spatial import distance
 
-import pickle
+try:
+   import cPickle as pickle
+except:
+   import pickle
+   
 import os
 
 
