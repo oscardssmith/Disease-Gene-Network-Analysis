@@ -63,7 +63,6 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
         #find the predicted probability of the omitted gene and add it to the current sum
         print("finding skipgene predicted probability")
         startTime = time.time()
-        thresholdCount = 0
         foundGene = False
         for i in range(rankThreshhold):
             if output[i][0] == skipGene:
