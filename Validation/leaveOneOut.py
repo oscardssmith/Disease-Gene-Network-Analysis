@@ -39,24 +39,24 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
 
     print("finished initialization, starting disease gene loop")
 
-    for skipGene in allDiseaseGenes:
+    for index, skipGene in enumerate(allDiseaseGenes):
         print("looping! skipping gene: ", skipGene)
 
         #create leave-one-out disease gene list
-        diseaseGeneList = []
-        for gene in allDiseaseGenes:
-            if gene != skipGene:
-                diseaseGeneList.append(gene)
+        # diseaseGeneList = []
+        # for gene in allDiseaseGenes:
+        #     if gene != skipGene:
+        #         diseaseGeneList.append(gene)
 
+        startVector = loader.load_start_vector(diseaseGeneFilePath, PPI_Network)
+        startVector[index] = 0
 
-        diseaseGeneList = loader.load_test_start_vector()
-        rankThreshhold = 3
 
 
         #run algorithm using modified disease gene file
         print("calling algorithm")
         startTime = time.time()
-        output = function(PPI_Network, diseaseGeneList)
+        output = function(PPI_Network, startVector)
         endTime = time.time()
         print("finished algorithm. Time elapsed:", endTime - startTime)
 
