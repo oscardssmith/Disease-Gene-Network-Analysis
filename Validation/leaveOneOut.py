@@ -65,7 +65,7 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
         startTime = time.time()
         foundGene = False
         for i in range(rankThreshhold):
-            print(output[i])
+            print(output[i][0])
             if output[i][0] == skipGene:
                 foundGene= True
                 break
