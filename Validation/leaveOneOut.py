@@ -48,6 +48,10 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
             if gene != skipGene:
                 diseaseGeneList.append(gene)
 
+
+        diseaseGeneList = loader.load_test_start_vector()
+
+        
         #run algorithm using modified disease gene file
         print("calling algorithm")
         startTime = time.time()
@@ -89,7 +93,8 @@ def main():
     totalStartTime = time.time()
     print("Starting leave one out validation.")
     print("Loading graph")
-    PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
+    # PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
+    PPI_Network = loader.load_test_graph()
     print("Loaded graph")
 
     result = leaveOneOut(rwr.RandomWalk, '../Data/EndometriosisProteins.tsv', PPI_Network)
