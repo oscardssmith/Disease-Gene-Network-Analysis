@@ -35,7 +35,7 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
     numDiseaseGenes = len(allDiseaseGenes)
     rankThreshhold = round(1.2 * numDiseaseGenes)
 
-    squaredDifferenceSum = 0
+    numGenesNotFound = 0
 
     print("finished initialization, starting disease gene loop")
 
@@ -59,10 +59,13 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
         print("finding skipgene predicted probability")
         startTime = time.time()
         thresholdCount = 0
-        for pair in output:
-            thresholdCount += 1
-            if pair[0] == skipGene and thresholdCount > rankThreshhold:
-                squaredDifferenceSum += 1
+        foundGene = False
+        for i in range(rankThreshhold):
+            if output[i][0] == skipGene:
+                foundGene= True
+                break
+        if not foundGene:
+            numGenesNotFound +=1
 
         endTime = time.time()
         print("added skipGene predictedProbability to squaredDifferenceSum\nTime elapsed:", endTime - startTime)
@@ -70,8 +73,8 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
 
     print("------------------------\nFinished running algorithm with all disease genes left out\nCalculating mean squared difference")
     #Find average of all squared differences
-    meanSquaredDifference = squaredDifferenceSum/numDiseaseGenes
-    return meanSquaredDifference
+    percentIncorrectlyRankedGenes = numGenesNotFound/numDiseaseGenes
+    return percentIncorrectlyRankedGenes
 
 
 
