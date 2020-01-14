@@ -18,6 +18,13 @@ def load_graph(path):
 
 
 
+def load_test_graph():
+    return nx.complete_graph(5)
+
+def load_test_start_vector():
+    return np.asarray([0,0,0,1,0])
+
+
 def load_disease_genes(path):
     """
     Loads disease genes from TSV file and returns a python list of all names

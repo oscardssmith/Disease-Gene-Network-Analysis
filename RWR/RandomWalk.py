@@ -72,12 +72,13 @@ def RandomWalk(graph, start_vector):
     print("creating matrix")
 
     # Load matrix from pickled object if exists to save time converting file.
-    if os.path.isfile("pickledmatrix"):
-        with open("pickledmatrix", 'rb') as handle:
-            matrix = pickle.load(handle)
+    if os.path.isfile("../Data/pickledmatrix"):
+        print("pickled matrix file exists, loading matrix from file")
+        with open("../Data/pickledmatrix", 'rb') as handle:
+            matrix = np.asarray(pickle.load(handle))
     else:
         matrix = np.asarray(normalize_adjacency_matrix(nx.to_numpy_matrix(graph)))
-        with open("pickledmatrix", 'wb') as handle:
+        with open("../Data/pickledmatrix", 'wb') as handle:
             pickle.dump(matrix, handle)
 
 

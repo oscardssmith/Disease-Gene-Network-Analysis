@@ -35,23 +35,28 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
     numDiseaseGenes = len(allDiseaseGenes)
     rankThreshhold = round(1.2 * numDiseaseGenes)
 
-    squaredDifferenceSum = 0
+    numGenesNotFound = 0
 
     print("finished initialization, starting disease gene loop")
 
-    for skipGene in allDiseaseGenes:
+    for index, skipGene in enumerate(allDiseaseGenes):
         print("looping! skipping gene: ", skipGene)
 
         #create leave-one-out disease gene list
-        diseaseGeneList = []
-        for gene in allDiseaseGenes:
-            if gene != skipGene:
-                diseaseGeneList.append(gene)
+        # diseaseGeneList = []
+        # for gene in allDiseaseGenes:
+        #     if gene != skipGene:
+        #         diseaseGeneList.append(gene)
+
+        startVector = loader.load_start_vector(diseaseGeneFilePath, PPI_Network)
+        startVector[index] = 0
+
+
 
         #run algorithm using modified disease gene file
         print("calling algorithm")
         startTime = time.time()
-        output = function(PPI_Network, diseaseGeneList)
+        output = function(PPI_Network, startVector)
         endTime = time.time()
         print("finished algorithm. Time elapsed:", endTime - startTime)
 
@@ -59,10 +64,13 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
         print("finding skipgene predicted probability")
         startTime = time.time()
         thresholdCount = 0
-        for pair in output:
-            thresholdCount += 1
-            if pair[0] == skipGene and thresholdCount > rankThreshhold:
-                squaredDifferenceSum += 1
+        foundGene = False
+        for i in range(rankThreshhold):
+            if output[i][0] == skipGene:
+                foundGene= True
+                break
+        if not foundGene:
+            numGenesNotFound +=1
 
         endTime = time.time()
         print("added skipGene predictedProbability to squaredDifferenceSum\nTime elapsed:", endTime - startTime)
@@ -70,8 +78,8 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
 
     print("------------------------\nFinished running algorithm with all disease genes left out\nCalculating mean squared difference")
     #Find average of all squared differences
-    meanSquaredDifference = squaredDifferenceSum/numDiseaseGenes
-    return meanSquaredDifference
+    percentIncorrectlyRankedGenes = numGenesNotFound/numDiseaseGenes
+    return percentIncorrectlyRankedGenes
 
 
 
@@ -86,7 +94,8 @@ def main():
     totalStartTime = time.time()
     print("Starting leave one out validation.")
     print("Loading graph")
-    PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
+    # PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
+    PPI_Network = loader.load_test_graph()
     print("Loaded graph")
 
     result = leaveOneOut(rwr.RandomWalk, '../Data/EndometriosisProteins.tsv', PPI_Network)
