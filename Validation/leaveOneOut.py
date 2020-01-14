@@ -50,8 +50,9 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
 
 
         diseaseGeneList = loader.load_test_start_vector()
+        rankThreshhold = 3
 
-        
+
         #run algorithm using modified disease gene file
         print("calling algorithm")
         startTime = time.time()
