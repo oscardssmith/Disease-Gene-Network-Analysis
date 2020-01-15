@@ -65,7 +65,7 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
         startTime = time.time()
         foundGene = False
         for i in range(rankThreshhold):
-            print(type(output[i]))
+            print(output[i][0])
             if output[i][0] == skipGene:
                 foundGene = True
                 break
@@ -94,8 +94,7 @@ def main():
     totalStartTime = time.time()
     print("Starting leave one out validation.")
     print("Loading graph")
-    # PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
-    PPI_Network = loader.load_test_graph()
+    PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
     print("Loaded graph")
 
     result = leaveOneOut(rwr.RandomWalk, '../Data/EndometriosisProteins.tsv', PPI_Network)
