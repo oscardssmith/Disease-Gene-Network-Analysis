@@ -89,24 +89,36 @@ def load_PPI_Network(filePath):
 
 
 def main():
-    # load the full PPI Network
-    totalStartTime = time.time()
-    print("Starting leave one out validation.")
-    print("Loading graph")
-    PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
-    print("Loaded graph")
+    # # load the full PPI Network
+    # totalStartTime = time.time()
+    # print("Starting leave one out validation.")
+    # print("Loading graph")
+    # PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
+    # print("Loaded graph")
+    #
+    # result = leaveOneOut(rwr.RandomWalk, '../Data/EndometriosisProteins.tsv', PPI_Network)
+    # print("Mean squared difference for RWR:", result)
+    #
+    # #result = leaveOneOut(dk.DiffusionKernel, 'diseaseGeneFile', PPI_Network)
+    # #print("Mean squared difference for Diffusion Kernel:", result)
+    # 
+    # result = leaveOneOut(pr.PageRank, 'diseaseGeneFile', PPI_Network)
+    # print("Mean squared difference for PageRank:", result)
+    #
+    # totalEndTime = time.time()
+    # print("Finished leave one out validation!\nTotal time in hours:", (totalEndTime - totalStartTime)/3600)
 
-    result = leaveOneOut(rwr.RandomWalk, '../Data/EndometriosisProteins.tsv', PPI_Network)
-    print("Mean squared difference for RWR:", result)
+    # testing if RWR and PageRank are the same -- delete later!
+    PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt') # load network
+    startVector = loader.load_start_vector('../Data/EndometriosisProteins.tsv', PPI_Network)
+    result_RWR = rwr.RandomWalk(PPI_Network, startVector)
+    result_PR = pr.PageRank(PPI_Network, startVector)
+    differenceScore =0
+    for i in range(len(result_RWR)):
+        if result_RWR[i][0] != result_PR[i][0]:
+            differenceScore +=1
+    print(differenceScore)
 
-    #result = leaveOneOut(dk.DiffusionKernel, 'diseaseGeneFile', PPI_Network)
-    #print("Mean squared difference for Diffusion Kernel:", result)
-
-    #result = leaveOneOut(pr.PageRank, 'diseaseGeneFile', PPI_Network)
-    #print("Mean squared difference for PageRank:", result)
-
-    totalEndTime = time.time()
-    print("Finished leave one out validation!\nTotal time in hours:", (totalEndTime - totalStartTime)/3600)
 
 
 if __name__ == '__main__':

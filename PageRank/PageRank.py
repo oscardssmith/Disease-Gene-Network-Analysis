@@ -18,10 +18,20 @@ EPSILON = 0.001
 def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
     print("started ranking genes")
     startTime = time.time()
-    matrix = normalize_adjacency_matrix(adjacency_matrix)
-    matrix = np.asarray(matrix)
+
+    # Load matrix from pickled object if exists to save time converting file.
+    if os.path.isfile("../Data/pickledmatrix"):
+        print("pickled matrix file exists, loading matrix from file")
+        with open("../Data/pickledmatrix", 'rb') as handle:
+            matrix = np.asarray(pickle.load(handle))
+    else:
+        matrix = np.asarray(normalize_adjacency_matrix(nx.to_numpy_matrix(graph)))
+        with open("../Data/pickledmatrix", 'wb') as handle:
+            pickle.dump(matrix, handle)
     endTime = time.time()
     print("time elapsed for normalizing the adjacency matrix: ",endTime - startTime )
+
+    
     d = float('inf')
     prev_vector = np.copy(starting_vector)
     iterations = 0
@@ -37,9 +47,7 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
 def PageRank(graph, start_vector):
     adjacency_matrix = nx.to_numpy_matrix(graph)
     prior_bias = np.copy(start_vector)
-    print("adjacency matrix shape:", adjacency_matrix.shape)
-    print("start vector shape:", start_vector.shape)
-    return zip(graph.nodes(),rank_genes(adjacency_matrix, start_vector, prior_bias, BETA))
+    return format_output(graph,rank_genes(adjacency_matrix, start_vector, prior_bias, BETA))
 
 def main():
     pathToData = "../Data/9606.protein.links.v11.0.txt"

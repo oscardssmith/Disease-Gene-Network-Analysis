@@ -65,8 +65,8 @@ def RandomWalk(graph, start_vector):
 
     @returns: a nested list of tuples, in sorted order of probability, where each item contains the name of a gene, and its respective probability as determined by the algorithm
     """
-    # Set algorithm constants
-    R = 0.2
+    # Set algorithm constants-- R is set to be same as Beta in PageRank for comparison
+    R = 0.3
     max_iterations = 500
     norm_threshold = 10**(-6)
     print("creating matrix")
