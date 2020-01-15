@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(1, '../Scripts/')
-from GraphUtils import normalize_adjacency_matrix
+from GraphUtils import normalize_adjacency_matrix, format_output
 import loader
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -31,7 +31,7 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
     endTime = time.time()
     print("time elapsed for normalizing the adjacency matrix: ",endTime - startTime )
 
-    
+
     d = float('inf')
     prev_vector = np.copy(starting_vector)
     iterations = 0
