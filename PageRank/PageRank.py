@@ -8,6 +8,12 @@ import time
 import math
 import numpy as np
 from scipy.spatial import distance
+try:
+   import cPickle as pickle
+except:
+   import pickle
+
+import os
 
 
 BETA = 0.3
