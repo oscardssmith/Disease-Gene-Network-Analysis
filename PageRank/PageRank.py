@@ -17,7 +17,7 @@ import os
 
 
 BETA = 0.3
-EPSILON = 0.001
+EPSILON = 10**(-6)
 
 # Given a np.array matrix, starting vector, prior bias vector, and back
 # probability, calculate the rank of each node in the graph.
