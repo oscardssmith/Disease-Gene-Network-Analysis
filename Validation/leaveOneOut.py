@@ -101,7 +101,7 @@ def main():
     #
     # #result = leaveOneOut(dk.DiffusionKernel, 'diseaseGeneFile', PPI_Network)
     # #print("Mean squared difference for Diffusion Kernel:", result)
-    # 
+    #
     # result = leaveOneOut(pr.PageRank, 'diseaseGeneFile', PPI_Network)
     # print("Mean squared difference for PageRank:", result)
     #
@@ -114,10 +114,10 @@ def main():
     result_RWR = rwr.RandomWalk(PPI_Network, startVector)
     result_PR = pr.PageRank(PPI_Network, startVector)
     differenceScore =0
-    for i in range(len(result_RWR)):
+    for i in range(50):
         if result_RWR[i][0] != result_PR[i][0]:
             differenceScore +=1
-    print(differenceScore)
+    print("difference score", differenceScore)
 
 
 
