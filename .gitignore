@@ -5,7 +5,7 @@
 4932.protein.links.v11.0.txt.gz
 4932.protein.links.v11.0.txt
 PPI_Network.graphml
-__pycache__
+/__pycache__
 test-graph-data.tsv
 pickledmatrix
 ._PageRank.py
