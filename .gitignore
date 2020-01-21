@@ -11,3 +11,4 @@ test-graph-data.tsv
 pickledmatrix
 ._PageRank.py
 *.pyc
+.DS_Store
