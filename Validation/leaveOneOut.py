@@ -25,7 +25,7 @@ import time
 
 
 
-def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
+def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, priors_file_path):
     print("Starting leaveOneOut function")
 
     diseaseGeneFile = open(diseaseGeneFilePath, 'r')
@@ -50,13 +50,20 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network):
 
         startVector = loader.load_start_vector(diseaseGeneFilePath, PPI_Network)
         startVector[index] = 0
+        priors_vector = np.zeros(PPI_Network.number_of_nodes())
+        if function == pr.PageRank:                     # Is this proper syntax?
+            priors_vector = pr.load_priors(priors_file_path)
 
 
 
         #run algorithm using modified disease gene file
         print("calling algorithm")
         startTime = time.time()
-        output = function(PPI_Network, startVector)
+        output= []
+        if function == pr.PageRank: #is this right?
+            output = function(PPI_Network, startVector, priors_vector)
+        else:
+            output = function(PPI_Network, startVector)
         endTime = time.time()
         print("finished algorithm. Time elapsed:", endTime - startTime)
 
@@ -95,24 +102,27 @@ def main():
     # print("Loading graph")
     # PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
     # print("Loaded graph")
+    # priors_file_path = 'Data/LymphomaProteinsPriors.tsv'
     #
-    # result = leaveOneOut(rwr.random_walk, '../Data/EndometriosisProteins.tsv', PPI_Network)
+    # result = leaveOneOut(rwr.random_walk, '../Data/EndometriosisProteins.tsv', PPI_Network, priors_file_path)
     # print("Mean squared difference for RWR:", result)
     #
-    # #result = leaveOneOut(dk.DiffusionKernel, 'diseaseGeneFile', PPI_Network)
+    # #result = leaveOneOut(dk.DiffusionKernel, 'diseaseGeneFile', PPI_Network, priors_file_path)
     # #print("Mean squared difference for Diffusion Kernel:", result)
     #
-    # result = leaveOneOut(pr.PageRank, 'diseaseGeneFile', PPI_Network)
+    # result = leaveOneOut(pr.PageRank, 'diseaseGeneFile', PPI_Network, priors_file_path)
     # print("Mean squared difference for PageRank:", result)
     #
     # totalEndTime = time.time()
     # print("Finished leave one out validation!\nTotal time in hours:", (totalEndTime - totalStartTime)/3600)
 
     # testing if RWR and PageRank are the same -- delete later!
+    priors_file_path= '..Data/LymphomaProteinsPriors.tsv'
     PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt') # load network
     startVector = loader.load_start_vector('../Data/EndometriosisProteins.tsv', PPI_Network)
+    priors_vector = pr.load_priors(priors_file_path) ### needs priors file!
     result_RWR = rwr.random_walk(PPI_Network, startVector)
-    result_PR = pr.PageRank(PPI_Network, startVector)
+    result_PR = pr.PageRank(PPI_Network, startVector, priors_vector)
     differenceScore =0
     for i in range(50):
         if result_RWR[i][0] != result_PR[i][0]:
