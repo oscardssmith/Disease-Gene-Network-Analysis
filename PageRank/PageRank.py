@@ -54,7 +54,7 @@ def load_priors(priors_file, graph):
     prior_bias = np.zeros(graph.number_of_nodes())
     protein_list = []
     total = 0
-    with open(path, 'r') as inputFile:
+    with open(priors_file, 'r') as inputFile:
         protein_file = inputFile.read()
         for line in protein_file:
             protein_list.append(line.split('\t'))
