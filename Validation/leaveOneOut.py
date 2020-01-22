@@ -117,11 +117,11 @@ def main():
     # print("Finished leave one out validation!\nTotal time in hours:", (totalEndTime - totalStartTime)/3600)
 
     # testing if RWR and PageRank are the same -- delete later!
-    priors_file_path= '..Data/LymphomaProteinsPriors.tsv'
+    priors_file_path= '../Data/LymphomaProteinsPriors.tsv'
     PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt') # load network
     startVector = loader.load_start_vector('../Data/LymphomaProteins.tsv', PPI_Network)
-    priors_vector = pr.load_priors(priors_file_path, PPI_Network) ### needs priors file!
     result_RWR = rwr.random_walk(PPI_Network, startVector)
+    priors_vector = pr.load_priors(priors_file_path, PPI_Network) ### needs priors file!
     result_PR = pr.PageRank(PPI_Network, startVector, priors_vector)
     differenceScore =0
     for i in range(50):
