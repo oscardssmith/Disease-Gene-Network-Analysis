@@ -4,10 +4,10 @@ import networkx as nx
 from loader import load_graph
 
 pathToData = "../Data/9606.protein.links.v11.0.txt"
-PPI_Graph = load_graph(pathToData)
+ppiGraph = load_graph(pathToData)
 
 result = []
-hist = nx.degree_histogram(PPI_Graph)
+hist = nx.degree_histogram(ppiGraph)
 for i, count in enumerate(hist):
     if count>0:
         result.append((i,count))
