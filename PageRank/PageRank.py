@@ -50,9 +50,28 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
         print("finished iterations", iterations)
     return prev_vector
 
-def PageRank(graph, start_vector):
+def PageRank(graph, start_vector, priors_file, using_priors):
     adjacency_matrix = nx.to_numpy_matrix(graph)
-    prior_bias = np.copy(start_vector)
+    prior_bias = np.zeros(graph.number_of_nodes())
+    if using_priors:
+        protein_list = []
+        total = 0
+        with open(path, 'r') as inputFile:
+            protein_file = inputFile.read()
+            for line in protein_file:
+                protein_list.append(line.split('\t'))
+        list_of_nodes = graph.nodes()
+        for protein in protein_list:
+            index = list_of_nodes.find(protein[0])
+            if protein.length == 1:
+                prior_bias[index] = 1
+                total += 1
+            else:
+                prior_bias[index] = protein[1]
+                total += protein[1]
+        prior_bias = (1/total) * prior_bias
+    else:
+        prior_bias = np.copy(start_vector)
     return format_output(graph,rank_genes(adjacency_matrix, start_vector, prior_bias, BETA))
 
 def main():
