@@ -4,8 +4,11 @@
 9606.protein.links.v11.0.tsv.gz
 4932.protein.links.v11.0.txt.gz
 4932.protein.links.v11.0.txt
+
 PPI_Network.graphml
 __pycache__
 test-graph-data.tsv
 pickledmatrix
 ._PageRank.py
+*.pyc
+.DS_Store

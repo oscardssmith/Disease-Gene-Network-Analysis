@@ -32,7 +32,7 @@ def create_file(path):
 
 
 def main():
-    create_file("test-graph-data-old.tsv")
+    create_file("test-graph-data.tsv")
 
 
 

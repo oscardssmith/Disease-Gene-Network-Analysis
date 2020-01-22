@@ -32,11 +32,11 @@ def load_disease_genes(path):
     with open(path, 'r') as inputFile:
         return inputFile.read().splitlines()
 
-def load_start_vector(path, PPI_Graph):
+def load_start_vector(path, ppiGraph):
     diseaseGeneList = set(load_disease_genes(path))
-    start_vector = np.zeros(PPI_Graph.number_of_nodes())
+    start_vector = np.zeros(ppiGraph.number_of_nodes())
     numDiseaseGenes = len(diseaseGeneList)
-    for i, node in enumerate(PPI_Graph.nodes()):
+    for i, node in enumerate(ppiGraph.nodes()):
         if node in diseaseGeneList:
             start_vector[i] = 1/numDiseaseGenes
     return np.asarray(start_vector, order='F')

@@ -16,7 +16,7 @@ sys.path.insert(1, '../RWR/')
 sys.path.insert(1, '../DiffusionKernel/')
 sys.path.insert(1, '../PageRank/')
 sys.path.insert(1, '../Scripts/')
-import RandomWalk as rwr
+import random_walk as rwr
 import DiffusionKernel as dk
 import PageRank as pr
 import loader
@@ -96,7 +96,7 @@ def main():
     # PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
     # print("Loaded graph")
     #
-    # result = leaveOneOut(rwr.RandomWalk, '../Data/EndometriosisProteins.tsv', PPI_Network)
+    # result = leaveOneOut(rwr.random_walk, '../Data/EndometriosisProteins.tsv', PPI_Network)
     # print("Mean squared difference for RWR:", result)
     #
     # #result = leaveOneOut(dk.DiffusionKernel, 'diseaseGeneFile', PPI_Network)
@@ -111,7 +111,7 @@ def main():
     # testing if RWR and PageRank are the same -- delete later!
     PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt') # load network
     startVector = loader.load_start_vector('../Data/EndometriosisProteins.tsv', PPI_Network)
-    result_RWR = rwr.RandomWalk(PPI_Network, startVector)
+    result_RWR = rwr.random_walk(PPI_Network, startVector)
     result_PR = pr.PageRank(PPI_Network, startVector)
     differenceScore =0
     for i in range(50):
