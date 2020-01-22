@@ -50,7 +50,7 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
         print("finished iterations", iterations)
     return prev_vector
 
-def load_priors(priors_file):
+def load_priors(priors_file, graph):
     prior_bias = np.zeros(graph.number_of_nodes())
     protein_list = []
     total = 0

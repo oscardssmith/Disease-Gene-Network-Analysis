@@ -119,8 +119,8 @@ def main():
     # testing if RWR and PageRank are the same -- delete later!
     priors_file_path= '..Data/LymphomaProteinsPriors.tsv'
     PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt') # load network
-    startVector = loader.load_start_vector('../Data/EndometriosisProteins.tsv', PPI_Network)
-    priors_vector = pr.load_priors(priors_file_path) ### needs priors file!
+    startVector = loader.load_start_vector('../Data/LymphomaProteins.tsv', PPI_Network)
+    priors_vector = pr.load_priors(priors_file_path, PPI_Network) ### needs priors file!
     result_RWR = rwr.random_walk(PPI_Network, startVector)
     result_PR = pr.PageRank(PPI_Network, startVector, priors_vector)
     differenceScore =0
