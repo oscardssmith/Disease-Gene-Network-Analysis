@@ -58,7 +58,7 @@ def load_priors(priors_file, graph):
         protein_file = inputFile.read()
         for line in protein_file:
             protein_list.append(line.split('\t'))
-    list_of_nodes = graph.nodes()
+    list_of_nodes = list(graph.nodes)
     for protein in protein_list:
         index = list_of_nodes.find(protein[0])
         if protein.length == 1:
