@@ -17,14 +17,13 @@ REAL_FILE = '../Data/9606.protein.links.v11.0.txt'
 pathToDiseaseGeneFile = "../Data/EndometriosisProteins.tsv"
 
 def diffusion_kernel(PPI_Graph, genes, B=1):
-    # np.asarray needed due to this bug https://github.com/scipy/scipy/issues/5546
-    # Note that this bug is fixed, but not yet backported
-    L = np.asarray(nx.laplacian_matrix(PPI_Graph, weight=-B).todense())
-    print(L)
-    return expm_multiply(L, genes)
-    #K = expm(-B * L)
-    #print(K.shape)
-    #return np.matmul(K, genes)
+    # Compute matrix exponential with eigen decomposition
+    # Faster since it uses the fact that the matrix is real, symetric
+    L = nx.laplacian_matrix(PPI_Graph).todense()
+    genes = np.array(genes, order='C')
+    vals, vecs = np.linalg.eigh(-B*L)
+    K = np.dot(np.dot(vecs, np.diag(np.exp(vals))), np.transpose(vecs))
+    return np.matmul(K, genes)
 
 if __name__ == '__main__':
     t1 = time()
