@@ -16,7 +16,7 @@ sys.path.insert(1, '../RWR/')
 sys.path.insert(1, '../DiffusionKernel/')
 sys.path.insert(1, '../PageRank/')
 sys.path.insert(1, '../Scripts/')
-import random_walk as rwr
+import RandomWalk as rwr
 import DiffusionKernel as dk
 import PageRank as pr
 import loader
