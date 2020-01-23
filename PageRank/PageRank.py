@@ -103,10 +103,10 @@ def main():
           time.time() - start_time, "seconds.")
 
     print(probability_vector)
-    sortedProbabilities = sorted(probability_vector, key=lambda x: x[1])
+    sorted_probabilities = sorted(probability_vector, key=lambda x: x[1])
     for i in range(50):
-        print("gene name: ", sortedProbabilities[i][0],
-              "probability:", sortedProbabilities[i][1])
+        print("gene name: ", sorted_probabilities[i][0],
+              "probability:", sorted_probabilities[i][1])
 
 
 if __name__ == '__main__':
