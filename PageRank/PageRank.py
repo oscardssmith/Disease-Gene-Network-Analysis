@@ -14,7 +14,6 @@ try:
 except:
     import pickle
 
-
 BETA = 0.3
 DISEASE_GENE_FILE_PATH = "../Data/EndometriosisProteins.tsv"
 DATA_PATH = "../Data/9606.protein.links.v11.0.txt"
@@ -23,8 +22,6 @@ PICKLE_PATH = "../Data/pickledmatrix"
 
 # Given a np.array matrix, starting vector, prior bias vector, and back
 # probability, calculate the rank of each node in the graph.
-
-
 def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
     print("started ranking genes")
     start_time = time()
