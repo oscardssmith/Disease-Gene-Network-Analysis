@@ -8,8 +8,8 @@ def normalize_adjacency_matrix(adjacency_matrix):
     return np.asarray(np.matmul(np.matmul(sqrt_d_inverse, adjacency_matrix), sqrt_d_inverse))
 
 
-def format_output(graph, rawOutputVector):
+def format_output(graph, raw_output_vector):
     # format probabilityVector into usable output
-    output = list(zip(graph.nodes(), rawOutputVector))
+    output = list(zip(graph.nodes(), raw_output_vector))
     output.sort(key=lambda tup: tup[1], reverse=True)
     return output
