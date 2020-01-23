@@ -5,7 +5,7 @@ import os
 from scipy.spatial import distance
 import numpy as np
 import math
-import time
+from time import time
 import matplotlib.pyplot as plt
 import networkx as nx
 import loader
@@ -18,7 +18,7 @@ except:
 BETA = 0.3
 DISEASE_GENE_FILE_PATH = "../Data/EndometriosisProteins.tsv"
 DATA_PATH = "../Data/9606.protein.links.v11.0.txt"
-EPSILON = 10**(-6)
+EPSILON = .000001 # 10^(-6)
 PICKLE_PATH = "../Data/pickledmatrix"
 
 # Given a np.array matrix, starting vector, prior bias vector, and back
@@ -27,7 +27,7 @@ PICKLE_PATH = "../Data/pickledmatrix"
 
 def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
     print("started ranking genes")
-    start_time = time.time()
+    start_time = time()
 
     # Load matrix from pickled object if exists to save time converting file.
     if os.path.isfile(PICKLE_PATH):
@@ -39,7 +39,7 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
             nx.to_numpy_matrix(graph)))
         with open(PICKLE_PATH, 'wb') as handle:
             pickle.dump(matrix, handle)
-    print("time elapsed for normalizing the adjacency matrix: ", time.time() - start_time)
+    print("time elapsed for normalizing the adjacency matrix: ", time() - start_time)
 
     d = float('inf')
     prev_vector = np.copy(starting_vector)
@@ -84,23 +84,23 @@ def PageRank(graph, start_vector, prior_bias):
 
 
 def main():
-
+    print(time())
     # Read data from input file to networkx graph format.
-    start_time = time.time()
+    start_time = time()
     PPI_Graph = loader.load_graph(DATA_PATH)
     print("Graph loaded from file.\nTime elapsed:",
-          time.time() - start_time, "seconds.")
+          time() - start_time, "seconds.")
 
     # Read data from disease gene file into list
-    start_time = time.time()
+    start_time = time()
     start_vector = loader.load_start_vector(DISEASE_GENE_FILE_PATH, PPI_Graph)
     print("Disease genes loaded from file.\nTime elapsed:",
-          time.time() - start_time, "seconds.")
+          time() - start_time, "seconds.")
 
-    start_time = time.time()
+    start_time = time()
     probability_vector = PageRank(PPI_Graph, start_vector)
     print("PageRank matrix implementation finished running.\nTime elapsed:",
-          time.time() - start_time, "seconds.")
+          time() - start_time, "seconds.")
 
     print(probability_vector)
     sorted_probabilities = sorted(probability_vector, key=lambda x: x[1])
