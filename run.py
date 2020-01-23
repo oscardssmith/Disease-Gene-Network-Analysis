@@ -37,9 +37,9 @@ def select_dataset():
     resetScreen()
     print("\n\nSelect the PPI network dataset you'd like to analyze:\n\n")
     
-    responses = {}
+    datasets = {}
     for i, f in enumerate(get_ppi_data_files(), start=1):
-        responses[i] = f
+        datasets[i] = f
         print(("\t- " + colored("{0}", "cyan") + ": {1}").format(i, f))
 
     print("\n\n\tNot seeing your data file? Make sure it is in the Data/ directory and has '.ppi' somewhere in its name.\n\n")
@@ -51,6 +51,7 @@ def select_dataset():
         except ValueError:
             cprint("please enter a number", "red")
 
+    return datasets[choice]
 
 
 def select_disease_gene_file():
@@ -73,6 +74,8 @@ def main():
     # Get user selections for what they want to run
 
     ppiDataset = select_dataset()
+
+    print("\nselected dataset {0}".format(ppiDataset))
 
     #diseaseGeneFile = select_disease_gene_file()
 
