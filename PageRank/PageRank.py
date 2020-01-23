@@ -55,13 +55,16 @@ def load_priors(priors_file, graph):
     protein_list = []
     total = 0
     with open(priors_file, 'r') as inputFile:
-        protein_file = inputFile.read()
-        for line in protein_file:
-            protein_list.append(line.split('\t'))
+        for line in inputFile:
+            stripped = line.rstrip('\n')
+            splitting = stripped.split('\t')
+            if len(splitting) == 2:
+                splitting[1] = int(splitting[1])
+            protein_list.append(splitting)
     list_of_nodes = list(graph.nodes)
     for protein in protein_list:
         index = list_of_nodes.index(protein[0])
-        if protein.length == 1:
+        if len(protein) == 1:
             prior_bias[index] = 1
             total += 1
         else:
