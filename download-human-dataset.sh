@@ -1,1 +1,1 @@
-wget https://stringdb-static.org/download/protein.links.v11.0/9606.protein.links.v11.0.txt.gz && gunzip 9606.protein.links.v11.0.txt.gz && mv 9606.protein.links.v11.0.txt Data/
+wget https://stringdb-static.org/download/protein.links.v11.0/9606.protein.links.v11.0.txt.gz && gunzip 9606.protein.links.v11.0.txt.gz && mv 9606.protein.links.v11.0.txt Data/9606.protein.links.v11.0.ppi.txt && echo "STRING human PPI data saved to Data/9606.protein.links.v11.0.ppi.txt"

@@ -9,16 +9,13 @@ from time import time
 
 import networkx as nx
 import numpy as np
-from scipy.linalg import expm
-from scipy.sparse.linalg import expm_multiply
 
-#import ..RWR.RandomWalk import load_graph
-
-TEST_FILE = '../Data/fake.tsv'
+BETA = 1
+pathToDiseaseGeneFile = "../Data/endometriosis-proteins.diseasegenes.tsv"
 REAL_FILE = '../Data/9606.protein.links.v11.0.txt'
-pathToDiseaseGeneFile = "../Data/EndometriosisProteins.tsv"
+TEST_FILE = '../Data/fake.tsv'
 
-def diffusion_kernel(PPI_Graph, genes, B=1):
+def diffusion_kernel(PPI_Graph, genes, beta=BETA):
     # Compute matrix exponential with eigen decomposition
     # Faster since it uses the fact that the matrix is real, symetric
     
@@ -31,7 +28,7 @@ def diffusion_kernel(PPI_Graph, genes, B=1):
         vals, vecs = np.linalg.eigh(L)
         with open("../Data/pickled_eigen_decomp", 'wb') as handle:
             pickle.dump((vals, vecs), handle)
-    result = np.dot(np.dot(np.dot(genes, np.transpose(vecs)), np.diag(np.exp(-B*vals))), vecs)
+    result = np.dot(np.dot(np.dot(genes, np.transpose(vecs)), np.diag(np.exp(-beta*vals))), vecs)
     return np.array(result).flatten()
 
 def dk_test():
