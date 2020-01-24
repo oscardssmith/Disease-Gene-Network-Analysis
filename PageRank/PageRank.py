@@ -15,7 +15,7 @@ except:
     import pickle
 
 BETA = 0.3
-DISEASE_GENE_FILE_PATH = "../Data/EndometriosisProteins.tsv"
+DISEASE_GENE_FILE_PATH = "../Data/endometriosis-proteins.diseasegenes.tsv"
 DATA_PATH = "../Data/9606.protein.links.v11.0.txt"
 EPSILON = .000001 # 10^(-6)
 PICKLE_PATH = "../Data/pickledmatrix"
