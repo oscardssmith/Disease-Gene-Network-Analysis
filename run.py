@@ -54,13 +54,15 @@ def select_dataset():
         print(("\t- " + colored("{0}", "cyan") + ": {1}").format(i, f))
 
     print("\n\n\tNot seeing your data file? Make sure it is in the Data/ directory and has '.ppi' somewhere in its name.\n\n")
-
     choice = 0
-    while choice == 0:
+    while choice == 0 or choice > len(datasets):
         try:
             choice = int(input("Select a dataset: >>"))
         except ValueError:
             cprint("please enter a number", "red")
+        if choice > len(datasets):
+            cprint("number must be between 1 and {0}".format(len(datasets)), "red")
+            choice = 0
 
     return datasets[choice]
 
@@ -74,15 +76,17 @@ def select_disease_gene_file():
         diseaseGeneFiles[i] = f
         print(("\t- " + colored("{0}", "cyan") + ": {1}").format(i, f))
 
-
     print("\n\n\tNot seeing your data file? Make sure it is in the Data/ directory and has '.diseasegenes' somewhere in its name.\n\n")
 
     choice = 0
-    while choice == 0:
+    while choice == 0 or choice > len(diseaseGeneFiles):
         try:
             choice = int(input("Select a disease gene file: >>"))
         except ValueError:
             cprint("please enter a number", "red")
+        if choice > len(diseaseGeneFiles):
+            cprint("number must be between 1 and {0}".format(len(diseaseGeneFiles)), "red")
+            choice = 0
 
     return diseaseGeneFiles[choice]
 
@@ -100,25 +104,26 @@ def select_program():
     print("\t- " + colored("4", "cyan") + ": Area under ROC curve")
     print("\t- " + colored("5", "cyan") + ": Leave one out cross validation")
 
-    programs = [
-        "" #zero index
-        "DiffusionKernel/DiffusionKernel.py"
-        "PageRank/PageRank.py"
-        "RWR/Randomwalk.py"
-        "Validation/AreaUnderROC.py"
-        "LeaveOneOut.py"
-    ]
+    programs = {
+        1:"DiffusionKernel/DiffusionKernel.py",
+        2:"PageRank/PageRank.py",
+        3:"RWR/Randomwalk.py",
+        4:"Validation/AreaUnderROC.py",
+        5:"LeaveOneOut.py",
+    }
 
     choice = 0
-    while choice == 0:
+    while choice == 0 or choice > len(programs):
         try:
             choice = int(input("Select a program: >>"))
         except ValueError:
             cprint("please enter a number", "red")
-    print(len(programs))
-    print(choice)
+        if choice > len(programs):
+            cprint("number must be between 1 and {0}".format(len(programs)), "red")
+            choice = 0
 
     return programs[choice]
+
 
 
 
@@ -143,7 +148,7 @@ def main():
 
     # Run stuff using user selections
 
-    print((colored("\nRunning ", "darkred") + "{0}" + colored("\n  on dataset ", "darkred") + "{1}," + colored("\n  using disease genes ", "darkred") + "{2}").format(program, ppiDataset, diseaseGeneFile))
+    print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}," + colored("\n  using disease genes:\t", "yellow") + "{2}").format(program, ppiDataset, diseaseGeneFile))
 
 
 
