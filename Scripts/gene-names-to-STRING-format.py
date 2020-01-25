@@ -21,6 +21,7 @@ def read_genes(infile):
         for line in infile:
             # Don't read \n
             genes.append(line[:-1])
+    print("num genes: ", len(genes))
     return genes
 
 # contruct params dictionary
@@ -47,12 +48,19 @@ def gene_names_to_STRING(genes):
 
 def output_response(response):
     # Read and parse the results
+    count_response = 0
+    protein_file = open("protein_file.txt", "a")
     for line in response.text.strip().split("\n"):
         fields = line.split("\t")
         # print(fields)
         input_identifier_, string_identifier = fields[0], fields[2]
         #print("Input:", input_identifier, "STRING:", string_identifier, sep="\t")
         print(string_identifier)
+        protein_file.write(string_identifier)
+        protein_file.write("\n")
+        count_response += 1
+    print("num proteins outputted:", count_response)
+    protein_file.close()
 
 
 if __name__ == '__main__':
