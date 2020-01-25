@@ -25,7 +25,7 @@ import time
 
 
 
-def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, priors_file_path):
+def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, priors_file_path= None):
     print("Starting leaveOneOut function")
 
     diseaseGeneFile = open(diseaseGeneFilePath, 'r')
