@@ -25,14 +25,14 @@ except:
 # Runs Random Walk with Restart using a matrix implementation
 def random_walk_matrix(matrix, startVector, R, maxIterations, normThreshold):
 
-    print("STARTING RANDOM WALK")
+    #print("STARTING RANDOM WALK")
 
     previousVector = np.copy(startVector)
     iterations = 0
     diff = float('inf')
 
     while diff > normThreshold and iterations < maxIterations:
-        print("iteration:", iterations)
+        #print("iteration:", iterations)
 
         #Perform one step of the walk
         newVector = (1 - R) * np.matmul(matrix, previousVector)
@@ -68,7 +68,7 @@ def random_walk(graph, startVector, r=0.3):
     #R = 0.3
     maxIterations = 500
     normThreshold = 10**(-6)
-    print("creating matrix")
+    #print("creating matrix")
 
     # Load matrix from pickled object if exists to save time converting file.
     if os.path.isfile("../Data/pickledmatrix"):
@@ -84,7 +84,7 @@ def random_walk(graph, startVector, r=0.3):
     probabilityVector = random_walk_matrix(matrix, startVector, r, maxIterations, normThreshold)
 
     #format probabilityVector into usable output
-    print("formatting output")
+    #print("formatting output")
     return format_output(graph, probabilityVector)
 
 
