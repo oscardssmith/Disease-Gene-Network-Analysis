@@ -25,7 +25,7 @@ import time
 
 
 
-def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, priors_file_path= None, param):
+def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, param, priors_file_path=None):
     print("Starting leaveOneOut function")
 
     diseaseGeneFile = open(diseaseGeneFilePath, 'r')
@@ -107,10 +107,9 @@ def main():
     for file_index in range(3):
         for param_index in range(4):
             print("DISEASE GENE FILE: ", file_paths[file_index], "PARAMETER: ", rwr_pr_params[param_index])
-            result_rwr = leaveOneOut(rwr.random_walk, file_paths[file_index], PPI_Network, None,
-            rwr_pr_params[param_index])
+            result_rwr = leaveOneOut(rwr.random_walk, file_paths[file_index], PPI_Network, rwr_pr_params[param_index])
             print("percentage of genes improperly predicted for RWR:", result_rwr)
-            result_pr = leaveOneOut(pr.PageRank, file_paths[file_index], PPI_Network, prior_paths[file_index], rwr_pr_params[param_index])
+            result_pr = leaveOneOut(pr.PageRank, file_paths[file_index], PPI_Network, rwr_pr_params[param_index], prior_paths[file_index])
             print("percentage of genes improperly predicted for PR:", result_pr)
 
     # result = leaveOneOut(pr.PageRank, 'diseaseGeneFile', PPI_Network, priors_file_path)
