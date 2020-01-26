@@ -75,9 +75,9 @@ def load_priors(priors_file, graph):
     return prior_bias
 
 
-def PageRank(graph, start_vector, prior_bias):
+def PageRank(graph, start_vector, prior_bias, beta=BETA):
     adjacency_matrix = nx.to_numpy_matrix(graph)
-    return GraphUtils.format_output(graph, rank_genes(adjacency_matrix, start_vector, prior_bias, BETA))
+    return GraphUtils.format_output(graph, rank_genes(adjacency_matrix, start_vector, prior_bias, beta))
 
 
 def main():

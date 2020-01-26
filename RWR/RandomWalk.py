@@ -52,7 +52,7 @@ def random_walk_matrix(matrix, startVector, R, maxIterations, normThreshold):
 
 
 
-def random_walk(graph, startVector):
+def random_walk(graph, startVector, r=0.3):
     print("INITIALIZING RANDOM WALK")
 
     """
@@ -65,7 +65,7 @@ def random_walk(graph, startVector):
     @returns: a nested list of tuples, in sorted order of probability, where each item contains the name of a gene, and its respective probability as determined by the algorithm
     """
     # Set algorithm constants-- R is set to be same as Beta in PageRank for comparison
-    R = 0.3
+    #R = 0.3
     maxIterations = 500
     normThreshold = 10**(-6)
     print("creating matrix")
@@ -81,7 +81,7 @@ def random_walk(graph, startVector):
             pickle.dump(matrix, handle)
 
 
-    probabilityVector = random_walk_matrix(matrix, startVector, R, maxIterations, normThreshold)
+    probabilityVector = random_walk_matrix(matrix, startVector, r, maxIterations, normThreshold)
 
     #format probabilityVector into usable output
     print("formatting output")
