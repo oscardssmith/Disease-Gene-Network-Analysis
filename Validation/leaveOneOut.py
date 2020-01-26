@@ -35,7 +35,7 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, param, priors_file_p
     diseaseGeneFile.close()
 
     numDiseaseGenes = len(allDiseaseGenes)
-    rankThreshhold = round(1.2 * numDiseaseGenes)
+    rankThreshhold = numDiseaseGenes
 
     numGenesNotFound = 0
 
@@ -48,9 +48,7 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, param, priors_file_p
         startVector[index] = 0
         priors_vector = np.zeros(PPI_Network.number_of_nodes())
         if function == pr.PageRank:                     # Is this proper syntax?
-            priors_vector = pr.load_priors(priors_file_path)
-
-
+            priors_vector = pr.load_priors(priors_file_path, PPI_Network)
 
         #run algorithm using modified disease gene file
         print("calling algorithm")
@@ -100,7 +98,6 @@ def main():
     print("Loading graph")
     PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
     print("Loaded graph")
-    priors_file_path = 'Data/LymphomaProteinsPriors.tsv'
     file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
     prior_paths = ['../Data/endometriosis-proteins-priors.diseasegenes.tsv','../Data/lymphoma-proteins-priors.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins-priors.diseasegenes.tsv']
     rwr_pr_params = [0.2, 0.4, 0.6, 0.8]

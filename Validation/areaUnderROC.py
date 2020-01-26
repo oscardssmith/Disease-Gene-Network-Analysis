@@ -14,7 +14,7 @@ import loader
 import time
 import matplotlib as plt
 
-def roc_curve(result_vec, ground_truth_vec):
+def roc_curve(result_vec, ground_truth_vec, name):
     TPR = []
     FPR = []
     for threshhold in range(len(result_vec)):
@@ -34,18 +34,24 @@ def roc_curve(result_vec, ground_truth_vec):
                 tn += 1
         TPR.append(tp/(tp + fn))
         FPR.append(fp/(fp + tn))
-    plt.pyplot.plot(FPR, TPR)
+    file_path = name + '.txt'
+    plot = plt.pyplot.plot(FPR, TPR)
+    plot.savefig(file_path)
 
 def main():
     # Get output vectors from each algorithm
     priors_file_path= '../Data/LymphomaProteinsPriors.tsv'
     PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt') # load network
-    startVector = loader.load_start_vector('../Data/LymphomaProteins.tsv', PPI_Network)
-    priors_vector = pr.load_priors(priors_file_path, PPI_Network)
 
-    output_RWR = rwr.random_walk(PPI_Network, startVector)
-    output_PR = pr.PageRank(PPI_Network, startVector, priors_vector)
-    output_DK = dk.diffusion_kernel(PPI_Network, startVector)
+
+    file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
+    prior_paths = ['../Data/endometriosis-proteins-priors.diseasegenes.tsv','../Data/lymphoma-proteins-priors.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins-priors.diseasegenes.tsv']
+    for i in range(3):
+        start_vector = loader.load_start_vector(file_paths[i], PPI_Network)
+        priors_vector = pr.load_priors(prior_paths[i], PPI_Network)
+        output_RWR = rwr.random_walk(PPI_Network, start_vector)
+        output_PR = pr.PageRank(PPI_Network, start_vector, priors_vector)
+        output_DK = dk.diffusion_kernel(PPI_Network, start_vector)
 
 
 
