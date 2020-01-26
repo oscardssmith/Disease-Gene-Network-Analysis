@@ -39,10 +39,10 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, param, priors_file_p
 
     numGenesNotFound = 0
 
-    print("finished initialization, starting disease gene loop")
+    #print("finished initialization, starting disease gene loop")
 
     for index, skipGene in enumerate(allDiseaseGenes):
-        print("looping! skipping gene: ", skipGene)
+        #print("looping! skipping gene: ", skipGene)
 
         startVector = loader.load_start_vector(diseaseGeneFilePath, PPI_Network)
         startVector[index] = 0
@@ -51,34 +51,36 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, param, priors_file_p
             priors_vector = pr.load_priors(priors_file_path, PPI_Network)
 
         #run algorithm using modified disease gene file
-        print("calling algorithm")
+        #print("calling algorithm")
         startTime = time.time()
         output= []
         if function == pr.PageRank: #is this right?
-            print("Using PageRank now")
+            #print("Using PageRank now")
             output = function(PPI_Network, startVector, priors_vector, param)
         else:
-            print("Using RWR now")
+            #print("Using RWR now")
             output = function(PPI_Network, startVector, param)
         endTime = time.time()
-        print("finished algorithm. Time elapsed:", endTime - startTime)
+        #print("finished algorithm. Time elapsed:", endTime - startTime)
 
         #find the predicted probability of the omitted gene and add it to the current sum
-        print("finding skipgene predicted probability")
+        #print("finding skipgene predicted probability")
         startTime = time.time()
         foundGene = False
         for i in range(rankThreshhold):
             if output[i][0] == skipGene:
                 foundGene = True
+                print("Found the gene: ", skipGene, "at rank: ", i)
                 break
         if not foundGene:
             numGenesNotFound +=1
 
         endTime = time.time()
-        print("added skipGene predictedProbability to squaredDifferenceSum\nTime elapsed:", endTime - startTime)
+        #print("added skipGene predictedProbability to squaredDifferenceSum\nTime elapsed:", endTime - startTime)
 
 
     print("------------------------\nFinished running algorithm with all disease genes left out\nCalculating mean squared difference")
+    print("Num genes not found for this run of leave one out: ", numGenesNotFound)
     #Find average of all squared differences
     percentIncorrectlyRankedGenes = numGenesNotFound/numDiseaseGenes
     return percentIncorrectlyRankedGenes
@@ -106,8 +108,10 @@ def main():
     for file_index in range(3):
         for param_index in range(4):
             print("DISEASE GENE FILE: ", file_paths[file_index], "PARAMETER: ", rwr_pr_params[param_index])
+            print("---------------RWR----------------------")
             result_rwr = leaveOneOut(rwr.random_walk, file_paths[file_index], PPI_Network, rwr_pr_params[param_index])
             print("percentage of genes improperly predicted for RWR:", result_rwr)
+            print("---------------PR----------------------")
             result_pr = leaveOneOut(pr.PageRank, file_paths[file_index], PPI_Network, rwr_pr_params[param_index], prior_paths[file_index])
             print("percentage of genes improperly predicted for PR:", result_pr)
 
