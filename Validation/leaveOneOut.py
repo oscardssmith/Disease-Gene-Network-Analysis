@@ -21,6 +21,8 @@ import DiffusionKernel as dk
 import PageRank as pr
 import loader
 import time
+import numpy as np
+import networkx as nx
 
 
 
