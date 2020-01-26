@@ -99,8 +99,8 @@ def main():
     PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
     print("Loaded graph")
     priors_file_path = 'Data/LymphomaProteinsPriors.tsv'
-    file_paths = ['.../Data/endometriosis-proteins.diseasegenes.tsv','.../Data/lymphoma-proteins.diseasegenes.tsv', '.../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
-    prior_paths = ['.../Data/endometriosis-proteins-priors.diseasegenes.tsv','.../Data/lymphoma-proteins-priors.diseasegenes.tsv', '.../Data/ischaemic-stroke-proteins-priors.diseasegenes.tsv']
+    file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
+    prior_paths = ['../Data/endometriosis-proteins-priors.diseasegenes.tsv','../Data/lymphoma-proteins-priors.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins-priors.diseasegenes.tsv']
     rwr_pr_params = [0.2, 0.4, 0.6, 0.8]
     dk_params = [0.4, 0.6, 0.8, 1.0]
 
