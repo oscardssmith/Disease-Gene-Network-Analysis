@@ -15,7 +15,7 @@ except:
     import pickle
 
 BETA = 0.3
-DISEASE_GENE_FILE_PATH = "../Data/EndometriosisProteins.tsv"
+DISEASE_GENE_FILE_PATH = "../Data/endometriosis-proteins.diseasegenes.tsv"
 DATA_PATH = "../Data/9606.protein.links.v11.0.txt"
 EPSILON = .000001 # 10^(-6)
 PICKLE_PATH = "../Data/pickledmatrix"
@@ -23,12 +23,12 @@ PICKLE_PATH = "../Data/pickledmatrix"
 # Given a np.array matrix, starting vector, prior bias vector, and back
 # probability, calculate the rank of each node in the graph.
 def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
-    print("started ranking genes")
+    #print("started ranking genes")
     start_time = time()
 
     # Load matrix from pickled object if exists to save time converting file.
     if os.path.isfile(PICKLE_PATH):
-        print("pickled matrix file exists, loading matrix from file")
+        #print("pickled matrix file exists, loading matrix from file")
         with open(PICKLE_PATH, 'rb') as handle:
             matrix = np.asarray(pickle.load(handle))
     else:
@@ -36,7 +36,7 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
             nx.to_numpy_matrix(graph)))
         with open(PICKLE_PATH, 'wb') as handle:
             pickle.dump(matrix, handle)
-    print("time elapsed for normalizing the adjacency matrix: ", time() - start_time)
+    #print("time elapsed for normalizing the adjacency matrix: ", time() - start_time)
 
     d = float('inf')
     prev_vector = np.copy(starting_vector)
@@ -47,7 +47,7 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
         d = distance.sqeuclidean(result, prev_vector)
         prev_vector = result
         iterations += 1
-        print("finished iterations", iterations)
+        #print("finished iterations", iterations)
     return prev_vector
 
 
@@ -75,9 +75,9 @@ def load_priors(priors_file, graph):
     return prior_bias
 
 
-def PageRank(graph, start_vector, prior_bias):
+def PageRank(graph, start_vector, prior_bias, beta=BETA):
     adjacency_matrix = nx.to_numpy_matrix(graph)
-    return GraphUtils.format_output(graph, rank_genes(adjacency_matrix, start_vector, prior_bias, BETA))
+    return GraphUtils.format_output(graph, rank_genes(adjacency_matrix, start_vector, prior_bias, beta))
 
 
 def main():
