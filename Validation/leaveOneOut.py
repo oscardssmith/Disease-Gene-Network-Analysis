@@ -30,6 +30,7 @@ import networkx as nx
 def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, param, priors_file_path=None):
     print("Starting leaveOneOut function")
 
+    # building list of disease genes
     diseaseGeneFile = open(diseaseGeneFilePath, 'r')
     allDiseaseGenes = diseaseGeneFile.read().splitlines()
     diseaseGeneFile.close()
@@ -40,11 +41,16 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, param, priors_file_p
     numGenesNotFound = 0
 
     #print("finished initialization, starting disease gene loop")
-
+    graph_nodes = PPI_Network.nodes()
+    startVector = loader.load_start_vector(diseaseGeneFilePath, PPI_Network)
+    startVector = (numDiseaseGenes/(numDiseaseGenes - 1)) * startVector
+    # skipping 
     for index, skipGene in enumerate(allDiseaseGenes):
         #print("looping! skipping gene: ", skipGene)
-
-        startVector = loader.load_start_vector(diseaseGeneFilePath, PPI_Network)
+        # loading the start vector
+        
+        # find the skip gene in the start vector, make it zero
+        index = graph_nodes.index(skipGene)
         startVector[index] = 0
         priors_vector = np.zeros(PPI_Network.number_of_nodes())
         if function == pr.PageRank:                     # Is this proper syntax?
