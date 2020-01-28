@@ -1,7 +1,10 @@
 import sys
 sys.path.insert(1, '../Scripts/')
+
+from CacheUtils import compute_if_not_cached
 from loader import load_graph, load_start_vector
 from GraphUtils import format_output
+
 import gzip
 import os
 import pickle
@@ -15,19 +18,15 @@ pathToDiseaseGeneFile = "../Data/endometriosis-proteins.diseasegenes.tsv"
 REAL_FILE = '../Data/9606.protein.links.v11.0.txt'
 TEST_FILE = '../Data/fake.tsv'
 
+def symmetric_eigen_from_graph(PPI_Graph):
+    L = nx.laplacian_matrix(PPI_Graph).todense()
+    return np.linalg.eigh(L)
+
 def diffusion_kernel(PPI_Graph, genes, beta=BETA):
     # Compute matrix exponential with eigen decomposition
     # Faster since it uses the fact that the matrix is real, symetric
     
-    if os.path.isfile("../Data/pickled_eigen_decomp"):
-        print("pickled matrix file exists, loading matrix from file")
-        with open("../Data/pickled_eigen_decomp", 'rb') as handle:
-            vals, vecs = pickle.load(handle)
-    else:
-        L = nx.laplacian_matrix(PPI_Graph).todense()
-        vals, vecs = np.linalg.eigh(L)
-        with open("../Data/pickled_eigen_decomp", 'wb') as handle:
-            pickle.dump((vals, vecs), handle)
+    vals, vecs = compute_if_not_cached(symmetric_eigen_from_graph, PPI_Graph)
     result = np.dot(np.dot(np.dot(genes, np.transpose(vecs)), np.diag(np.exp(-beta*vals))), vecs)
     result = np.array(result).flatten()
     return format_output(PPI_Graph, result)
