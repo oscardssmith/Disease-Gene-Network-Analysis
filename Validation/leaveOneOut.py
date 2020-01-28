@@ -41,7 +41,7 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, param, priors_file_p
     numGenesNotFound = 0
 
     #print("finished initialization, starting disease gene loop")
-    graph_nodes = PPI_Network.nodes()
+    graph_nodes = list(PPI_Network.nodes())
     startVector = loader.load_start_vector(diseaseGeneFilePath, PPI_Network)
     startVector = (numDiseaseGenes/(numDiseaseGenes - 1)) * startVector
     # skipping 
