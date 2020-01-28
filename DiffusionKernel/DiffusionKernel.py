@@ -29,7 +29,8 @@ def diffusion_kernel(PPI_Graph, genes, beta=BETA):
         with open("../Data/pickled_eigen_decomp", 'wb') as handle:
             pickle.dump((vals, vecs), handle)
     result = np.dot(np.dot(np.dot(genes, np.transpose(vecs)), np.diag(np.exp(-beta*vals))), vecs)
-    return np.array(result).flatten()
+    result = np.array(result).flatten()
+    return format_output(PPI_Graph, result)
 
 def dk_test():
     try:
@@ -39,8 +40,7 @@ def dk_test():
     	nx.write_weighted_edgelist(PPI_Graph, 'graph.edgelist')
     start_vector = load_start_vector(pathToDiseaseGeneFile, PPI_Graph)
     x = diffusion_kernel(PPI_Graph, start_vector)
-    formatted_vector = format_output(PPI_Graph, x)
-    return formatted_vector
+    return x
 
 def dk_leaveOneOut(startVector):
     try:
@@ -49,9 +49,7 @@ def dk_leaveOneOut(startVector):
         PPI_Graph = load_graph(REAL_FILE)
         nx.write_weighted_edgelist(PPI_Graph, 'graph.edgelist')
     x = diffusion_kernel(PPI_Graph, start_vector)
-    formatted_vector = format_output(PPI_Graph, x)
-    return formatted_vector
-
+    return x
 
 if __name__ == '__main__':
     tick = time()
