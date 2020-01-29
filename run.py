@@ -1,5 +1,5 @@
 # This script is intended to be the one-stop-shop for running any of our algorithms/tests, on any valid dataset.
-# It presents the user with a clean command line menu interface for selecting the algorithm/program they want to run, as well as the datasets to use.
+# It presents the user with a clean command line menu interface for selecting the algorithm/validation method they want to run, as well as the datasets to use.
 
 
 from signal import signal, SIGINT
@@ -92,37 +92,115 @@ def select_disease_gene_file():
 
 
 
-def select_program():
+def select_algorithm():
     resetScreen()
-    print("\n\nSelect the program you'd like to run:\n\n")
+    print("\n\nSelect the algorithm you'd like to run:\n\n")
 
     cprint("---ALGORITHMS---\n", "green")
     print("\t- " + colored("1", "cyan") + ": Diffusion kernel")
     print("\t- " + colored("2", "cyan") + ": PageRank")
     print("\t- " + colored("3", "cyan") + ": Random walk with restart")
-    cprint("\n---VALIDATION---\n", "green")
-    print("\t- " + colored("4", "cyan") + ": Area under ROC curve")
-    print("\t- " + colored("5", "cyan") + ": Leave one out cross validation")
+    
 
-    programs = {
+    algorithms = {
         1:"DiffusionKernel/DiffusionKernel.py",
         2:"PageRank/PageRank.py",
-        3:"RWR/Randomwalk.py",
-        4:"Validation/AreaUnderROC.py",
-        5:"LeaveOneOut.py",
+        3:"RWR/Randomwalk.py"
     }
 
     choice = 0
-    while choice == 0 or choice > len(programs):
+    while choice == 0 or choice > len(algorithms):
         try:
-            choice = int(input("Select a program: >>"))
+            choice = int(input("Select an algorithm: >>"))
         except ValueError:
             cprint("please enter a number", "red")
-        if choice > len(programs):
-            cprint("number must be between 1 and {0}".format(len(programs)), "red")
+        if choice > len(algorithms):
+            cprint("number must be between 1 and {0}".format(len(algorithms)), "red")
             choice = 0
 
-    return programs[choice]
+    return algorithms[choice]
+
+
+def select_beta_value():
+    resetScreen()
+    print("\nDiffusion kernel allows you to specify a beta value that _____")
+    print("\nPlease enter a beta value between " + colored("0", "cyan") + " and " + colored("2", "cyan") + ".")
+
+    choice = float("inf")
+    while choice < 0 or choice > 2:
+        try:
+            choice = float(input("Select beta: >>"))
+        except ValueError:
+            cprint("please enter a decimal number between 0 and 2", "red")
+            continue
+        if choice < 0 or choice > 2:
+            cprint("please enter a decimal number between 0 and 2", "red")
+            choice = float("inf")
+    return choice
+
+
+def select_pr_beta_value():
+    resetScreen()
+    print("\nPageRank allows you to specify a beta value that sets the probability of restarting from a known disease gene.\nA value of 0 means the algorithm will never 'restart', while a value of 1 means that the algorithm will only ever visit known disease genes. (always restart)\nMost researchers set a relatively low beta value, around .2")
+    print("\nPlease enter a beta value between " + colored("0", "cyan") + " and " + colored("1", "cyan") + ".")
+
+    choice = float("inf")
+    while choice < 0 or choice > 1:
+        try:
+            choice = float(input("Select beta: >>"))
+        except ValueError:
+            cprint("please enter a decimal number between 0 and 1", "red")
+            continue
+        if choice < 0 or choice > 1:
+            cprint("please enter a decimal number between 0 and 1", "red")
+            choice = float("inf")
+    return choice
+
+
+def select_rwr_r_value():
+    resetScreen()
+    print("\nRandom Walk with Restart allows you to specify an R value that sets the probability of restarting from a known disease gene.\nA value of 0 means the algorithm will never 'restart', while a value of 1 means that the algorithm will only ever visit known disease genes. (always restart)\nMost researchers set a relatively low R value, around .2")
+    print("\nPlease enter an R value between " + colored("0", "cyan") + " and " + colored("1", "cyan") + ".")
+
+    choice = float("inf")
+    while choice < 0 or choice > 1:
+        try:
+            choice = float(input("Select R: >>"))
+        except ValueError:
+            cprint("please enter a decimal number between 0 and 1", "red")
+            continue
+        if choice < 0 or choice > 1:
+            cprint("please enter a decimal number between 0 and 1", "red")
+            choice = float("inf")
+    return choice
+
+
+def select_validation():
+    resetScreen()
+    print("\n\nSelect the validation method you'd like to use:\n\n")
+
+    cprint("---VALIDATION---\n", "green")
+    print("\t- " + colored("1", "cyan") + ": None")
+    print("\t- " + colored("2", "cyan") + ": Area under ROC curve")
+    print("\t- " + colored("3", "cyan") + ": Leave one out cross validation")
+
+    validations = {
+        1:"None",
+        2:"Validation/AreaUnderROC.py",
+        3:"Validation/LeaveOneOut.py"
+    }
+
+    choice = 0
+    while choice == 0 or choice > len(validations):
+        try:
+            choice = int(input("Select a validation method: >>"))
+        except ValueError:
+            cprint("please enter a number", "red")
+        if choice > len(validations):
+            cprint("number must be between 1 and {0}".format(len(validations)), "red")
+            choice = 0
+
+    return validations[choice]
 
 
 
@@ -139,18 +217,36 @@ def main():
 
     ppiDataset = select_dataset()
 
-    
-
     diseaseGeneFile = select_disease_gene_file()
 
-    program = select_program()
+    algorithm = select_algorithm()
+
+    if algorithm == "DiffusionKernel/DiffusionKernel.py":
+        beta = select_beta_value()
+
+    if algorithm == "PageRank/PageRank.py":
+        beta = select_pr_beta_value()
+
+    if algorithm == "RWR/Randomwalk.py":
+        R = select_rwr_r_value()
 
 
-    # Run stuff using user selections
 
-    print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}," + colored("\n  using disease genes:\t", "yellow") + "{2}").format(program, ppiDataset, diseaseGeneFile))
+    validation = select_validation()
 
 
+    # Confirm user selections
+    resetScreen()
+    print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}" + colored("\n  using disease genes:\t", "yellow") + "{2}" + colored("\n\nValidating with:\t", "yellow") + "{3}").format(algorithm, ppiDataset, diseaseGeneFile, validation))
+    input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
+
+    # Run stuff
+    if validation == "None":
+        cmd = "python3 {0} {1} {2}".format(algorithm, ppiDataset, diseaseGeneFile)
+        os.system(cmd)
+    else:
+        cmd = "python3 {0} {1} {2} {3}".format(validation, algorithm, ppiDataset, diseaseGeneFile)
+        os.system(cmd)
 
 
 
