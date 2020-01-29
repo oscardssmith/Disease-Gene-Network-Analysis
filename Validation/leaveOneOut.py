@@ -55,6 +55,7 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, param, priors_file_p
         priors_vector = np.zeros(PPI_Network.number_of_nodes())
         if function == pr.PageRank:                     # Is this proper syntax?
             priors_vector = pr.load_priors(priors_file_path, PPI_Network)
+            priors_vector[index] = 0
 
         #run algorithm using modified disease gene file
         #print("calling algorithm")
@@ -67,7 +68,7 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, param, priors_file_p
             #print("Using RWR now")
             output = function(PPI_Network, startVector, param)
         endTime = time.time()
-        #print("finished algorithm. Time elapsed:", endTime - startTime)
+        print("finished algorithm. Time elapsed:", endTime - startTime)
 
         #find the predicted probability of the omitted gene and add it to the current sum
         #print("finding skipgene predicted probability")
@@ -113,13 +114,16 @@ def main():
 
     for file_index in range(3):
         for param_index in range(4):
-            print("DISEASE GENE FILE: ", file_paths[file_index], "PARAMETER: ", rwr_pr_params[param_index])
+            print("--------------------DISEASE GENE FILE: ", file_paths[file_index], "PARAMETER: ", rwr_pr_params[param_index], "---------------------------------")
             print("---------------RWR----------------------")
             result_rwr = leaveOneOut(rwr.random_walk, file_paths[file_index], PPI_Network, rwr_pr_params[param_index])
             print("percentage of genes improperly predicted for RWR:", result_rwr)
             print("---------------PR----------------------")
             result_pr = leaveOneOut(pr.PageRank, file_paths[file_index], PPI_Network, rwr_pr_params[param_index], prior_paths[file_index])
             print("percentage of genes improperly predicted for PR:", result_pr)
+            print("---------------DK----------------------")
+            result_dk = leaveOneOut(dk.diffusion_kernel, file_paths[file_index], PPI_Network, dk_params[param_index], prior_paths[file_index])
+            print("percentage of genes improperly predicted for DK:", result_dk)
 
     # result = leaveOneOut(pr.PageRank, 'diseaseGeneFile', PPI_Network, priors_file_path)
     # print("Mean squared difference for PageRank:", result)
