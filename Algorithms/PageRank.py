@@ -1,24 +1,28 @@
 import sys
 sys.path.insert(1, '../Scripts/')
+#Insert relative paths for calls from run.py
+sys.path.insert(1, 'Scripts/')
+from CacheUtils import compute_if_not_cached
 import GraphUtils
+from CacheUtils import compute_if_not_cached
 import os
 from scipy.spatial import distance
 import numpy as np
 import math
 from time import time
-import matplotlib.pyplot as plt
 import networkx as nx
 import loader
-try:
-    import cPickle as pickle
-except:
-    import pickle
+from loader import load_graph, load_start_vector
 
 BETA = 0.3
 DISEASE_GENE_FILE_PATH = "../Data/endometriosis-proteins.diseasegenes.tsv"
 DATA_PATH = "../Data/9606.protein.links.v11.0.txt"
 EPSILON = .000001 # 10^(-6)
 PICKLE_PATH = "../Data/pickledmatrix"
+
+def compute_matrix(graph):
+    return np.asarray(GraphUtils.normalize_adjacency_matrix(
+            nx.to_numpy_matrix(graph)))
 
 # Given a np.array matrix, starting vector, prior bias vector, and back
 # probability, calculate the rank of each node in the graph.
@@ -27,15 +31,7 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
     start_time = time()
 
     # Load matrix from pickled object if exists to save time converting file.
-    if os.path.isfile(PICKLE_PATH):
-        #print("pickled matrix file exists, loading matrix from file")
-        with open(PICKLE_PATH, 'rb') as handle:
-            matrix = np.asarray(pickle.load(handle))
-    else:
-        matrix = np.asarray(GraphUtils.normalize_adjacency_matrix(
-            nx.to_numpy_matrix(graph)))
-        with open(PICKLE_PATH, 'wb') as handle:
-            pickle.dump(matrix, handle)
+    matrix = compute_if_not_cached(compute_matrix, graph)
     #print("time elapsed for normalizing the adjacency matrix: ", time() - start_time)
 
     d = float('inf')
@@ -75,12 +71,30 @@ def load_priors(priors_file, graph):
     return prior_bias
 
 
-def PageRank(graph, start_vector, prior_bias, beta=BETA):
+def page_rank(graph, start_vector, prior_bias, beta=BETA):
     adjacency_matrix = nx.to_numpy_matrix(graph)
     return GraphUtils.format_output(graph, rank_genes(adjacency_matrix, start_vector, prior_bias, beta))
 
 
 def main():
+    print(sys.argv)
+
+    pathToPPINetworkFile = sys.argv[1]
+    pathToDiseaseGeneFile = sys.argv[2]
+    beta = float(sys.argv[3])
+
+    print("loading data from files..")
+    ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName="ppiGraph")
+    diseaseGenes = load_start_vector(pathToDiseaseGeneFile, ppiGraph)
+
+    page_rank(ppiGraph, diseaseGenes, beta)
+
+
+
+
+
+
+
     print(time())
     # Read data from input file to networkx graph format.
     start_time = time()

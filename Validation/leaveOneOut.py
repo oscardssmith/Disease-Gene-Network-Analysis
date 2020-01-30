@@ -12,9 +12,8 @@ Each algorithm produces results in a 2 dimensional array where each item is a tu
 
 """
 import sys
-sys.path.insert(1, '../RWR/')
-sys.path.insert(1, '../DiffusionKernel/')
-sys.path.insert(1, '../PageRank/')
+sys.path.insert(1, '../Algorithms/')
+sys.path.insert(1, 'Algorithms/')
 sys.path.insert(1, '../Scripts/')
 import RandomWalk as rwr
 import DiffusionKernel as dk
@@ -119,7 +118,7 @@ def main():
             result_rwr = leaveOneOut(rwr.random_walk, file_paths[file_index], PPI_Network, rwr_pr_params[param_index])
             print("percentage of genes improperly predicted for RWR:", result_rwr)
             print("---------------PR----------------------")
-            result_pr = leaveOneOut(pr.PageRank, file_paths[file_index], PPI_Network, rwr_pr_params[param_index], prior_paths[file_index])
+            result_pr = leaveOneOut(pr.page_rank, file_paths[file_index], PPI_Network, rwr_pr_params[param_index], prior_paths[file_index])
             print("percentage of genes improperly predicted for PR:", result_pr)
            # print("---------------DK----------------------")
            # result_dk = leaveOneOut(dk.diffusion_kernel, file_paths[file_index], PPI_Network, dk_params[param_index], prior_paths[file_index])
