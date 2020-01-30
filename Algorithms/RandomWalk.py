@@ -7,7 +7,6 @@ import loader
 from GraphUtils import normalize_adjacency_matrix
 from GraphUtils import format_output
 import networkx as nx
-import matplotlib.pyplot as plt
 import time
 import math
 import numpy as np

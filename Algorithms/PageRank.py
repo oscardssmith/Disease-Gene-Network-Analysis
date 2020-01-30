@@ -9,7 +9,6 @@ from scipy.spatial import distance
 import numpy as np
 import math
 from time import time
-import matplotlib.pyplot as plt
 import networkx as nx
 import loader
 
