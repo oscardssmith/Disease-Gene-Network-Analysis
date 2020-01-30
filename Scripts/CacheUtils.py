@@ -3,7 +3,7 @@ import os.path
 import pickle
 import tempfile
 
-def compute_if_not_cached(f, *args, fileName = None):
+def compute_if_not_cached(f, *args, fileName=None):
     """
      Tool for caching large calculation.
      When run, it checks if a temp file containing the result exists.
