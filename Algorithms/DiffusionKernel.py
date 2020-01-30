@@ -32,41 +32,10 @@ def diffusion_kernel_core(ppiGraph, genes, beta):
     result = np.array(result).flatten()
     return format_output(ppiGraph, result)
 
-
-# unnecessary??
-# def dk_leaveOneOut(startVector):
-#     try:
-#         ppiGraph = nx.read_weighted_edgelist('graph.edgelist')
-#     except:
-#         ppiGraph = load_graph(REAL_FILE)
-#         nx.write_weighted_edgelist(ppiGraph, 'graph.edgelist')
-#     x = diffusion_kernel(ppiGraph, startVector)
-#     return x
-
-
-
 # Standard Wrapper Function
 def diffusion_kernel(ppiGraph, diseaseGenes, beta = 1):
     print("running diffusion kernel..")
     return diffusion_kernel_core(ppiGraph, diseaseGenes, beta)
-    # Format output if necessary for validation?
-
-
-
-
-
-#unnecessary?
-# def dk_test():
-#     try:
-#     	ppiGraph = nx.read_weighted_edgelist('graph.edgelist')
-#     except:
-#     	ppiGraph = load_graph(REAL_FILE)
-#     	nx.write_weighted_edgelist(ppiGraph, 'graph.edgelist')
-#     start_vector = load_start_vector(pathToDiseaseGeneFile, ppiGraph)
-#     x = diffusion_kernel(ppiGraph, start_vector)
-#     return x
-    
-
 
 if __name__ == '__main__':
 
@@ -78,13 +47,4 @@ if __name__ == '__main__':
     ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName="ppiGraph")
     diseaseGenes = load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
-    diffusion_kernel(ppiGraph, diseaseGenes, beta)
-
-
-
-    # tick = time()
-    # test = dk_test()
-    # time_elapsed = time() - tick
-    # print('Finished. Time taken: ', time_elapsed)
-    # for i in range(100):
-    # 	print(test[i])
+    rankedGenes = diffusion_kernel(ppiGraph, diseaseGenes, beta)

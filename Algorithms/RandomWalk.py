@@ -3,7 +3,7 @@ import os
 sys.path.insert(1, '../Scripts/')
 #Insert relative paths for calls from run.py
 sys.path.insert(1, 'Scripts/')
-import loader
+from loader import load_graph, load_start_vector
 from CacheUtils import compute_if_not_cached
 from GraphUtils import normalize_adjacency_matrix
 from GraphUtils import format_output
@@ -72,7 +72,7 @@ def random_walk(graph, startVector, r=0.2):
 
     # Load matrix from pickled object if exists to save time converting file.
     if os.path.isfile("../Data/pickledmatrix"):
-        print("pickled matrix file exists, loading matrix from file")
+       # print("pickled matrix file exists, loading matrix from file")
         with open("../Data/pickledmatrix", 'rb') as handle:
             matrix = np.asarray(pickle.load(handle))
     else:
@@ -93,7 +93,6 @@ def random_walk(graph, startVector, r=0.2):
 
 
 def main():
-    print(sys.argv)
 
     pathToPPINetworkFile = sys.argv[1]
     pathToDiseaseGeneFile = sys.argv[2]

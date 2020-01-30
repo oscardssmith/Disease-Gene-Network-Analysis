@@ -35,7 +35,7 @@ def leaveOneOut(function, diseaseGeneFilePath, PPI_Network, param, priors_file_p
     diseaseGeneFile.close()
 
     numDiseaseGenes = len(allDiseaseGenes)
-    rankThreshhold = numDiseaseGenes
+    rankThreshhold = 150
 
     numGenesNotFound = 0
 
@@ -106,8 +106,8 @@ def main():
     print("Loading graph")
     PPI_Network = load_PPI_Network('../Data/9606.protein.links.v11.0.txt')
     print("Loaded graph")
-    file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
-    prior_paths = ['../Data/endometriosis-proteins-priors.diseasegenes.tsv','../Data/lymphoma-proteins-priors.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins-priors.diseasegenes.tsv']
+    file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-proteins.diseasegenes.tsv']
+    prior_paths = ['../Data/endometriosis-proteins-priors.diseasegenes.tsv','../Data/lymphoma-proteins-priors.diseasegenes.tsv', '../Data/ischaemic-proteins-priors.diseasegenes.tsv']
     rwr_pr_params = [0.2, 0.4, 0.6, 0.8]
     dk_params = [0.4, 0.6, 0.8, 1.0]
 
@@ -120,9 +120,9 @@ def main():
             print("---------------PR----------------------")
             result_pr = leaveOneOut(pr.page_rank, file_paths[file_index], PPI_Network, rwr_pr_params[param_index], prior_paths[file_index])
             print("percentage of genes improperly predicted for PR:", result_pr)
-            print("---------------DK----------------------")
-            result_dk = leaveOneOut(dk.diffusion_kernel, file_paths[file_index], PPI_Network, dk_params[param_index], prior_paths[file_index])
-            print("percentage of genes improperly predicted for DK:", result_dk)
+           # print("---------------DK----------------------")
+           # result_dk = leaveOneOut(dk.diffusion_kernel, file_paths[file_index], PPI_Network, dk_params[param_index], prior_paths[file_index])
+           # print("percentage of genes improperly predicted for DK:", result_dk)
 
     # result = leaveOneOut(pr.PageRank, 'diseaseGeneFile', PPI_Network, priors_file_path)
     # print("Mean squared difference for PageRank:", result)
