@@ -6,7 +6,11 @@ from signal import signal, SIGINT
 import subprocess
 import sys
 import os
-from termcolor import colored, cprint
+try:
+    from termcolor import colored, cprint
+except ModuleNotFoundError:
+    print("installing termcolor:")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--user", "termcolor"])
 
 
 
@@ -26,7 +30,7 @@ def checkDependencies():
     print("\nChecking for required libraries...")
 
     error = False
-    for lib in ['networkx', 'numpy', 'scipy', 'matplotlib', 'requests']:
+    for lib in ['termcolor', 'networkx', 'numpy', 'scipy', 'matplotlib', 'requests', 'tk']:
         error = checkPipLibrary(lib) or error
     
     if error:
