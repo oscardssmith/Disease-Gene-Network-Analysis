@@ -12,7 +12,7 @@ import math
 from time import time
 import networkx as nx
 import loader
-from loader import load_graph
+from loader import load_graph, load_start_vector
 
 BETA = 0.3
 DISEASE_GENE_FILE_PATH = "../Data/endometriosis-proteins.diseasegenes.tsv"
