@@ -26,7 +26,7 @@ def compute_matrix(graph):
 
 # Given a np.array matrix, starting vector, prior bias vector, and back
 # probability, calculate the rank of each node in the graph.
-def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
+def rank_genes(graph, starting_vector, prior_bias, beta):
     #print("started ranking genes")
     start_time = time()
 
@@ -72,8 +72,7 @@ def load_priors(priors_file, graph):
 
 
 def page_rank(graph, start_vector, prior_bias, beta=BETA):
-    adjacency_matrix = nx.to_numpy_matrix(graph)
-    return GraphUtils.format_output(graph, rank_genes(adjacency_matrix, start_vector, prior_bias, beta))
+    return GraphUtils.format_output(graph, rank_genes(graph, start_vector, prior_bias, beta))
 
 
 def main():

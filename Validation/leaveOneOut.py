@@ -36,7 +36,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param, priors_file
     diseaseGeneFile.close()
 
     numDiseaseGenes = len(allDiseaseGenes)
-    rankThreshhold = numDiseaseGenes
+    rankThreshhold = 150
 
     numGenesNotFound = 0
 

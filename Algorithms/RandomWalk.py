@@ -72,7 +72,7 @@ def random_walk(graph, startVector, r=0.2):
 
     # Load matrix from pickled object if exists to save time converting file.
     if os.path.isfile("../Data/pickledmatrix"):
-        print("pickled matrix file exists, loading matrix from file")
+       # print("pickled matrix file exists, loading matrix from file")
         with open("../Data/pickledmatrix", 'rb') as handle:
             matrix = np.asarray(pickle.load(handle))
     else:
