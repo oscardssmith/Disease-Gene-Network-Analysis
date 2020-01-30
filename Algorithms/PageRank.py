@@ -3,6 +3,7 @@ sys.path.insert(1, '../Scripts/')
 #Insert relative paths for calls from run.py
 sys.path.insert(1, 'Scripts/')
 import GraphUtils
+from CacheUtils import compute_if_not_cached
 import os
 from scipy.spatial import distance
 import numpy as np
@@ -11,16 +12,16 @@ from time import time
 import matplotlib.pyplot as plt
 import networkx as nx
 import loader
-try:
-    import cPickle as pickle
-except:
-    import pickle
 
 BETA = 0.3
 DISEASE_GENE_FILE_PATH = "../Data/endometriosis-proteins.diseasegenes.tsv"
 DATA_PATH = "../Data/9606.protein.links.v11.0.txt"
 EPSILON = .000001 # 10^(-6)
 PICKLE_PATH = "../Data/pickledmatrix"
+
+def compute_matrix(graph):
+    return np.asarray(GraphUtils.normalize_adjacency_matrix(
+            nx.to_numpy_matrix(graph)))
 
 # Given a np.array matrix, starting vector, prior bias vector, and back
 # probability, calculate the rank of each node in the graph.
@@ -29,15 +30,7 @@ def rank_genes(adjacency_matrix, starting_vector, prior_bias, beta):
     start_time = time()
 
     # Load matrix from pickled object if exists to save time converting file.
-    if os.path.isfile(PICKLE_PATH):
-        #print("pickled matrix file exists, loading matrix from file")
-        with open(PICKLE_PATH, 'rb') as handle:
-            matrix = np.asarray(pickle.load(handle))
-    else:
-        matrix = np.asarray(GraphUtils.normalize_adjacency_matrix(
-            nx.to_numpy_matrix(graph)))
-        with open(PICKLE_PATH, 'wb') as handle:
-            pickle.dump(matrix, handle)
+    matrix = compute_if_not_cached(compute_matrix, graph)
     #print("time elapsed for normalizing the adjacency matrix: ", time() - start_time)
 
     d = float('inf')
