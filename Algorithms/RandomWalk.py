@@ -4,6 +4,7 @@ sys.path.insert(1, '../Scripts/')
 #Insert relative paths for calls from run.py
 sys.path.insert(1, 'Scripts/')
 import loader
+from CacheUtils import compute_if_not_cached
 from GraphUtils import normalize_adjacency_matrix
 from GraphUtils import format_output
 import networkx as nx

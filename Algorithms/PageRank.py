@@ -2,6 +2,7 @@ import sys
 sys.path.insert(1, '../Scripts/')
 #Insert relative paths for calls from run.py
 sys.path.insert(1, 'Scripts/')
+from CacheUtils import compute_if_not_cached
 import GraphUtils
 from CacheUtils import compute_if_not_cached
 import os
@@ -10,7 +11,9 @@ import numpy as np
 import math
 from time import time
 import networkx as nx
+<<<<<<< HEAD
 import loader
+from loader import load_graph
 
 BETA = 0.3
 DISEASE_GENE_FILE_PATH = "../Data/endometriosis-proteins.diseasegenes.tsv"
