@@ -2,6 +2,7 @@ import sys
 sys.path.insert(1, '../Scripts/')
 #Insert relative paths for calls from run.py
 sys.path.insert(1, 'Scripts/')
+from CacheUtils import compute_if_not_cached
 import GraphUtils
 import os
 from scipy.spatial import distance
@@ -10,7 +11,7 @@ import math
 from time import time
 import matplotlib.pyplot as plt
 import networkx as nx
-import loader
+from loader import load_graph
 try:
     import cPickle as pickle
 except:
