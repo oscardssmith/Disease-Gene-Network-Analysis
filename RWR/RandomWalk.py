@@ -53,7 +53,7 @@ def random_walk_matrix(matrix, startVector, R, maxIterations, normThreshold):
 
 
 def random_walk(graph, startVector, r=0.3):
-    print("INITIALIZING RANDOM WALK")
+   # print("INITIALIZING RANDOM WALK")
 
     """
     This method can be called from anywhere (such as validation scripts) and does whatever it needs to do to produce a properly formatted output,
@@ -72,7 +72,7 @@ def random_walk(graph, startVector, r=0.3):
 
     # Load matrix from pickled object if exists to save time converting file.
     if os.path.isfile("../Data/pickledmatrix"):
-        print("pickled matrix file exists, loading matrix from file")
+       # print("pickled matrix file exists, loading matrix from file")
         with open("../Data/pickledmatrix", 'rb') as handle:
             matrix = np.asarray(pickle.load(handle))
     else:
