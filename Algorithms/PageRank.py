@@ -11,7 +11,6 @@ import numpy as np
 import math
 from time import time
 import networkx as nx
-<<<<<<< HEAD
 import loader
 from loader import load_graph
 
