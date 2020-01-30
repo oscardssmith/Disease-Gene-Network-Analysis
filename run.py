@@ -171,9 +171,9 @@ def select_algorithm():
     
 
     algorithms = {
-        1:"DiffusionKernel/DiffusionKernel.py",
-        2:"PageRank/PageRank.py",
-        3:"RWR/Randomwalk.py"
+        1:"Algorithms/DiffusionKernel.py",
+        2:"Algorithms/PageRank.py",
+        3:"Algorithms/Randomwalk.py"
     }
 
     choice = 0
@@ -294,13 +294,13 @@ def main():
 
     algorithm = select_algorithm()
 
-    if algorithm == "DiffusionKernel/DiffusionKernel.py":
+    if algorithm == "Algorithms/DiffusionKernel.py":
         beta = select_beta_value()
 
-    if algorithm == "PageRank/PageRank.py":
+    if algorithm == "Algorithms/PageRank.py":
         beta = select_pr_beta_value()
 
-    if algorithm == "RWR/Randomwalk.py":
+    if algorithm == "Algorithms/Randomwalk.py":
         R = select_rwr_r_value()
 
 
@@ -314,7 +314,7 @@ def main():
     input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
 
     # Run stuff
-    if algorithm == "DiffusionKernel/DiffusionKernel.py" or algorithm == "PageRank/PageRank.py":
+    if algorithm == "Algorithms/DiffusionKernel.py" or algorithm == "Algorithms/PageRank.py":
         numeric = beta
     else:
         numeric = R
