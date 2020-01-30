@@ -3,9 +3,11 @@
 
 
 from signal import signal, SIGINT
+import subprocess
 import sys
 import os
 from termcolor import colored, cprint
+
 
 
 # Interface Utility Functions
@@ -20,6 +22,70 @@ def sigint_handler(signalReceived, frame):
     print('\nExiting..\n')
     exit(0)
 
+def checkDependencies():
+    print("\nChecking for required libraries...")
+
+    error = False
+    for lib in ['networkx', 'numpy', 'scipy', 'matplotlib', 'requests']:
+        error = checkPipLibrary(lib) or error
+    
+    if error:
+        choice = input("\nWould you like to try to automatically install missing dependencies? (Y/n) >>")
+        if choice.upper() != "Y":
+            print("\nExiting..\n")
+            sys.exit(0)
+        else:
+            print("\nInstalling dependencies..\n")
+            subprocess.Popen(["python3", "setup.py"]).wait()
+            print("\nExiting script.. please restart it.\n")
+            sys.exit(0)
+            
+    else:
+        cprint("Success.", "green")
+
+    print("\nChecking for datasets..\n")
+
+    dgf = get_disease_gene_files()
+    ppif = get_ppi_data_files()
+
+    if len(ppif) == 0:
+        cprint("No PPI network found.", "red")
+        choice = input("Would you like to automatically download the newest one from String-DB.org? (Y/n) >>")
+        if choice.upper() != "Y":
+            print("\nExiting..\n")
+            sys.exit(0)
+        else:
+            print("Installing String dataset..")
+            p = subprocess.Popen(["bash", "download-human-dataset.sh"])
+            p.wait()
+            if p.returncode != 0:
+                cprint("Something went wrong. Exiting.", "red")
+                sys.exit(1)
+            else:
+                print("\nString data successfully installed.\n")
+    
+    if len(dgf) == 0:
+        print("\n There are no disease-gene files installed. Disease gene files must be in the Data/ directory and must include '.diseasegenes' in the file name.")
+        print("Exiting..")
+        sys.exit(0) 
+
+    cprint("Success.", "green")   
+
+
+def checkPipLibrary(lib):
+    print("checking for {0}".format(lib), end=" ")
+    error = False
+    try:
+        __import__(lib)
+    except ModuleNotFoundError:
+        print(colored("missing", "red"))
+        error = True
+    if not error:
+        print(colored("yes", "green"))
+    return error 
+
+
+
 
 
 # Selection/Execution Functions
@@ -31,14 +97,14 @@ def get_ppi_data_files():
     ppiDataFiles = []
     for f in get_files_in_directory("Data/"):
         if 'ppi' in f.split('.'):
-            ppiDataFiles.append(f)
+            ppiDataFiles.append("Data/" + f)
     return ppiDataFiles
 
 def get_disease_gene_files():
     diseaseGeneFiles = []
     for f in get_files_in_directory("Data/"):
         if 'diseasegenes' in f.split('.'):
-            diseaseGeneFiles.append(f)
+            diseaseGeneFiles.append("Data/" + f)
     return diseaseGeneFiles
 
 
@@ -100,6 +166,8 @@ def select_algorithm():
     print("\t- " + colored("1", "cyan") + ": Diffusion kernel")
     print("\t- " + colored("2", "cyan") + ": PageRank")
     print("\t- " + colored("3", "cyan") + ": Random walk with restart")
+
+    print("\n\n")
     
 
     algorithms = {
@@ -184,6 +252,8 @@ def select_validation():
     print("\t- " + colored("2", "cyan") + ": Area under ROC curve")
     print("\t- " + colored("3", "cyan") + ": Leave one out cross validation")
 
+    print("\n\n")
+
     validations = {
         1:"None",
         2:"Validation/AreaUnderROC.py",
@@ -210,7 +280,10 @@ def main():
     #Initialization
     signal(SIGINT, sigint_handler)
     resetScreen()
+
+    #Check for dependencies
     print("Welcome to the script")
+    checkDependencies()
     input("Press enter to continue: >>")
 
     # Get user selections for what they want to run
@@ -241,11 +314,16 @@ def main():
     input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
 
     # Run stuff
+    if algorithm == "DiffusionKernel/DiffusionKernel.py" or algorithm == "PageRank/PageRank.py":
+        numeric = beta
+    else:
+        numeric = R
+
     if validation == "None":
-        cmd = "python3 {0} {1} {2}".format(algorithm, ppiDataset, diseaseGeneFile)
+        cmd = "python3 {0} {1} {2} {3}".format(algorithm, ppiDataset, diseaseGeneFile, numeric)
         os.system(cmd)
     else:
-        cmd = "python3 {0} {1} {2} {3}".format(validation, algorithm, ppiDataset, diseaseGeneFile)
+        cmd = "python3 {0} {1} {2} {3} {4}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric)
         os.system(cmd)
 
 

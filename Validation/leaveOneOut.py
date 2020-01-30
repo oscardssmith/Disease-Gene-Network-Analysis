@@ -119,7 +119,7 @@ def main():
             result_rwr = leaveOneOut(rwr.random_walk, file_paths[file_index], PPI_Network, rwr_pr_params[param_index])
             print("percentage of genes improperly predicted for RWR:", result_rwr)
             print("---------------PR----------------------")
-            result_pr = leaveOneOut(pr.PageRank, file_paths[file_index], PPI_Network, rwr_pr_params[param_index], prior_paths[file_index])
+            result_pr = leaveOneOut(pr.page_rank, file_paths[file_index], PPI_Network, rwr_pr_params[param_index], prior_paths[file_index])
             print("percentage of genes improperly predicted for PR:", result_pr)
             print("---------------DK----------------------")
             result_dk = leaveOneOut(dk.diffusion_kernel, file_paths[file_index], PPI_Network, dk_params[param_index], prior_paths[file_index])

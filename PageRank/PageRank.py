@@ -1,5 +1,7 @@
 import sys
 sys.path.insert(1, '../Scripts/')
+#Insert relative paths for calls from run.py
+sys.path.insert(1, 'Scripts/')
 import GraphUtils
 import os
 from scipy.spatial import distance
@@ -75,12 +77,30 @@ def load_priors(priors_file, graph):
     return prior_bias
 
 
-def PageRank(graph, start_vector, prior_bias, beta=BETA):
+def page_rank(graph, start_vector, prior_bias, beta=BETA):
     adjacency_matrix = nx.to_numpy_matrix(graph)
     return GraphUtils.format_output(graph, rank_genes(adjacency_matrix, start_vector, prior_bias, beta))
 
 
 def main():
+    print(sys.argv)
+
+    pathToPPINetworkFile = sys.argv[1]
+    pathToDiseaseGeneFile = sys.argv[2]
+    beta = float(sys.argv[3])
+
+    print("loading data from files..")
+    ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName="ppiGraph")
+    diseaseGenes = load_start_vector(pathToDiseaseGeneFile, ppiGraph)
+
+    page_rank(ppiGraph, diseaseGenes, beta)
+
+
+
+
+
+
+
     print(time())
     # Read data from input file to networkx graph format.
     start_time = time()

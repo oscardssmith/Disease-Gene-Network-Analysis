@@ -1,6 +1,8 @@
 import sys
 import os
 sys.path.insert(1, '../Scripts/')
+#Insert relative paths for calls from run.py
+sys.path.insert(1, 'Scripts/')
 import loader
 from GraphUtils import normalize_adjacency_matrix
 from GraphUtils import format_output
@@ -52,7 +54,7 @@ def random_walk_matrix(matrix, startVector, R, maxIterations, normThreshold):
 
 
 
-def random_walk(graph, startVector, r=0.3):
+def random_walk(graph, startVector, r=0.2):
     print("INITIALIZING RANDOM WALK")
 
     """
@@ -64,8 +66,6 @@ def random_walk(graph, startVector, r=0.3):
 
     @returns: a nested list of tuples, in sorted order of probability, where each item contains the name of a gene, and its respective probability as determined by the algorithm
     """
-    # Set algorithm constants-- R is set to be same as Beta in PageRank for comparison
-    #R = 0.3
     maxIterations = 500
     normThreshold = 10**(-6)
     #print("creating matrix")
@@ -93,34 +93,50 @@ def random_walk(graph, startVector, r=0.3):
 
 
 def main():
-    pathToData = "../Data/9606.protein.links.v11.0.txt"
-    pathToDiseaseGeneFile = "../Data/EndometriosisProteins.tsv"
+    print(sys.argv)
+
+    pathToPPINetworkFile = sys.argv[1]
+    pathToDiseaseGeneFile = sys.argv[2]
+    R = float(sys.argv[3])
+
+    print("loading data from files..")
+    ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName="ppiGraph")
+    diseaseGenes = load_start_vector(pathToDiseaseGeneFile, ppiGraph)
+
+    random_walk(ppiGraph, diseaseGenes, R)
 
 
-    print("Loading graph from file:", pathToData)
-
-    #Read data from input file to networkx graph format.
-    startTime = time.time()
-    ppiGraph = loader.load_graph(pathToData)
-    endTime = time.time()
-
-    print("Graph loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
 
 
-    #Read data from disease gene file into list
-    startTime = time.time()
-    startVector = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
-    endTime = time.time()
 
-    print("Disease genes loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
+    # pathToData = "../Data/9606.protein.links.v11.0.txt"
+    # pathToDiseaseGeneFile = "../Data/EndometriosisProteins.tsv"
 
 
-    startTime = time.time()
-    probabilityVector = random_walk(ppiGraph, startVector)
-    endTime = time.time()
+    # print("Loading graph from file:", pathToData)
 
-    print("Random Walk matrix implementation finished running.\nTime elapsed:", endTime - startTime, "seconds.")
-    print(probabilityVector, startVector)
+    # #Read data from input file to networkx graph format.
+    # startTime = time.time()
+    # ppiGraph = loader.load_graph(pathToData)
+    # endTime = time.time()
+
+    # print("Graph loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
+
+
+    # #Read data from disease gene file into list
+    # startTime = time.time()
+    # startVector = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
+    # endTime = time.time()
+
+    # print("Disease genes loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
+
+
+    # startTime = time.time()
+    # probabilityVector = random_walk(ppiGraph, startVector)
+    # endTime = time.time()
+
+    # print("Random Walk matrix implementation finished running.\nTime elapsed:", endTime - startTime, "seconds.")
+    # print(probabilityVector, startVector)
 
 
     #Visualize graph in matplotlib.
