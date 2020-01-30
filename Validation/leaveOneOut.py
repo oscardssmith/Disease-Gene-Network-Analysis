@@ -42,7 +42,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param, priors_file
 
     #print("finished initialization, starting disease gene loop")
     graph_nodes = list(PPI_Network.nodes())
-    startVector = loader.load_start_vector(diseaseGeneFilePath, PPI_Network)
+    startVector = load_start_vector(diseaseGeneFilePath, PPI_Network)
     startVector = (numDiseaseGenes/(numDiseaseGenes - 1)) * startVector
     # skipping 
     for index, skipGene in enumerate(allDiseaseGenes):
@@ -116,6 +116,8 @@ def main():
         function = pr.PageRank
     if algorithm == "Algorithms/RandomWalk.py":
         function = rwr.RandomWalk
+    else:
+        function = None
 
     leave_one_out(function, pathToDiseaseGeneFile, ppiGraph, param)
 
