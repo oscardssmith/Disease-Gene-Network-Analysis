@@ -93,7 +93,6 @@ def random_walk(graph, startVector, r=0.2):
 
 
 def main():
-    print(sys.argv)
 
     pathToPPINetworkFile = sys.argv[1]
     pathToDiseaseGeneFile = sys.argv[2]
