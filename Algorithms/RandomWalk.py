@@ -3,7 +3,7 @@ import os
 sys.path.insert(1, '../Scripts/')
 #Insert relative paths for calls from run.py
 sys.path.insert(1, 'Scripts/')
-import loader
+from loader import load_graph, load_start_vector
 from CacheUtils import compute_if_not_cached
 from GraphUtils import normalize_adjacency_matrix
 from GraphUtils import format_output

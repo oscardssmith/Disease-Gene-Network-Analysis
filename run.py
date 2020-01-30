@@ -30,7 +30,7 @@ def checkDependencies():
     print("\nChecking for required libraries...")
 
     error = False
-    for lib in ['termcolor', 'networkx', 'numpy', 'scipy', 'matplotlib', 'requests', 'tk']:
+    for lib in ['termcolor', 'networkx', 'numpy', 'scipy', 'matplotlib', 'requests', 'tkinter']:
         error = checkPipLibrary(lib) or error
     
     if error:
@@ -288,7 +288,6 @@ def main():
     #Check for dependencies
     print("Welcome to the script")
     checkDependencies()
-    input("Press enter to continue: >>")
 
     # Get user selections for what they want to run
 
