@@ -8,9 +8,12 @@ import sys
 import os
 try:
     from termcolor import colored, cprint
-except ModuleNotFoundError:
-    print("installing termcolor:")
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "--user", "termcolor"])
+except ImportError:
+    print("Module termcolor not found. Install termcolor for color.")
+    def cprint(m, c):
+        print(m)
+    def colored(m, c):
+        return m
 
 
 
@@ -81,7 +84,7 @@ def checkPipLibrary(lib):
     error = False
     try:
         __import__(lib)
-    except ModuleNotFoundError:
+    except ImportError:
         print(colored("missing", "red"))
         error = True
     if not error:
