@@ -3,7 +3,7 @@ import os.path as path
 import pickle
 import tempfile
 
-def compute_if_not_cached(f, fileName = None, *args):
+def compute_if_not_cached(f, *args, fileName=None):
     """
      Tool for caching large calculation.
      When run, it checks if a temp file containing the result exists.
@@ -14,18 +14,18 @@ def compute_if_not_cached(f, fileName = None, *args):
     """
     if fileName is None:
         fileName = f.__name__
-    path = path.join(tempfile.gettempdir(), "CompBioCompsCache", fileName + ".pickle")
-    if os.path.isfile(path):
+    file_path = path.join(tempfile.gettempdir(), "CompBioCompsCache", fileName + ".pickle")
+    if path.isfile(file_path):
         print("pickled matrix file exists, loading matrix from file")
         try:
-            with open(path, 'rb') as handle:
+            with open(file_path, 'rb') as handle:
                 return pickle.load(handle)
         except pickle.UnpicklingError: #If previous pickling was broken or corrupted.
-            os.remove(path)
+            os.remove(file_path)
             return compute_if_not_cached(f, fileName, *args)
     else:
         result = f(*args)
-        with open(path, 'wb') as handle:
+        with open(file_path, 'wb') as handle:
             pickle.dump(result, handle)
         return result
 
