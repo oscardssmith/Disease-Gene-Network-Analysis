@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--user", package])
 
 
 libraries = ['networkx', 'numpy', 'scipy', 'matplotlib', 'requests']
