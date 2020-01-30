@@ -86,15 +86,9 @@ def main():
     ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName="ppiGraph")
     diseaseGenes = load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
-    page_rank(ppiGraph, diseaseGenes, beta)
+    return page_rank(ppiGraph, diseaseGenes, beta)
 
-
-
-
-
-
-
-    print(time())
+    '''print(time())
     # Read data from input file to networkx graph format.
     start_time = time()
     PPI_Graph = loader.load_graph(DATA_PATH)
@@ -116,7 +110,7 @@ def main():
     sorted_probabilities = sorted(probability_vector, key=lambda x: x[1])
     for i in range(50):
         print("gene name: ", sorted_probabilities[i][0],
-              "probability:", sorted_probabilities[i][1])
+              "probability:", sorted_probabilities[i][1])'''
 
 
 if __name__ == '__main__':
