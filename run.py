@@ -33,7 +33,7 @@ def checkDependencies():
     print("\nChecking for required libraries...")
 
     error = False
-    for lib in ['termcolor', 'networkx', 'numpy', 'scipy', 'matplotlib', 'requests', 'tkinter']:
+    for lib in ['networkx', 'numpy', 'scipy', 'matplotlib', 'requests', 'tkinter']:
         error = checkPipLibrary(lib) or error
     
     if error:
