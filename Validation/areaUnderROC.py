@@ -33,7 +33,7 @@ def roc_curve(result_vec, ground_truth_vec, name):
                 tn += 1
         TPR.append(tp/(tp + fn))
         FPR.append(fp/(fp + tn))
-    file_path = name + '.txt'
+    file_path = name + '.png'
     plot = plt.pyplot.plot(FPR, TPR)
     plot.savefig(file_path)
 
@@ -58,16 +58,34 @@ def main():
         priors_vector = pr.load_priors(prior_paths[i], PPI_Network)
 
         # getting output from algorithms
+        start_time = time.time()
         output_RWR = rwr.random_walk(PPI_Network, start_vector)
-        output_PR = pr.PageRank(PPI_Network, start_vector, priors_vector)
+        end_time = time.time()
+        print("time for rwr:", end_time - start_time)
+        start_time = time.time()
+        output_PR = pr.page_rank(PPI_Network, start_vector, priors_vector)
+        end_time = time.time()
+        print("time for pr:", end_time - start_time)
+        start_time = time.time()
         output_DK = dk.diffusion_kernel(PPI_Network, start_vector)
+        end_time = time.time()
+        print("time for dk:", end_time - start_time)
         # building roc curves
+        start_time = time.time()
         name = "rwr-" + names[i]
         roc_curve(output_RWR, ground_truth_vec, name)
+        end_time = time.time()
+        print("time for roc curve, rwr:", end_time -start_time)
+        start_time = time.time()
         name = "pr-" + names[i]
         roc_curve(output_PR, ground_truth_vec, name)
+        end_time = time.time()
+        print("time for roc curve, pr:", end_time - start_time)
+        start_time = time.time()
         name = "dk-" + names[i]
         roc_curve(output_DK, ground_truth_vec, name)
+        end_time = time.time()
+        print("time for roc curve, dk:", end_time - start_time)
 
 if __name__ == '__main__':
     main()
