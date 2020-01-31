@@ -8,8 +8,9 @@ import sys
 import os
 try:
     from termcolor import colored, cprint
+    termcolorMissing = False
 except ImportError:
-    print("Module termcolor not found. Install termcolor for color.")
+    termcolorMissing = True
     def cprint(m, c):
         print(m)
     def colored(m, c):
@@ -31,6 +32,9 @@ def sigint_handler(signalReceived, frame):
 
 def checkDependencies():
     print("\nChecking for required libraries...")
+
+    if termcolorMissing:
+        print("Module termcolor not found. Install termcolor python module for color.")
 
     error = False
     for lib in ['networkx', 'numpy', 'scipy', 'matplotlib', 'requests', 'tkinter']:
