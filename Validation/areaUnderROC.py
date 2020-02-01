@@ -23,6 +23,7 @@ def roc_curve(result_vec, ground_truth_vec, name):
         tn = 0
         for i in range(len(result_vec)):
             item = result_vec[i]
+            print(item)
             if i <= threshhold and item in ground_truth_vec:
                 tp += 1
             elif i <= threshhold and item not in ground_truth_vec:
