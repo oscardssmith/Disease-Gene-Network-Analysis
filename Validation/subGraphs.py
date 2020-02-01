@@ -28,3 +28,4 @@ def main():
         subgraph = PPI_Network.subgraph(nodes_in_subgraph)
 
         nx.write_graphml(subgraph, names[i])
+        print("exported file named" + names[i])
