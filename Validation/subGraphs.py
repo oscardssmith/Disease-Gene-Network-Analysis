@@ -29,3 +29,8 @@ def main():
 
         nx.write_graphml(subgraph, names[i])
         print("exported file named" + names[i])
+
+
+
+if __name__ == '__main__':
+    main()
