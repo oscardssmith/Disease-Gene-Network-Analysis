@@ -53,15 +53,17 @@ def main():
         # building ground truth
         ground_truth_vec = []
         with open(ground_truth_files[i], 'r') as input:
-            input = input.readline()
+            input = input.readlines()
             for line in input:
                 protein = line.rstrip('\n')
                 ground_truth_vec.append(protein)
+        print(ground_truth_vec)
         # building start and priors vector
+        #
         start_vector = loader.load_start_vector(file_paths[i], PPI_Network)
         priors_vector = pr.load_priors(prior_paths[i], PPI_Network)
 
-        # getting output from algorithms
+        #getting output from algorithms
         start_time = time.time()
         output_RWR = rwr.random_walk(PPI_Network, start_vector)
         end_time = time.time()
@@ -70,11 +72,13 @@ def main():
         output_PR = pr.page_rank(PPI_Network, start_vector, priors_vector)
         end_time = time.time()
         print("time for pr:", end_time - start_time)
+
        # start_time = time.time()
        # output_DK = dk.diffusion_kernel(PPI_Network, start_vector)
        # end_time = time.time()
        # print("time for dk:", end_time - start_time)
         # building roc curves
+
         start_time = time.time()
         name = "rwr-" + names[i]
         roc_curve(output_RWR, ground_truth_vec, name)
