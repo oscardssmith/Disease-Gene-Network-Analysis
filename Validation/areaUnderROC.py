@@ -25,9 +25,9 @@ def roc_curve(result_vec, ground_truth_vec, name):
             item = result_vec[i]
             if i <= threshhold and item in ground_truth_vec:
                 tp += 1
-            elif i <= threshhold:
+            elif i <= threshhold and item not in ground_truth_vec:
                 fp += 1
-            elif item in ground_truth_vec:
+            elif item in ground_truth_vec and i> threshhold:
                 fn += 1
             else:
                 tn += 1
