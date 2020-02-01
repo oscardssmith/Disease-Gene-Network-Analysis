@@ -11,7 +11,7 @@ import DiffusionKernel as dk
 import PageRank as pr
 import loader
 import time
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 def roc_curve(result_vec, ground_truth_vec, name):
     TPR = []
@@ -23,18 +23,22 @@ def roc_curve(result_vec, ground_truth_vec, name):
         tn = 0
         for i in range(len(result_vec)):
             item = result_vec[i]
-            if i < threshhold and item in ground_truth_vec:
+            if i <= threshhold and item in ground_truth_vec:
                 tp += 1
-            elif i < threshhold:
+            elif i <= threshhold:
                 fp += 1
             elif item in ground_truth_vec:
                 fn += 1
             else:
                 tn += 1
+        print("true positive:", tp)
+        print("false positive:", fp)
+        print("true negative:", tn)
+        print("false negative:", fn)
         TPR.append(tp/(tp + fn))
         FPR.append(fp/(fp + tn))
     file_path = name + '.png'
-    plot = plt.pyplot.plot(FPR, TPR)
+    plot = plt.plot(FPR, TPR)
     plot.savefig(file_path)
 
 def main():
@@ -66,10 +70,10 @@ def main():
         output_PR = pr.page_rank(PPI_Network, start_vector, priors_vector)
         end_time = time.time()
         print("time for pr:", end_time - start_time)
-        start_time = time.time()
-        output_DK = dk.diffusion_kernel(PPI_Network, start_vector)
-        end_time = time.time()
-        print("time for dk:", end_time - start_time)
+       # start_time = time.time()
+       # output_DK = dk.diffusion_kernel(PPI_Network, start_vector)
+       # end_time = time.time()
+       # print("time for dk:", end_time - start_time)
         # building roc curves
         start_time = time.time()
         name = "rwr-" + names[i]
@@ -82,10 +86,7 @@ def main():
         end_time = time.time()
         print("time for roc curve, pr:", end_time - start_time)
         start_time = time.time()
-        name = "dk-" + names[i]
-        roc_curve(output_DK, ground_truth_vec, name)
-        end_time = time.time()
-        print("time for roc curve, dk:", end_time - start_time)
+
 
 if __name__ == '__main__':
     main()
