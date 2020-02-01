@@ -1,6 +1,10 @@
 '''
 Generating subgraphs for cytoscape
 '''
+import sys
+sys.path.insert(1, '../Algorithms/')
+sys.path.insert(1, 'Algorithms/')
+sys.path.insert(1, '../Scripts/')
 import loader
 
 import networkx as nx
@@ -24,5 +28,3 @@ def main():
         subgraph = PPI_Network.subgraph(nodes_in_subgraph)
 
         nx.write_graphml(subgraph, names[i])
-
-        
