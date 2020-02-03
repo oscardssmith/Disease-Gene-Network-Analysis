@@ -22,8 +22,7 @@ def roc_curve(result_vec, ground_truth_vec, name):
         fn = 0
         tn = 0
         for i in range(len(result_vec)):
-            item = result_vec[i]
-            print(item)
+            item = result_vec[i][0]
             if i <= threshhold and item in ground_truth_vec:
                 tp += 1
             elif i <= threshhold and item not in ground_truth_vec:
@@ -32,15 +31,16 @@ def roc_curve(result_vec, ground_truth_vec, name):
                 fn += 1
             else:
                 tn += 1
-        print("true positive:", tp)
-        print("false positive:", fp)
-        print("true negative:", tn)
-        print("false negative:", fn)
+       # print("true positive:", tp)
+       # print("false positive:", fp)
+       # print("true negative:", tn)
+       # print("false negative:", fn)
         TPR.append(tp/(tp + fn))
         FPR.append(fp/(fp + tn))
     file_path = name + '.png'
     plot = plt.plot(FPR, TPR)
-    plot.savefig(file_path)
+    plt.show()
+    plt.savefig(file_path)
 
 def main():
     # Get output vectors from each algorithm
