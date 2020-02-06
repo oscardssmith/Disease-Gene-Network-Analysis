@@ -85,7 +85,7 @@ def main():
         loader.load_graph, pathToPPINetworkFile, fileName="ppiGraph")
     diseaseGenes = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
-    return page_rank(ppiGraph, diseaseGenes, beta)
+    print(page_rank(ppiGraph, diseaseGenes, beta))
 
     '''print(time())
     # Read data from input file to networkx graph format.
