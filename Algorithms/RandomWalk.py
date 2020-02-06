@@ -1,27 +1,22 @@
 import sys
 import os
 sys.path.insert(1, '../Scripts/')
-#Insert relative paths for calls from run.py
+# Insert relative paths for calls from run.py
 sys.path.insert(1, 'Scripts/')
-from loader import load_graph, load_start_vector
-from CacheUtils import compute_if_not_cached
-from GraphUtils import normalize_adjacency_matrix
-from GraphUtils import format_output
-import networkx as nx
-import time
-import math
-import numpy as np
 from scipy.spatial import distance
+import numpy as np
+import math
+import time
+import networkx as nx
+import GraphUtils
+from CacheUtils import compute_if_not_cached
+import loader
 try:
-   import cPickle as pickle
+    import cPickle as pickle
 except:
-   import pickle
+    import pickle
 
-
-
-
-
-
+    
 
 
 # Runs Random Walk with Restart using a matrix implementation
@@ -36,22 +31,15 @@ def random_walk_matrix(matrix, startVector, R, maxIterations, normThreshold):
     while diff > normThreshold and iterations < maxIterations:
         #print("iteration:", iterations)
 
-        #Perform one step of the walk
+        # Perform one step of the walk
         newVector = (1 - R) * np.matmul(matrix, previousVector)
         newVector = np.add(newVector, R * startVector)
-
 
         diff = distance.sqeuclidean(newVector, previousVector)
         previousVector = newVector
         iterations += 1
 
     return newVector
-
-
-
-
-
-
 
 
 def random_walk(graph, startVector, r=0.2):
@@ -76,20 +64,17 @@ def random_walk(graph, startVector, r=0.2):
         with open("../Data/pickledmatrix", 'rb') as handle:
             matrix = np.asarray(pickle.load(handle))
     else:
-        matrix = np.asarray(normalize_adjacency_matrix(nx.to_numpy_matrix(graph)))
+        matrix = np.asarray(GraphUtils.normalize_adjacency_matrix(
+            nx.to_numpy_matrix(graph)))
         with open("../Data/pickledmatrix", 'wb') as handle:
             pickle.dump(matrix, handle)
 
+    probabilityVector = random_walk_matrix(
+        matrix, startVector, r, maxIterations, normThreshold)
 
-    probabilityVector = random_walk_matrix(matrix, startVector, r, maxIterations, normThreshold)
-
-    #format probabilityVector into usable output
+    # format probabilityVector into usable output
     #print("formatting output")
-    return format_output(graph, probabilityVector)
-
-
-
-
+    return GraphUtils.format_output(graph, probabilityVector)
 
 
 def main():
@@ -99,18 +84,14 @@ def main():
     R = float(sys.argv[3])
 
     print("loading data from files..")
-    ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName="ppiGraph")
-    diseaseGenes = load_start_vector(pathToDiseaseGeneFile, ppiGraph)
+    ppiGraph = compute_if_not_cached(
+        loader.load_graph, pathToPPINetworkFile, fileName="ppiGraph")
+    diseaseGenes = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
     random_walk(ppiGraph, diseaseGenes, R)
 
-
-
-
-
     # pathToData = "../Data/9606.protein.links.v11.0.txt"
     # pathToDiseaseGeneFile = "../Data/EndometriosisProteins.tsv"
-
 
     # print("Loading graph from file:", pathToData)
 
@@ -121,14 +102,12 @@ def main():
 
     # print("Graph loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
 
-
     # #Read data from disease gene file into list
     # startTime = time.time()
     # startVector = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
     # endTime = time.time()
 
     # print("Disease genes loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
-
 
     # startTime = time.time()
     # probabilityVector = random_walk(ppiGraph, startVector)
@@ -137,23 +116,20 @@ def main():
     # print("Random Walk matrix implementation finished running.\nTime elapsed:", endTime - startTime, "seconds.")
     # print(probabilityVector, startVector)
 
-
-    #Visualize graph in matplotlib.
+    # Visualize graph in matplotlib.
     #startTime = time.time()
     #nx.draw(ppiGraph, node_color='r', edge_color='b')
     #endTime = time.time()
 
     #print("graph visualized.\nTime elapsed:", endTime - startTime, "seconds.")
-    #plt.show()
+    # plt.show()
 
-
-    #Export to graphML file
+    # Export to graphML file
     #startTime = time.time()
     #nx.write_graphml(ppiGraph, "PPI_Network.graphml")
     #endTime = time.time()
 
     #print("graph exported.\nTime elapsed:", endTime - startTime, "seconds.")
-
 
 
 if __name__ == '__main__':

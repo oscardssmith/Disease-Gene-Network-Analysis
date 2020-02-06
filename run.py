@@ -184,7 +184,7 @@ def select_algorithm():
     algorithms = {
         1:"Algorithms/DiffusionKernel.py",
         2:"Algorithms/PageRank.py",
-        3:"Algorithms/Randomwalk.py"
+        3:"Algorithms/RandomWalk.py"
     }
 
     choice = 0
@@ -310,7 +310,7 @@ def main():
     if algorithm == "Algorithms/PageRank.py":
         beta = select_pr_beta_value()
 
-    if algorithm == "Algorithms/Randomwalk.py":
+    if algorithm == "Algorithms/RandomWalk.py":
         R = select_rwr_r_value()
 
 

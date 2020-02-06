@@ -1,78 +1,79 @@
 import sys
+import os
 sys.path.insert(1, '../Scripts/')
-#Insert relative paths for calls from run.py
+# Insert relative paths for calls from run.py
 sys.path.insert(1, 'Scripts/')
-from CacheUtils import compute_if_not_cached
+import loader
+import networkx as nx
+from time import time
+import math
+import numpy as np
+from scipy.spatial import distance
 import GraphUtils
 from CacheUtils import compute_if_not_cached
-import os
-from scipy.spatial import distance
-import numpy as np
-import math
-from time import time
-import networkx as nx
-import loader
-from loader import load_graph, load_start_vector
 
 BETA = 0.3
 DISEASE_GENE_FILE_PATH = "../Data/endometriosis-proteins.diseasegenes.tsv"
 DATA_PATH = "../Data/9606.protein.links.v11.0.txt"
-EPSILON = .000001 # 10^(-6)
+EPSILON = .000001  # 10^(-6)
 PICKLE_PATH = "../Data/pickledmatrix"
+
 
 def compute_matrix(graph):
     return np.asarray(GraphUtils.normalize_adjacency_matrix(
-            nx.to_numpy_matrix(graph)))
+        nx.to_numpy_matrix(graph)))
 
 # Given a np.array matrix, starting vector, prior bias vector, and back
 # probability, calculate the rank of each node in the graph.
-def rank_genes(graph, starting_vector, prior_bias, beta):
+
+
+def rank_genes(graph, startingVector, priorBias, beta):
     #print("started ranking genes")
-    start_time = time()
+    # start_time = time()
 
     # Load matrix from pickled object if exists to save time converting file.
     matrix = compute_if_not_cached(compute_matrix, graph)
     #print("time elapsed for normalizing the adjacency matrix: ", time() - start_time)
 
     d = float('inf')
-    prev_vector = np.copy(starting_vector)
+    prevVector = np.copy(startingVector)
     iterations = 0
     while d > EPSILON:
-        result = (1 - beta) * np.matmul(matrix, prev_vector)
-        result = np.add(result, beta*prior_bias)
-        d = distance.sqeuclidean(result, prev_vector)
-        prev_vector = result
+        result = (1 - beta) * np.matmul(matrix, prevVector)
+        result = np.add(result, beta*priorBias)
+        d = distance.sqeuclidean(result, prevVector)
+        prevVector = result
         iterations += 1
         #print("finished iterations", iterations)
-    return prev_vector
+    return prevVector
 
 
-def load_priors(priors_file, graph):
-    prior_bias = np.zeros(graph.number_of_nodes())
-    protein_list = []
+def load_priors(priorsFile, graph):
+    priorBias = np.zeros(graph.number_of_nodes())
+    proteinList = []
     total = 0
-    with open(priors_file, 'r') as inputFile:
+    with open(priorsFile, 'r') as inputFile:
         for line in inputFile:
             stripped = line.rstrip('\n')
             splitting = stripped.split('\t')
             if len(splitting) == 2:
                 splitting[1] = int(splitting[1])
-            protein_list.append(splitting)
-    list_of_nodes = list(graph.nodes)
-    for protein in protein_list:
-        index = list_of_nodes.index(protein[0])
+            proteinList.append(splitting)
+    listOfNodes = list(graph.nodes)
+    for protein in proteinList:
+        index = listOfNodes.index(protein[0])
         if len(protein) == 1:
-            prior_bias[index] = 1
+            priorBias[index] = 1
             total += 1
         else:
-            prior_bias[index] = protein[1]
+            priorBias[index] = protein[1]
             total += protein[1]
-    prior_bias = (1/total) * prior_bias
-    return prior_bias
+    priorBias = (1/total) * priorBias
+    return priorBias
 
 
-def page_rank(graph, start_vector, prior_bias, beta=BETA):
-    return GraphUtils.format_output(graph, rank_genes(graph, start_vector, prior_bias, beta))
+def page_rank(graph, startVector, priorBias, beta=BETA):
+    return GraphUtils.format_output(graph, rank_genes(graph, startVector, priorBias, beta))
 
 
 def main():
@@ -83,8 +84,9 @@ def main():
     beta = float(sys.argv[3])
 
     print("loading data from files..")
-    ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName="ppiGraph")
-    diseaseGenes = load_start_vector(pathToDiseaseGeneFile, ppiGraph)
+    ppiGraph = compute_if_not_cached(
+        loader.load_graph, pathToPPINetworkFile, fileName="ppiGraph")
+    diseaseGenes = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
     return page_rank(ppiGraph, diseaseGenes, beta)
 
