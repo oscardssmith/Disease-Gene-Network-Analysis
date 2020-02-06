@@ -345,10 +345,10 @@ def main():
         numeric = R
 
     if validation == "None":
-        cmd = "python3 {0} {1} {2} {3} > {4}".format(algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
+        cmd = "python3 {0} {1} {2} {3} {4}".format(algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
         os.system(cmd)
     else:
-        cmd = "python3 {0} {1} {2} {3} {4} > {5}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
+        cmd = "python3 {0} {1} {2} {3} {4} {5}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
         os.system(cmd)
 
 

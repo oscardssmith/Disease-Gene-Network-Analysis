@@ -75,12 +75,17 @@ def main():
     pathToPPINetworkFile = sys.argv[1]
     pathToDiseaseGeneFile = sys.argv[2]
     R = float(sys.argv[3])
+    outputFile = sys.argv[4]
 
     print("loading data from files..")
     ppiGraph = compute_if_not_cached(loader.load_graph, pathToPPINetworkFile, fileName="ppiGraph")
     diseaseGenes = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
-    random_walk(ppiGraph, diseaseGenes, R)
+    results = random_walk(ppiGraph, diseaseGenes, R)
+
+    print("Saving results to", outputFile)
+    with open(outputFile, "w") as of:
+        of.write(results)
 
 
 if __name__ == '__main__':
