@@ -335,6 +335,7 @@ def main():
     # Confirm user selections
     resetScreen()
     print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}" + colored("\n  using disease genes:\t", "yellow") + "{2}" + colored("\n\nValidating with:\t", "yellow") + "{3}").format(algorithm, ppiDataset, diseaseGeneFile, validation))
+    print(colored("\nSaving results to:\t", "yellow") + outputFile)    
     input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
 
     # Run stuff
