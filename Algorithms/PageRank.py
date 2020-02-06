@@ -77,7 +77,6 @@ def page_rank(graph, startVector, priorBias, beta=BETA):
 
 
 def main():
-    print(sys.argv)
 
     pathToPPINetworkFile = sys.argv[1]
     pathToDiseaseGeneFile = sys.argv[2]
