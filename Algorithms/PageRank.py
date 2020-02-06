@@ -28,12 +28,10 @@ def compute_matrix(graph):
 
 
 def rank_genes(graph, startingVector, priorBias, beta):
-    #print("started ranking genes")
-    # start_time = time()
+    print("Starting PageRank")
 
     # Load matrix from pickled object if exists to save time converting file.
     matrix = compute_if_not_cached(compute_matrix, graph)
-    #print("time elapsed for normalizing the adjacency matrix: ", time() - start_time)
 
     d = float('inf')
     prevVector = np.copy(startingVector)
@@ -44,7 +42,7 @@ def rank_genes(graph, startingVector, priorBias, beta):
         d = distance.sqeuclidean(result, prevVector)
         prevVector = result
         iterations += 1
-        #print("finished iterations", iterations)
+        print("finished iteration:", iterations)
     return prevVector
 
 
