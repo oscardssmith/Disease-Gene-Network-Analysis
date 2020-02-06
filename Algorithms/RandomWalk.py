@@ -87,6 +87,7 @@ def main():
     print("Saving results to", outputFile)
     with open(outputFile, "w", newline='') as of:
         outputWriter = csv.writer(of, quoting=csv.QUOTE_ALL)
+        outputWriter.writerow(["Gene", "Ranking"])
         for row in results:
             outputWriter.writerow(row)
     print("done.")

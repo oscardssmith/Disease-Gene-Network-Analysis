@@ -90,8 +90,11 @@ def main():
     results = page_rank(ppiGraph, diseaseGenes, beta)
 
     print("Saving results to", outputFile)
-    with open(outputFile, "w") as of:
-        of.write(str(results))
+    with open(outputFile, "w", newline='') as of:
+        outputWriter = csv.writer(of, quoting=csv.QUOTE_ALL)
+        outputWriter.writerow(["Gene", "Ranking"])
+        for row in results:
+            outputWriter.writerow(row)
     print("done.")
 
     '''print(time())
