@@ -22,14 +22,14 @@ except:
 # Runs Random Walk with Restart using a matrix implementation
 def random_walk_matrix(matrix, startVector, R, maxIterations, normThreshold):
 
-    #print("STARTING RANDOM WALK")
+    print("STARTING RANDOM WALK")
 
     previousVector = np.copy(startVector)
     iterations = 0
     diff = float('inf')
 
     while diff > normThreshold and iterations < maxIterations:
-        #print("iteration:", iterations)
+        print("iteration:", iterations)
 
         # Perform one step of the walk
         newVector = (1 - R) * np.matmul(matrix, previousVector)
@@ -40,6 +40,10 @@ def random_walk_matrix(matrix, startVector, R, maxIterations, normThreshold):
         iterations += 1
 
     return newVector
+
+
+def create_normalized_matrix(ppiGraph):
+    return np.asarray(GraphUtils.normalize_adjacency_matrix(nx.to_numpy_matrix(ppiGraph)))
 
 
 def random_walk(graph, startVector, r=0.2):
@@ -56,24 +60,26 @@ def random_walk(graph, startVector, r=0.2):
     """
     maxIterations = 500
     normThreshold = 10**(-6)
-    #print("creating matrix")
+    print("creating matrix")
 
-    # Load matrix from pickled object if exists to save time converting file.
-    if os.path.isfile("../Data/pickledmatrix"):
-       # print("pickled matrix file exists, loading matrix from file")
-        with open("../Data/pickledmatrix", 'rb') as handle:
-            matrix = np.asarray(pickle.load(handle))
-    else:
-        matrix = np.asarray(GraphUtils.normalize_adjacency_matrix(
-            nx.to_numpy_matrix(graph)))
-        with open("../Data/pickledmatrix", 'wb') as handle:
-            pickle.dump(matrix, handle)
+    mamtrix = compute_if_not_cached(create_normalized_matrix, graph, fileName="rwr_normalized_matrix")
 
-    probabilityVector = random_walk_matrix(
-        matrix, startVector, r, maxIterations, normThreshold)
+
+    # # Load matrix from pickled object if exists to save time converting file.
+    # if os.path.isfile("../Data/pickledmatrix"):
+    #    # print("pickled matrix file exists, loading matrix from file")
+    #     with open("../Data/pickledmatrix", 'rb') as handle:
+    #         matrix = np.asarray(pickle.load(handle))
+    # else:
+    #     matrix = np.asarray(GraphUtils.normalize_adjacency_matrix(
+    #         nx.to_numpy_matrix(graph)))
+    #     with open("../Data/pickledmatrix", 'wb') as handle:
+    #         pickle.dump(matrix, handle)
+
+    probabilityVector = random_walk_matrix(matrix, startVector, r, maxIterations, normThreshold)
 
     # format probabilityVector into usable output
-    #print("formatting output")
+    print("formatting output")
     return GraphUtils.format_output(graph, probabilityVector)
 
 
@@ -84,8 +90,7 @@ def main():
     R = float(sys.argv[3])
 
     print("loading data from files..")
-    ppiGraph = compute_if_not_cached(
-        loader.load_graph, pathToPPINetworkFile, fileName="ppiGraph")
+    ppiGraph = compute_if_not_cached(loader.load_graph, pathToPPINetworkFile, fileName="ppiGraph")
     diseaseGenes = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
     random_walk(ppiGraph, diseaseGenes, R)
