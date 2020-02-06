@@ -7,6 +7,7 @@ from scipy.spatial import distance
 import numpy as np
 import math
 import time
+import csv
 import networkx as nx
 import GraphUtils
 from CacheUtils import compute_if_not_cached
@@ -84,8 +85,10 @@ def main():
     results = random_walk(ppiGraph, diseaseGenes, R)
 
     print("Saving results to", outputFile)
-    with open(outputFile, "w") as of:
-        of.write(str(results))
+    with open(outputFile, "w", newline='') as of:
+        outputWriter = csv.writer(of, quoting=csv.QUOTE_ALL)
+        for row in results:
+            outputWriter.writerow(row)
     print("done.")
 
 

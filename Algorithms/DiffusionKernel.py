@@ -7,6 +7,7 @@ from GraphUtils import format_output
 import gzip
 import os
 import pickle
+import csv
 import networkx as nx
 import numpy as np
 import loader
