@@ -284,6 +284,17 @@ def select_validation():
     return validations[choice]
 
 
+def select_output_file():
+    resetScreen()
+    print("\n----OUTPUT----\n")
+    print("Please enter a name for your output file - this file will appear in the Results directory.\n\n")
+    name = input("Name: >>").strip()
+    if len(name.split('.')) == 1:
+        name = name + ".txt"
+    return "Results/" + name
+
+
+
 
 
 
@@ -317,6 +328,9 @@ def main():
 
     validation = select_validation()
 
+    # Create output file:
+    outputFile = select_output_file()
+
 
     # Confirm user selections
     resetScreen()
@@ -330,10 +344,10 @@ def main():
         numeric = R
 
     if validation == "None":
-        cmd = "python3 {0} {1} {2} {3}".format(algorithm, ppiDataset, diseaseGeneFile, numeric)
+        cmd = "python3 {0} {1} {2} {3} > {4}".format(algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
         os.system(cmd)
     else:
-        cmd = "python3 {0} {1} {2} {3} {4}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric)
+        cmd = "python3 {0} {1} {2} {3} {4} > {5}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
         os.system(cmd)
 
 
