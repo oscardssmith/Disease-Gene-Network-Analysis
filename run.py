@@ -37,7 +37,7 @@ def checkDependencies():
         print("Module termcolor not found. Install termcolor python module for color.")
 
     error = False
-    for lib in ['networkx', 'numpy', 'scipy', 'matplotlib', 'requests', 'tkinter']:
+    for lib in ['networkx', 'numpy', 'scipy', 'matplotlib', 'requests']:
         error = checkPipLibrary(lib) or error
     
     if error:
