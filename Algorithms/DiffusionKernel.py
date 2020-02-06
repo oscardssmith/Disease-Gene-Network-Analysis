@@ -40,10 +40,16 @@ if __name__ == '__main__':
     pathToPPINetworkFile = sys.argv[1]
     pathToDiseaseGeneFile = sys.argv[2]
     beta = float(sys.argv[3])
+    outputFile = sys.argv[4]
 
     print("loading data from files..")
     ppiGraph = compute_if_not_cached(
         loader.load_graph, pathToPPINetworkFile, fileName="ppiGraph")
     diseaseGenes = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
-    rankedGenes = diffusion_kernel(ppiGraph, diseaseGenes, beta)
+    results = diffusion_kernel(ppiGraph, diseaseGenes, beta)
+
+    print("Saving results to", outputFile)
+    with open(outputFile, "w") as of:
+        of.write(str(results))
+    print("done.")

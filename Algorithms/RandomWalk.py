@@ -85,7 +85,8 @@ def main():
 
     print("Saving results to", outputFile)
     with open(outputFile, "w") as of:
-        of.write(results)
+        of.write(str(results))
+    print("done.")
 
 
 if __name__ == '__main__':

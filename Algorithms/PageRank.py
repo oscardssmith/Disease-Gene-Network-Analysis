@@ -79,13 +79,19 @@ def main():
     pathToPPINetworkFile = sys.argv[1]
     pathToDiseaseGeneFile = sys.argv[2]
     beta = float(sys.argv[3])
+    outputFile = sys.argv[4]
 
     print("loading data from files..")
     ppiGraph = compute_if_not_cached(
         loader.load_graph, pathToPPINetworkFile, fileName="ppiGraph")
     diseaseGenes = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
-    print(page_rank(ppiGraph, diseaseGenes, beta))
+    results = page_rank(ppiGraph, diseaseGenes, beta)
+
+    print("Saving results to", outputFile)
+    with open(outputFile, "w") as of:
+        of.write(str(results))s
+    print("done.")
 
     '''print(time())
     # Read data from input file to networkx graph format.
