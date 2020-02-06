@@ -21,7 +21,6 @@ except:
 
 # Runs Random Walk with Restart using a matrix implementation
 def random_walk_matrix(matrix, startVector, R, maxIterations, normThreshold):
-
     print("STARTING RANDOM WALK")
 
     previousVector = np.copy(startVector)
@@ -62,19 +61,7 @@ def random_walk(graph, startVector, r=0.2):
     normThreshold = 10**(-6)
     print("creating matrix")
 
-    mamtrix = compute_if_not_cached(create_normalized_matrix, graph, fileName="rwr_normalized_matrix")
-
-
-    # # Load matrix from pickled object if exists to save time converting file.
-    # if os.path.isfile("../Data/pickledmatrix"):
-    #    # print("pickled matrix file exists, loading matrix from file")
-    #     with open("../Data/pickledmatrix", 'rb') as handle:
-    #         matrix = np.asarray(pickle.load(handle))
-    # else:
-    #     matrix = np.asarray(GraphUtils.normalize_adjacency_matrix(
-    #         nx.to_numpy_matrix(graph)))
-    #     with open("../Data/pickledmatrix", 'wb') as handle:
-    #         pickle.dump(matrix, handle)
+    matrix = compute_if_not_cached(create_normalized_matrix, graph, fileName="rwr_normalized_matrix")
 
     probabilityVector = random_walk_matrix(matrix, startVector, r, maxIterations, normThreshold)
 
@@ -94,47 +81,6 @@ def main():
     diseaseGenes = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
     random_walk(ppiGraph, diseaseGenes, R)
-
-    # pathToData = "../Data/9606.protein.links.v11.0.txt"
-    # pathToDiseaseGeneFile = "../Data/EndometriosisProteins.tsv"
-
-    # print("Loading graph from file:", pathToData)
-
-    # #Read data from input file to networkx graph format.
-    # startTime = time.time()
-    # ppiGraph = loader.load_graph(pathToData)
-    # endTime = time.time()
-
-    # print("Graph loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
-
-    # #Read data from disease gene file into list
-    # startTime = time.time()
-    # startVector = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
-    # endTime = time.time()
-
-    # print("Disease genes loaded from file.\nTime elapsed:", endTime - startTime, "seconds.")
-
-    # startTime = time.time()
-    # probabilityVector = random_walk(ppiGraph, startVector)
-    # endTime = time.time()
-
-    # print("Random Walk matrix implementation finished running.\nTime elapsed:", endTime - startTime, "seconds.")
-    # print(probabilityVector, startVector)
-
-    # Visualize graph in matplotlib.
-    #startTime = time.time()
-    #nx.draw(ppiGraph, node_color='r', edge_color='b')
-    #endTime = time.time()
-
-    #print("graph visualized.\nTime elapsed:", endTime - startTime, "seconds.")
-    # plt.show()
-
-    # Export to graphML file
-    #startTime = time.time()
-    #nx.write_graphml(ppiGraph, "PPI_Network.graphml")
-    #endTime = time.time()
-
-    #print("graph exported.\nTime elapsed:", endTime - startTime, "seconds.")
 
 
 if __name__ == '__main__':
