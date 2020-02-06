@@ -90,7 +90,7 @@ def main():
 
     print("Saving results to", outputFile)
     with open(outputFile, "w") as of:
-        of.write(str(results))s
+        of.write(str(results))
     print("done.")
 
     '''print(time())
