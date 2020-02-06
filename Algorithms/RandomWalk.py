@@ -45,7 +45,7 @@ def create_normalized_matrix(ppiGraph):
     return np.asarray(GraphUtils.normalize_adjacency_matrix(nx.to_numpy_matrix(ppiGraph)))
 
 
-def random_walk(graph, startVector, r=0.2):
+def random_walk(graph, startVector, r=0.4):
     print("INITIALIZING RANDOM WALK")
 
     """
