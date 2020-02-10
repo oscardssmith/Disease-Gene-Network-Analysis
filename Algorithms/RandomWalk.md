@@ -1,4 +1,4 @@
-# Random Walk with restart
+# Random Walk with Restart
 
 ## Theory
 Originally designed for image segmentation, Random Walk with Restart (RWR) is an algorithm that gives the closeness between two nodes in a graph. Random walk is the iterative transitions of a walker from its current node to a randomly selected adjacent node. In RWR, at each state there is also the possibility to restart, with probability *r*, from the start node rather than continue the current walk. The RWR can be defined as:
@@ -20,4 +20,4 @@ This function uses a function from GraphUtils to transform the networkx graph in
 This is a wrapper function for random_walk_matrix() that is used in validation scripts. The normalized matrix will be computed if the normalized adjacency matrix has not already been computed and pickled. If the file has been pickled before, the normalized adjacency matrix is loaded from the pickled file. The function then runs random_walk_matrix with the given graph, *R*, and start vector and returns an output vector that is formatted using a function from GraphUtils.
 
 ### main()
-The main method allows the wrapper method random_walk() to be run from the run.py in the command line. Command line arguments are parsed and passed to random_walk() and the output of random_walk() is written to a .csv file that is saved to the given file path. 
+The main method allows the wrapper method random_walk() to be run from the run.py in the command line. Command line arguments are parsed and passed to random_walk() and the output of random_walk() is written to a .csv file that is saved to the given file path.
