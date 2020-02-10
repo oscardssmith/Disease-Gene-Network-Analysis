@@ -101,16 +101,12 @@ def get_files_in_directory(path):
     return [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
 
 def find_priors_file(diseaseGeneFilePath):
-    print("finding match for", diseaseGeneFilePath)
     targetName = diseaseGeneFilePath.split(".")[0]
-    print("targetname:", targetName)
     for f in get_files_in_directory("Data/"):
-        f = "Data/" + f
-        print("trying:", f)
         if 'priors' in f.split('.') and targetName in f.split('.'):
-            print("found:", f)
             return f
-            
+    cprint("No priors file exists for your specified disease gene set.\nCannot run leave-one-out with PageRank on this disease gene set.", "red")
+    sys.exit(0)
 
 
 
@@ -136,10 +132,10 @@ def main():
     else:
         function = None
 
-    print(function)
 
     result = leave_one_out(function, pathToDiseaseGeneFile, ppiGraph, param)
 
+    print("Saving results to:", outputFile)
     with open(outputFile, "w") as of:
         of.write("Leave-one-out Validation Results:\n\nAlgorithm:\t\t{0}\nPPI Graph:\t\t{1}\nDisease Genes:\t\t{2}\nPercentage Correctly Found Genes:\t\t{3}%\n\n".format(algorithm, pathToPPINetworkFile, pathToDiseaseGeneFile, result*100))
 

@@ -102,6 +102,8 @@ def main():
         end_time = time.time()
         print("time for roc curve, dk:", end_time - start_time)
 
+        print(colored("Done. ", "green") + "Plots have been saved as png files in the Results folder.")
+
 
 if __name__ == '__main__':
     main()
