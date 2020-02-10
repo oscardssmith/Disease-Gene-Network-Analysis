@@ -47,7 +47,7 @@ def checkDependencies():
             sys.exit(0)
         else:
             print("\nInstalling dependencies..\n")
-            subprocess.Popen(["python3", "setup.py"]).wait()
+            subprocess.Popen(["python3", "Scripts/setup.py"]).wait()
             print("\nExiting script.. please restart it.\n")
             sys.exit(0)
             
@@ -67,7 +67,7 @@ def checkDependencies():
             sys.exit(0)
         else:
             print("Installing String dataset..")
-            p = subprocess.Popen(["bash", "download-human-dataset.sh"])
+            p = subprocess.Popen(["bash", "Scripts/download-human-dataset.sh"])
             p.wait()
             if p.returncode != 0:
                 cprint("Something went wrong. Exiting.", "red")
