@@ -12,6 +12,7 @@ Each algorithm produces results in a 2 dimensional array where each item is a tu
 
 """
 import sys
+import os
 sys.path.insert(1, '../Algorithms/')
 sys.path.insert(1, 'Algorithms/')
 sys.path.insert(1, '../Imports/')
