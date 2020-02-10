@@ -32,7 +32,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param, priors_file
 
     # building list of disease genes
     diseaseGeneFile = open(diseaseGeneFilePath, 'r')
-    allDiseaseGenes = diseaseGeneFile.read().splitlines().strip()
+    allDiseaseGenes = diseaseGeneFile.read().splitlines()
     diseaseGeneFile.close()
 
     numDiseaseGenes = len(allDiseaseGenes)
