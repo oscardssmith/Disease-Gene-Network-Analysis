@@ -394,6 +394,8 @@ def main():
         cmd = "python3 {0} {1} {2} {3} {4} {5}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
         os.system(cmd)
     else:
+        changedir = "cd Validation"
+        os.system(changedir)
         cmd = "python3 {0} {1}".format(validation, ppiDataset)
         os.system(cmd)
 

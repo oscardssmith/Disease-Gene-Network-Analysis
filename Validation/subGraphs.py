@@ -4,7 +4,7 @@ Generating subgraphs for cytoscape
 import sys
 sys.path.insert(1, '../Algorithms/')
 sys.path.insert(1, 'Algorithms/')
-sys.path.insert(1, '../Scripts/')
+sys.path.insert(1, '../Imports/')
 import loader
 
 import networkx as nx

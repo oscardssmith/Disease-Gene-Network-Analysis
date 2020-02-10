@@ -1,8 +1,8 @@
 import sys
 import os
-sys.path.insert(1, '../Scripts/')
+sys.path.insert(1, '../Imports/')
 # Insert relative paths for calls from run.py
-sys.path.insert(1, 'Scripts/')
+sys.path.insert(1, 'Imports/')
 import loader
 import networkx as nx
 from time import time

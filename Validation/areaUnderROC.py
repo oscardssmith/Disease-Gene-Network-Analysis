@@ -5,7 +5,7 @@ AUROC analysis
 import sys
 sys.path.insert(1, '../Algorithms/')
 sys.path.insert(1, 'Algorithms/')
-sys.path.insert(1, '../Scripts/')
+sys.path.insert(1, '../Imports/')
 import RandomWalk as rwr
 import DiffusionKernel as dk
 import PageRank as pr
@@ -37,14 +37,14 @@ def roc_curve(result_vec, ground_truth_vec, name):
        # print("false negative:", fn)
         TPR.append(tp/(tp + fn))
         FPR.append(fp/(fp + tn))
-    file_path = name + '.png'
+    file_path = "../Results/" + name + '.png'
     plot = plt.plot(FPR, TPR)
     plt.show()
     plt.savefig(file_path)
 
 def main():
     #Get file path choices
-    pathToPPINetworkFile = sys.argv[1]
+    pathToPPINetworkFile = "../" + sys.argv[1]
 
     # Get output vectors from each algorithm
     PPI_Network = loader.load_graph(pathToPPINetworkFile)  # load network
