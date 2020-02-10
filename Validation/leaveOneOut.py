@@ -53,7 +53,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param, priors_file
         index = graph_nodes.index(skipGene)
         startVector[index] = 0
         priors_vector = np.zeros(PPI_Network.number_of_nodes())
-        if function == pr.PageRank:                     # Is this proper syntax?
+        if function == pr.page_rank:                     # Is this proper syntax?
             priors_vector = pr.load_priors(priors_file_path, PPI_Network)
             priors_vector[index] = 0
 
@@ -61,7 +61,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param, priors_file
         #print("calling algorithm")
         startTime = time.time()
         output= []
-        if function == pr.PageRank: #is this right?
+        if function == pr.page_rank: #is this right?
             #print("Using PageRank now")
             output = function(PPI_Network, startVector, priors_vector, param)
         else:
