@@ -111,11 +111,12 @@ def main():
     print("loading data from files..")
     ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName="ppiGraph")
     
+
     if algorithm == "Algorithms/DiffusionKernel.py":
         function = dk.diffusion_kernel
-    if algorithm == "Algorithms/PageRank.py":
+    elif algorithm == "Algorithms/PageRank.py":
         function = pr.page_rank
-    if algorithm == "Algorithms/RandomWalk.py":
+    elif algorithm == "Algorithms/RandomWalk.py":
         function = rwr.random_walk
     else:
         function = None
