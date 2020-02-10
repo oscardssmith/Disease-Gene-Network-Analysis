@@ -17,11 +17,22 @@ try:
 except:
     import pickle
 
-    
 
 
-# Runs Random Walk with Restart using a matrix implementation
+
+
 def random_walk_matrix(matrix, startVector, R, maxIterations, normThreshold):
+    """
+    Runs Random Walk with Restart using a matrix implementation
+
+    @param matrix: numpy array, normalized adjancency matrix of entire PPI network
+    @param startVector: numpy array, contains weighted start probabilities
+    @param R: float, probability of restart parameter
+    @param maxInterations: integer, maximum number of iterations to run
+    @param normThreshold: integer, threshold at which the algorithm stops running if the difference between two steps is less than it
+
+    @returns numpy array, final vector containing ranked proteins
+    """
     print("STARTING RANDOM WALK")
 
     previousVector = np.copy(startVector)
@@ -43,23 +54,33 @@ def random_walk_matrix(matrix, startVector, R, maxIterations, normThreshold):
 
 
 def create_normalized_matrix(ppiGraph):
+    """
+    Generates normalized adjacency matrix.
+
+    @param ppiGraph: a networkx graph containing the entire PPI network
+    @returns: a numpy array that contains the normalized adjacency matrix
+    """
+
     return np.asarray(GraphUtils.normalize_adjacency_matrix(nx.to_numpy_matrix(ppiGraph)))
 
 
 def random_walk(graph, startVector, r=0.4):
-    print("INITIALIZING RANDOM WALK")
 
     """
     This method can be called from anywhere (such as validation scripts) and does whatever it needs to do to produce a properly formatted output,
     using only the given parameters.
 
     @param graph: a networkx graph object containing the entire PPI network
-    @param diseaseGeneList: a python list object where each item is a string containing the name of a known disease gene
+    @param startVector: a numpy array that contains the weighted start probabilities for each protein in the network
 
     @returns: a nested list of tuples, in sorted order of probability, where each item contains the name of a gene, and its respective probability as determined by the algorithm
     """
+
+    print("INITIALIZING RANDOM WALK")
+
     maxIterations = 500
     normThreshold = 10**(-6)
+
     print("creating matrix")
 
     matrix = compute_if_not_cached(create_normalized_matrix, graph, fileName="rwr_normalized_matrix")
@@ -72,7 +93,11 @@ def random_walk(graph, startVector, r=0.4):
 
 
 def main():
-
+    """
+    Allows random_walk() to be run through run.py.
+    Parses command line arguments and feeds them as parameters to random_walk().
+    Outputs list of ranked proteins as a .csv file in specified file path. 
+    """
     pathToPPINetworkFile = sys.argv[1]
     pathToDiseaseGeneFile = sys.argv[2]
     R = float(sys.argv[3])
