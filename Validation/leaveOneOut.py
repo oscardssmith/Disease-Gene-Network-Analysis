@@ -14,7 +14,7 @@ Each algorithm produces results in a 2 dimensional array where each item is a tu
 import sys
 sys.path.insert(1, '../Algorithms/')
 sys.path.insert(1, 'Algorithms/')
-sys.path.insert(1, '../Scripts/')
+sys.path.insert(1, '../Imports/')
 import RandomWalk as rwr
 import DiffusionKernel as dk
 import PageRank as pr
