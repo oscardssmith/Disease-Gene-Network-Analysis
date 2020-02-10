@@ -302,8 +302,8 @@ def select_validation():
     print("\n\n")
 
     validations = {
-        1:"AreaUnderROC.py", #no folder because pwd gets changed for ROC
-        2:"Validation/LeaveOneOut.py"
+        1:"areaUnderROC.py", #no folder because pwd gets changed for ROC
+        2:"Validation/leaveOneOut.py"
     }
 
     choice = 0
@@ -352,7 +352,7 @@ def main():
 
     if program == "validation":
         validation = select_validation()
-        if validation == "Validation/LeaveOneOut.py":
+        if validation == "Validation/leaveOneOut.py":
             algorithm, numeric = select_algorithm()
             ppiDataset = select_dataset()
             diseaseGeneFile = select_disease_gene_file()
@@ -362,7 +362,7 @@ def main():
     
 
     # Create output file:
-    if program == "algorithm" or validation == "Validation/LeaveOneOut.py":
+    if program == "algorithm" or validation == "Validation/leaveOneOut.py":
         outputFile = select_output_file()
 
 
@@ -376,7 +376,7 @@ def main():
 
     if program == "validation":
         cprint("----Validation Test----", "green")
-        if validation == "Validation/LeaveOneOut.py":
+        if validation == "Validation/leaveOneOut.py":
             print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}" + colored("\n  using disease genes:\t", "yellow") + "{2}" + colored("\n\nValidating with:\t", "yellow") + "{3}").format(algorithm, ppiDataset, diseaseGeneFile, validation))
             print(colored("\nSaving results to:\t", "yellow") + outputFile)
             input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
@@ -390,7 +390,7 @@ def main():
     if program == "algorithm":
         cmd = "python3 {0} {1} {2} {3} {4}".format(algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
         os.system(cmd)
-    elif validation == "Validation/LeaveOneOut.py":
+    elif validation == "Validation/leaveOneOut.py":
         cmd = "python3 {0} {1} {2} {3} {4} {5}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
         os.system(cmd)
     else:
