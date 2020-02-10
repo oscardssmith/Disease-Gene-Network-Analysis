@@ -105,6 +105,7 @@ def find_priors_file(diseaseGeneFilePath):
     targetName = diseaseGeneFilePath.split(".")[0]
     print("targetname:", targetName)
     for f in get_files_in_directory("Data/"):
+        f = "Data/" + f
         print("trying:", f)
         if 'priors' in f.split('.') and targetName in f.split('.'):
             print("found:", f)
