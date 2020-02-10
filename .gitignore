@@ -1,15 +1,6 @@
-9606.protein.links.v11.0.txt.gz
-9606.protein.links.v11.0.txt
-9606.protein.links.v11.0.ppi.txt
-9606.protein.links.v11.0.tsv
-9606.protein.links.v11.0.tsv.gz
-4932.protein.links.v11.0.txt.gz
-4932.protein.links.v11.0.txt
-
-PPI_Network.graphml
+*.protein.links.v11.*
+*.graphml
 __pycache__
-test-graph-data.tsv
-pickledmatrix
 ._PageRank.py
 *.pyc
 .DS_Store
