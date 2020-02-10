@@ -63,7 +63,7 @@ def main():
                 ground_truth_vec.append(protein)
         print(ground_truth_vec)
         # building start and priors vector
-        #
+        
         start_vector = loader.load_start_vector(file_paths[i], PPI_Network)
         priors_vector = pr.load_priors(prior_paths[i], PPI_Network)
 
@@ -77,11 +77,12 @@ def main():
         end_time = time.time()
         print("time for pr:", end_time - start_time)
 
-       # start_time = time.time()
-       # output_DK = dk.diffusion_kernel(PPI_Network, start_vector)
-       # end_time = time.time()
-       # print("time for dk:", end_time - start_time)
-        # building roc curves
+        start_time = time.time()
+        output_DK = dk.diffusion_kernel(PPI_Network, start_vector)
+        end_time = time.time()
+        print("time for dk:", end_time - start_time)
+        
+        #building roc curves
 
         start_time = time.time()
         name = "rwr-" + names[i]
@@ -94,6 +95,12 @@ def main():
         end_time = time.time()
         print("time for roc curve, pr:", end_time - start_time)
         start_time = time.time()
+
+        start_time = time.time()
+        name = "dk-" + names[i]
+        roc_curve(output_DK, ground_truth_vec, name)
+        end_time = time.time()
+        print("time for roc curve, dk:", end_time - start_time)
 
 
 if __name__ == '__main__':
