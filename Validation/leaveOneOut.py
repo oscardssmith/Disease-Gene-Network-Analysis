@@ -120,6 +120,8 @@ def main():
     else:
         function = None
 
+    print(function)
+
     result = leave_one_out(function, pathToDiseaseGeneFile, ppiGraph, param)
 
     with open(outputFile, "w") as of:
