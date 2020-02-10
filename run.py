@@ -362,8 +362,10 @@ def main():
     
 
     # Create output file:
-    if program == "algorithm" or validation == "Validation/leaveOneOut.py":
-        outputFile = select_output_file()
+    if program == "algorithm":
+        outputFile = select_output_file() + ".csv"
+    if validation == "Validation/leaveOneOut.py":
+        outputFile = select_output_file() + ".txt"
 
 
     # Confirm user selections
