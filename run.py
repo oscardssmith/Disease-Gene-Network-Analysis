@@ -169,6 +169,34 @@ def select_disease_gene_file():
 
 
 
+def select_program():
+    resetScreen()
+    print("\n\nSelect the task you'd like to perform:\n\n")
+
+    print("\t- " + colored("1", "cyan") + ": Run an algorithm")
+    print("\t- " + colored("2", "cyan") + ": Validation test")
+
+    print("\n\n")
+
+    programs = {
+        1:"algorithm",
+        2:"validation"
+    }
+
+    choice = 0
+    while choice == 0:
+        try:
+            choice = int(input("Select a task: >>"))
+        except ValueError:
+            cprint("please enter a number", "red")
+        if choice > 2:
+            cprint("number must be 1 or 2", "red")
+            choice = 0
+    
+    return programs[choice]
+
+
+
 def select_algorithm():
     resetScreen()
     print("\n\nSelect the algorithm you'd like to run:\n\n")
@@ -188,7 +216,7 @@ def select_algorithm():
     }
 
     choice = 0
-    while choice == 0 or choice > len(algorithms):
+    while choice == 0:
         try:
             choice = int(input("Select an algorithm: >>"))
         except ValueError:
@@ -196,8 +224,17 @@ def select_algorithm():
         if choice > len(algorithms):
             cprint("number must be between 1 and {0}".format(len(algorithms)), "red")
             choice = 0
+    
+    if algorithms[choice] == "Algorithms/DiffusionKernel.py":
+        numeric = select_beta_value()
 
-    return algorithms[choice]
+    if algorithms[choice] == "Algorithms/PageRank.py":
+        numeric = select_pr_beta_value()
+
+    if algorithms[choice] == "Algorithms/RandomWalk.py":
+        numeric = select_rwr_r_value()
+
+    return algorithms[choice], numeric
 
 
 def select_beta_value():
@@ -259,16 +296,14 @@ def select_validation():
     print("\n\nSelect the validation method you'd like to use:\n\n")
 
     cprint("---VALIDATION---\n", "green")
-    print("\t- " + colored("1", "cyan") + ": None")
-    print("\t- " + colored("2", "cyan") + ": Area under ROC curve")
-    print("\t- " + colored("3", "cyan") + ": Leave one out cross validation")
+    print("\t- " + colored("1", "cyan") + ": Area under ROC curve")
+    print("\t- " + colored("2", "cyan") + ": Leave one out cross validation")
 
     print("\n\n")
 
     validations = {
-        1:"None",
-        2:"Validation/AreaUnderROC.py",
-        3:"Validation/LeaveOneOut.py"
+        1:"Validation/AreaUnderROC.py",
+        2:"Validation/LeaveOneOut.py"
     }
 
     choice = 0
@@ -308,47 +343,58 @@ def main():
     checkDependencies()
 
     # Get user selections for what they want to run
+    program = select_program()
 
-    ppiDataset = select_dataset()
+    if program == "algorithm":
+        algorithm, numeric = select_algorithm()
+        ppiDataset = select_dataset()
+        diseaseGeneFile = select_disease_gene_file()
 
-    diseaseGeneFile = select_disease_gene_file()
+    if program == "validation":
+        validation = select_validation()
+        if validation == "Validation/LeaveOneOut.py":
+            algorithm, numeric = select_algorithm()
+            ppiDataset = select_dataset()
+            diseaseGeneFile = select_disease_gene_file()
+        else:
+            ppiDataset = select_dataset()
 
-    algorithm = select_algorithm()
-
-    if algorithm == "Algorithms/DiffusionKernel.py":
-        beta = select_beta_value()
-
-    if algorithm == "Algorithms/PageRank.py":
-        beta = select_pr_beta_value()
-
-    if algorithm == "Algorithms/RandomWalk.py":
-        R = select_rwr_r_value()
-
-
-
-    validation = select_validation()
+    
 
     # Create output file:
-    outputFile = select_output_file()
+    if program == "algorithm" or validation == "Validation/LeaveOneOut.py":
+        outputFile = select_output_file()
 
 
     # Confirm user selections
     resetScreen()
-    print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}" + colored("\n  using disease genes:\t", "yellow") + "{2}" + colored("\n\nValidating with:\t", "yellow") + "{3}").format(algorithm, ppiDataset, diseaseGeneFile, validation))
-    print(colored("\nSaving results to:\t", "yellow") + outputFile)    
-    input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
+    if program == "algorithm":
+        cprint("----Algorithm----", "green")
+        print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}" + colored("\n  using disease genes:\t", "yellow") + "{2}").format(algorithm, ppiDataset, diseaseGeneFile))
+        print(colored("\nSaving results to:\t", "yellow") + outputFile)
+        input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
+
+    if program == "validation":
+        cprint("----Validation Test----", "green")
+        if validation == "Validation/LeaveOneOut.py":
+            print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}" + colored("\n  using disease genes:\t", "yellow") + "{2}" + colored("\n\nValidating with:\t", "yellow") + "{3}").format(algorithm, ppiDataset, diseaseGeneFile, validation))
+            print(colored("\nSaving results to:\t", "yellow") + outputFile)
+            input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
+        else:
+            cprint("\nGenerating area under ROC curves")
+            print(colored("\nSaving results to:\t", "yellow") + "Results folder")
+            input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
+
 
     # Run stuff
-    if algorithm == "Algorithms/DiffusionKernel.py" or algorithm == "Algorithms/PageRank.py":
-        numeric = beta
-    else:
-        numeric = R
-
-    if validation == "None":
+    if program == "algorithm":
         cmd = "python3 {0} {1} {2} {3} {4}".format(algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
         os.system(cmd)
-    else:
+    elif validation == "Validation/LeaveOneOut.py":
         cmd = "python3 {0} {1} {2} {3} {4} {5}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
+        os.system(cmd)
+    else:
+        cmd = "python3 {0} {1}".format(validation, ppiDataset)
         os.system(cmd)
 
 

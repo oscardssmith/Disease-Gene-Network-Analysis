@@ -43,13 +43,16 @@ def roc_curve(result_vec, ground_truth_vec, name):
     plt.savefig(file_path)
 
 def main():
+    #Get file path choices
+    pathToPPINetworkFile = sys.argv[1]
+
     # Get output vectors from each algorithm
-    priors_file_path= '../Data/LymphomaProteinsPriors.tsv'
-    PPI_Network = loader.load_graph('../Data/9606.protein.links.v11.0.txt') # load network
+    PPI_Network = loader.load_graph(pathToPPINetworkFile)  # load network
     ground_truth_files = ['../Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', '../Data/MalaCard-protein-ischaemic-stroke.diseasegenes.tsv','../Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
     file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
     prior_paths = ['../Data/endometriosis-proteins-priors.diseasegenes.tsv','../Data/lymphoma-proteins-priors.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins-priors.diseasegenes.tsv']
     names = ['endometriosis', 'lymphoma', 'ischaemic-stroke']
+    
     for i in range(3):
         # building ground truth
         ground_truth_vec = []
