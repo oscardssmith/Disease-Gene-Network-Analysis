@@ -27,7 +27,7 @@ import networkx as nx
 
 
 
-def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param, priors_file_path=None):
+def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
     print("Starting leaveOneOut function")
 
     # building list of disease genes
@@ -53,7 +53,8 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param, priors_file
         index = graph_nodes.index(skipGene)
         startVector[index] = 0
         priors_vector = np.zeros(PPI_Network.number_of_nodes())
-        if function == pr.page_rank:                     # Is this proper syntax?
+        if function == pr.page_rank:
+            priors_file_path = find_priors_file(diseaseGeneFilePath)
             priors_vector = pr.load_priors(priors_file_path, PPI_Network)
             priors_vector[index] = 0
 
@@ -94,9 +95,17 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param, priors_file
 
 
 
-# unnecessary?
-# def load_PPI_Network(filePath):
-#     return loader.load_graph(filePath)
+
+def get_files_in_directory(path):
+    return [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+
+def find_priors_file(diseaseGeneFilePath):
+    targetName = diseaseGeneFilePath.split(".")[0]
+    for f in get_files_in_directory("Data/"):
+        if 'priors' in f.split('.') and targetName in f.split('.'):
+            return f
+            
+
 
 
 
@@ -126,7 +135,7 @@ def main():
     result = leave_one_out(function, pathToDiseaseGeneFile, ppiGraph, param)
 
     with open(outputFile, "w") as of:
-        of.write("Leave-one-out Validation Results:\n\nAlgorithm:\t\t{0}\nPPI Graph:\t\t{1}\nDisease Genes:\t\t{2}\nPercentage Correctly Found Genes:\t\t{3}%".format(algorithm, pathToPPINetworkFile, pathToDiseaseGeneFile, result*100))
+        of.write("Leave-one-out Validation Results:\n\nAlgorithm:\t\t{0}\nPPI Graph:\t\t{1}\nDisease Genes:\t\t{2}\nPercentage Correctly Found Genes:\t\t{3}%\n\n".format(algorithm, pathToPPINetworkFile, pathToDiseaseGeneFile, result*100))
 
 
 
