@@ -89,8 +89,8 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param, priors_file
     print("------------------------\nFinished running algorithm with all disease genes left out\nCalculating mean squared difference")
     print("Num genes not found for this run of leave one out: ", numGenesNotFound)
     #Find average of all squared differences
-    percentIncorrectlyRankedGenes = numGenesNotFound/numDiseaseGenes
-    return percentIncorrectlyRankedGenes
+    percentCorrectlyRankedGenes = 1 - numGenesNotFound/numDiseaseGenes
+    return percentCorrectlyRankedGenes
 
 
 
@@ -106,6 +106,7 @@ def main():
     pathToPPINetworkFile = sys.argv[2]
     pathToDiseaseGeneFile = sys.argv[3]
     param = float(sys.argv[4])
+    outputFile = sys.argv[5]
 
     print("loading data from files..")
     ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName="ppiGraph")
@@ -119,9 +120,10 @@ def main():
     else:
         function = None
 
-    leave_one_out(function, pathToDiseaseGeneFile, ppiGraph, param)
+    result = leave_one_out(function, pathToDiseaseGeneFile, ppiGraph, param)
 
-
+    with open(outputFile, "w") as of:
+        of.write("Leave-one-out Validation Results:\n\nAlgorithm:\t\t{0}\nPPI Graph:\t\t{1}\nDisease Genes:\t\t{2}\nPercentage Correctly Found Genes:\t\t{3}%".format(algorithm, pathToPPINetworkFile, pathToDiseaseGeneFile, result*100))
 
 
 
