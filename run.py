@@ -302,7 +302,7 @@ def select_validation():
     print("\n\n")
 
     validations = {
-        1:"Validation/AreaUnderROC.py",
+        1:"AreaUnderROC.py", #no folder because pwd gets changed for ROC
         2:"Validation/LeaveOneOut.py"
     }
 
@@ -381,7 +381,7 @@ def main():
             print(colored("\nSaving results to:\t", "yellow") + outputFile)
             input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
         else:
-            cprint("\nGenerating area under ROC curves")
+            cprint("\nGenerating area under ROC curves", "green")
             print(colored("\nSaving results to:\t", "yellow") + "Results folder")
             input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
 
@@ -394,9 +394,7 @@ def main():
         cmd = "python3 {0} {1} {2} {3} {4} {5}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
         os.system(cmd)
     else:
-        changedir = "cd Validation"
-        os.system(changedir)
-        cmd = "python3 {0} {1}".format(validation, ppiDataset)
+        cmd = "cd Validation ; python3 {0} {1}".format(validation, ppiDataset)
         os.system(cmd)
 
 
