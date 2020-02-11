@@ -1,5 +1,4 @@
-# CompBioComps
-Place for code for 2019 Comps
+# Disease Gene Network Analysis
 
 Disease Gene Prioritization with Algorithms
 
