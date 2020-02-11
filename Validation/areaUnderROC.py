@@ -11,6 +11,7 @@ import DiffusionKernel as dk
 import PageRank as pr
 import loader
 import time
+import numpy as np
 import matplotlib.pyplot as plt
 
 def roc_curve(result_vec, ground_truth_vec, name):
@@ -37,18 +38,22 @@ def roc_curve(result_vec, ground_truth_vec, name):
        # print("false negative:", fn)
         TPR.append(tp/(tp + fn))
         FPR.append(fp/(fp + tn))
-    file_path = name + '.png'
+    file_path = name + '2.png'
+    area = np.trapz(TPR, FPR)
     plot = plt.plot(FPR, TPR)
+    area_text = "area under roc: " + str(area)
+    plt.text(0.6, 0.2, area_text)
     plt.show()
     plt.savefig(file_path)
+    plt.clf()
 
 def main():
     # Get output vectors from each algorithm
     priors_file_path= '../Data/LymphomaProteinsPriors.tsv'
     PPI_Network = loader.load_graph('../Data/9606.protein.links.v11.0.txt') # load network
-    ground_truth_files = ['../Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', '../Data/MalaCard-protein-ischaemic-stroke.diseasegenes.tsv','../Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
-    file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
-    prior_paths = ['../Data/endometriosis-proteins-priors.diseasegenes.tsv','../Data/lymphoma-proteins-priors.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins-priors.diseasegenes.tsv']
+    ground_truth_files = ['../Data/MalaCard-protein-Endometriosis.diseasegenes.tsv','../Data/MalaCard-protein-lymphoma.diseasegenes.tsv', '../Data/MalaCard-protein-ischaemic-stroke.diseasegenes.tsv']
+    file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-proteins.diseasegenes.tsv']
+    prior_paths = ['../Data/endometriosis-proteins-priors.diseasegenes.tsv','../Data/lymphoma-proteins-priors.diseasegenes.tsv', '../Data/ischaemic-proteins-priors.diseasegenes.tsv']
     names = ['endometriosis', 'lymphoma', 'ischaemic-stroke']
     for i in range(3):
         # building ground truth
