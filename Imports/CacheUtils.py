@@ -3,6 +3,8 @@ import os.path
 import pickle
 import tempfile
 
+FULL_PERMISSIONS = 0o777
+
 def compute_if_not_cached(f, *args, fileName=None):
     """
      Tool for caching large calculation.
@@ -15,7 +17,8 @@ def compute_if_not_cached(f, *args, fileName=None):
     cacheFolder = os.path.join(tempfile.gettempdir(), "CompBioCompsCache")
     if not os.path.isdir(cacheFolder):
         os.mkdir(cacheFolder)
-        os.chmod(cacheFolder, 0o777)
+        # This should happen automatically, but apparently may not
+        os.chmod(cacheFolder, FULL_PERMISSIONS)
     if fileName is None:
         fileName = f.__name__
     filePath = os.path.join(cacheFolder, fileName + ".pickle")

@@ -17,28 +17,22 @@ def roc_curve(result_vec, ground_truth_vec, name):
     TPR = []
     FPR = []
     for threshhold in range(len(result_vec)):
-        tp = 0
-        fp = 0
-        fn = 0
-        tn = 0
+        tp = fp = fn = tn = 0
         for i in range(len(result_vec)):
             item = result_vec[i][0]
             if i <= threshhold and item in ground_truth_vec:
                 tp += 1
             elif i <= threshhold and item not in ground_truth_vec:
                 fp += 1
-            elif item in ground_truth_vec and i> threshhold:
+            elif item in ground_truth_vec:
                 fn += 1
             else:
                 tn += 1
-       # print("true positive:", tp)
-       # print("false positive:", fp)
-       # print("true negative:", tn)
-       # print("false negative:", fn)
+                
         TPR.append(tp/(tp + fn))
         FPR.append(fp/(fp + tn))
     file_path = "../Results/" + name + '.png'
-    plot = plt.plot(FPR, TPR)
+    plt.plot(FPR, TPR)
     plt.show()
     plt.savefig(file_path)
 
