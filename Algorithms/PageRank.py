@@ -5,8 +5,6 @@ sys.path.insert(1, '../Imports/')
 sys.path.insert(1, 'Imports/')
 import loader
 import networkx as nx
-from time import time
-import math
 import csv
 import numpy as np
 from scipy.spatial import distance

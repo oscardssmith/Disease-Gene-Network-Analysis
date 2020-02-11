@@ -1,12 +1,9 @@
 import sys
-import os
 sys.path.insert(1, '../Imports/')
 # Insert relative paths for calls from run.py
 sys.path.insert(1, 'Imports/')
 from scipy.spatial import distance
 import numpy as np
-import math
-import time
 import csv
 import networkx as nx
 import GraphUtils
