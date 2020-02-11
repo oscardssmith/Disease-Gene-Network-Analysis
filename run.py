@@ -334,17 +334,19 @@ def select_output_file():
 
 
 def main():
-    #Initialization
+    # Initialization
     signal(SIGINT, sigint_handler)
     resetScreen()
 
-    #Check for dependencies
+    # Resource demand warning
     print("----Disease Gene Prioritization Script----")
     print(colored("\nWarning:", "red"), "This script eats up a lot of resources!\nDo not run without at least 32GB of RAM, and a multi-core processor will make your life better.")
     input(colored("\nPress enter to continue, ctrl+c to quit: >>", "green"))
+    
+    #Check for dependencies
     checkDependencies()
 
-    # Get user selections for what they want to run
+    # Get user selections for algorithm/validation they want to run
     program = select_program()
 
     if program == "algorithm":
@@ -362,11 +364,10 @@ def main():
             ppiDataset = select_dataset()
 
     
-
     # Create output file:
     if program == "algorithm":
         outputFile = select_output_file() + ".csv"
-    if validation == "Validation/leaveOneOut.py":
+    elif validation == "Validation/leaveOneOut.py":
         outputFile = select_output_file() + ".txt"
 
 
