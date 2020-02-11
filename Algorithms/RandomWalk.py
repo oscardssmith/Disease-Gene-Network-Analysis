@@ -12,10 +12,6 @@ import networkx as nx
 import GraphUtils
 from CacheUtils import compute_if_not_cached
 import loader
-try:
-    import cPickle as pickle
-except:
-    import pickle
 
 
 
