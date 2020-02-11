@@ -47,7 +47,8 @@ def roc_curve(result_vec, ground_truth_vec, name):
 
 def main():
     #Get file path choices
-    pathToPPINetworkFile = "../" + sys.argv[1]
+    #pathToPPINetworkFile = "../" + sys.argv[1]
+    pathToPPINetworkFile = '../Data/9606.protein.links.v11.0.txt'
 
     # Get output vectors from each algorithm
 
