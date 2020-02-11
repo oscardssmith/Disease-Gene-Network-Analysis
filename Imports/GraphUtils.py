@@ -18,6 +18,7 @@ def format_output(graph, raw_output_vector):
     output = []
     for tup in l:
         pair = [snc.string_to_name(table, tup[0]), tup[1]]
-    print(tup[0])
-    print(tup[1])
+        output.append(pair)
+    print(output[0])
+    print(output[1])
     return output
