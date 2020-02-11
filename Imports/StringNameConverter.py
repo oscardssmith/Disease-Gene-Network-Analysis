@@ -25,12 +25,3 @@ def string_to_name(table, s):
     except KeyError:
         return s
     
-
-
-
-# DELETE ME
-table = load_lookup_table()
-
-print(name_to_string(table, "CYP19A1"))
-
-print(string_to_name(table, "9606.ENSP00000408146"))
