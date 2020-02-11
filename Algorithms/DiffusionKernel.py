@@ -7,6 +7,7 @@ from GraphUtils import format_output
 import networkx as nx
 import numpy as np
 import loader
+import csv
 
 
 def symmetric_eigen_from_graph(ppiGraph):
