@@ -4,10 +4,6 @@ sys.path.insert(1, '../Imports/')
 sys.path.insert(1, 'Imports/')
 from CacheUtils import compute_if_not_cached
 from GraphUtils import format_output
-import gzip
-import os
-import pickle
-import csv
 import networkx as nx
 import numpy as np
 import loader
