@@ -239,7 +239,7 @@ def select_algorithm():
 
 def select_beta_value():
     resetScreen()
-    print("\nDiffusion kernel allows you to specify a beta value that _____")
+    print("\nDiffusion kernel allows you to specify a beta value that controls the spread of the algorithm through the graph.\nA value of 0 prioritizes the disease genes (center) highest, larger values increase the influence of further nodes.")
     print("\nPlease enter a beta value between " + colored("0", "cyan") + " and " + colored("2", "cyan") + ".")
 
     choice = float("inf")
@@ -257,7 +257,7 @@ def select_beta_value():
 
 def select_pr_beta_value():
     resetScreen()
-    print("\nPageRank allows you to specify a beta value that sets the probability of restarting from a known disease gene.\nA value of 0 means the algorithm will never 'restart', while a value of 1 means that the algorithm will only ever visit known disease genes. (always restart)\nMost researchers set a relatively low beta value, around .2")
+    print("\nPageRank allows you to specify a beta value that sets the probability of restarting from a known disease gene.\nA value of 0 means the algorithm will never 'restart', while a value of 1 means that the algorithm will only ever visit known disease genes. (always restart)\nWe have found through ROC analysis that an r value around .4 yields the best results.")
     print("\nPlease enter a beta value between " + colored("0", "cyan") + " and " + colored("1", "cyan") + ".")
 
     choice = float("inf")
@@ -275,7 +275,7 @@ def select_pr_beta_value():
 
 def select_rwr_r_value():
     resetScreen()
-    print("\nRandom Walk with Restart allows you to specify an R value that sets the probability of restarting from a known disease gene.\nA value of 0 means the algorithm will never 'restart', while a value of 1 means that the algorithm will only ever visit known disease genes. (always restart)\nMost researchers set a relatively low R value, around .2")
+    print("\nRandom Walk with Restart allows you to specify an R value that sets the probability of restarting from a known disease gene.\nA value of 0 means the algorithm will never 'restart', while a value of 1 means that the algorithm will only ever visit known disease genes. (always restart)\nWe have found through ROC analysis that an r value around .4 yields the best results.")
     print("\nPlease enter an R value between " + colored("0", "cyan") + " and " + colored("1", "cyan") + ".")
 
     choice = float("inf")
@@ -339,7 +339,9 @@ def main():
     resetScreen()
 
     #Check for dependencies
-    print("Welcome to the script")
+    print("----Disease Gene Prioritization Script----")
+    print(colored("\nWarning:", "red"), "This script eats up a lot of resources!\nDo not run without at least 32GB of RAM, and a multi-core processor will make your life better.")
+    input(colored("\nPress enter to continue, ctrl+c to quit: >>", "green"))
     checkDependencies()
 
     # Get user selections for what they want to run
