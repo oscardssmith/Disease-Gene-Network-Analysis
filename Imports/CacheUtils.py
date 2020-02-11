@@ -14,7 +14,7 @@ def compute_if_not_cached(f, *args, fileName=None):
      If so, it unpickles and returns that file.
      If not, it runs f(*args), pickles the result to the file and returns it.
     """
-    cacheFolder = os.path.join(tempfile.gettempdir(), "CompBioCompsCache")
+    cacheFolder = os.path.join(tempfile.gettempdir(), "DiseaseGeneNetworkAnalysisCache")
     if not os.path.isdir(cacheFolder):
         os.mkdir(cacheFolder)
         # This should happen automatically, but apparently may not
