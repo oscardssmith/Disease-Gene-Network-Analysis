@@ -10,20 +10,9 @@ def load_graph(path):
     with open(path, 'r') as input_file:
         input_file.readline()
         for line in input_file:
-            # if line.strip() == "#":
-            #    break
             data = line.strip().split(" ")
-            #print("new edge:", data[0], data[1], data[2])
             graph.add_edge(data[0], data[1], confidence=data[2])
     return graph
-
-
-def load_test_graph():
-    return nx.complete_graph(5)
-
-
-def load_test_start_vector():
-    return np.asarray([0, 0, 0, 1, 0])
 
 
 def load_disease_genes(path):

@@ -37,7 +37,7 @@ def checkDependencies():
         print("Module termcolor not found. Install termcolor python module for color.")
 
     error = False
-    for lib in ['networkx', 'numpy', 'scipy', 'matplotlib', 'requests', 'tkinter']:
+    for lib in ['networkx', 'numpy', 'scipy', 'matplotlib', 'requests']:
         error = checkPipLibrary(lib) or error
     
     if error:
@@ -47,7 +47,7 @@ def checkDependencies():
             sys.exit(0)
         else:
             print("\nInstalling dependencies..\n")
-            subprocess.Popen(["python3", "setup.py"]).wait()
+            subprocess.Popen(["python3", "Scripts/setup.py"]).wait()
             print("\nExiting script.. please restart it.\n")
             sys.exit(0)
             
@@ -67,7 +67,7 @@ def checkDependencies():
             sys.exit(0)
         else:
             print("Installing String dataset..")
-            p = subprocess.Popen(["bash", "download-human-dataset.sh"])
+            p = subprocess.Popen(["bash", "Scripts/download-human-dataset.sh"])
             p.wait()
             if p.returncode != 0:
                 cprint("Something went wrong. Exiting.", "red")
@@ -169,6 +169,34 @@ def select_disease_gene_file():
 
 
 
+def select_program():
+    resetScreen()
+    print("\n\nSelect the task you'd like to perform:\n\n")
+
+    print("\t- " + colored("1", "cyan") + ": Run an algorithm")
+    print("\t- " + colored("2", "cyan") + ": Validation test")
+
+    print("\n\n")
+
+    programs = {
+        1:"algorithm",
+        2:"validation"
+    }
+
+    choice = 0
+    while choice == 0:
+        try:
+            choice = int(input("Select a task: >>"))
+        except ValueError:
+            cprint("please enter a number", "red")
+        if choice > 2:
+            cprint("number must be 1 or 2", "red")
+            choice = 0
+    
+    return programs[choice]
+
+
+
 def select_algorithm():
     resetScreen()
     print("\n\nSelect the algorithm you'd like to run:\n\n")
@@ -184,11 +212,11 @@ def select_algorithm():
     algorithms = {
         1:"Algorithms/DiffusionKernel.py",
         2:"Algorithms/PageRank.py",
-        3:"Algorithms/Randomwalk.py"
+        3:"Algorithms/RandomWalk.py"
     }
 
     choice = 0
-    while choice == 0 or choice > len(algorithms):
+    while choice == 0:
         try:
             choice = int(input("Select an algorithm: >>"))
         except ValueError:
@@ -196,13 +224,22 @@ def select_algorithm():
         if choice > len(algorithms):
             cprint("number must be between 1 and {0}".format(len(algorithms)), "red")
             choice = 0
+    
+    if algorithms[choice] == "Algorithms/DiffusionKernel.py":
+        numeric = select_beta_value()
 
-    return algorithms[choice]
+    if algorithms[choice] == "Algorithms/PageRank.py":
+        numeric = select_pr_beta_value()
+
+    if algorithms[choice] == "Algorithms/RandomWalk.py":
+        numeric = select_rwr_r_value()
+
+    return algorithms[choice], numeric
 
 
 def select_beta_value():
     resetScreen()
-    print("\nDiffusion kernel allows you to specify a beta value that _____")
+    print("\nDiffusion kernel allows you to specify a beta value that controls the spread of the algorithm through the graph.\nA value of 0 prioritizes the disease genes (center) highest, larger values increase the influence of further nodes.")
     print("\nPlease enter a beta value between " + colored("0", "cyan") + " and " + colored("2", "cyan") + ".")
 
     choice = float("inf")
@@ -220,7 +257,7 @@ def select_beta_value():
 
 def select_pr_beta_value():
     resetScreen()
-    print("\nPageRank allows you to specify a beta value that sets the probability of restarting from a known disease gene.\nA value of 0 means the algorithm will never 'restart', while a value of 1 means that the algorithm will only ever visit known disease genes. (always restart)\nMost researchers set a relatively low beta value, around .2")
+    print("\nPageRank allows you to specify a beta value that sets the probability of restarting from a known disease gene.\nA value of 0 means the algorithm will never 'restart', while a value of 1 means that the algorithm will only ever visit known disease genes. (always restart)\nWe have found through ROC analysis that an r value around .4 yields the best results.")
     print("\nPlease enter a beta value between " + colored("0", "cyan") + " and " + colored("1", "cyan") + ".")
 
     choice = float("inf")
@@ -238,7 +275,7 @@ def select_pr_beta_value():
 
 def select_rwr_r_value():
     resetScreen()
-    print("\nRandom Walk with Restart allows you to specify an R value that sets the probability of restarting from a known disease gene.\nA value of 0 means the algorithm will never 'restart', while a value of 1 means that the algorithm will only ever visit known disease genes. (always restart)\nMost researchers set a relatively low R value, around .2")
+    print("\nRandom Walk with Restart allows you to specify an R value that sets the probability of restarting from a known disease gene.\nA value of 0 means the algorithm will never 'restart', while a value of 1 means that the algorithm will only ever visit known disease genes. (always restart)\nWe have found through ROC analysis that an r value around .4 yields the best results.")
     print("\nPlease enter an R value between " + colored("0", "cyan") + " and " + colored("1", "cyan") + ".")
 
     choice = float("inf")
@@ -259,16 +296,14 @@ def select_validation():
     print("\n\nSelect the validation method you'd like to use:\n\n")
 
     cprint("---VALIDATION---\n", "green")
-    print("\t- " + colored("1", "cyan") + ": None")
-    print("\t- " + colored("2", "cyan") + ": Area under ROC curve")
-    print("\t- " + colored("3", "cyan") + ": Leave one out cross validation")
+    print("\t- " + colored("1", "cyan") + ": Area under ROC curve")
+    print("\t- " + colored("2", "cyan") + ": Leave one out cross validation")
 
     print("\n\n")
 
     validations = {
-        1:"None",
-        2:"Validation/AreaUnderROC.py",
-        3:"Validation/LeaveOneOut.py"
+        1:"areaUnderROC.py", #no folder because pwd gets changed for ROC
+        2:"Validation/leaveOneOut.py"
     }
 
     choice = 0
@@ -284,56 +319,87 @@ def select_validation():
     return validations[choice]
 
 
+def select_output_file():
+    resetScreen()
+    print("\n----OUTPUT----\n")
+    print("Please enter a name for your output file - this file will appear in the Results directory.\n\n")
+    name = input("Name: >>").strip()
+    if len(name.split('.')) == 1:
+        name = name + ".csv"
+    return "Results/" + name
+
+
+
 
 
 
 def main():
-    #Initialization
+    # Initialization
     signal(SIGINT, sigint_handler)
     resetScreen()
 
+    # Resource demand warning
+    print("----Disease Gene Prioritization Script----")
+    print(colored("\nWarning:", "red"), "This script eats up a lot of resources!\nDo not run without at least 32GB of RAM, and a multi-core processor will make your life better.")
+    input(colored("\nPress enter to continue, ctrl+c to quit: >>", "green"))
+    
     #Check for dependencies
-    print("Welcome to the script")
     checkDependencies()
 
-    # Get user selections for what they want to run
+    # Get user selections for algorithm/validation they want to run
+    program = select_program()
 
-    ppiDataset = select_dataset()
+    if program == "algorithm":
+        algorithm, numeric = select_algorithm()
+        ppiDataset = select_dataset()
+        diseaseGeneFile = select_disease_gene_file()
 
-    diseaseGeneFile = select_disease_gene_file()
+    if program == "validation":
+        validation = select_validation()
+        if validation == "Validation/leaveOneOut.py":
+            algorithm, numeric = select_algorithm()
+            ppiDataset = select_dataset()
+            diseaseGeneFile = select_disease_gene_file()
+        else:
+            ppiDataset = select_dataset()
 
-    algorithm = select_algorithm()
-
-    if algorithm == "Algorithms/DiffusionKernel.py":
-        beta = select_beta_value()
-
-    if algorithm == "Algorithms/PageRank.py":
-        beta = select_pr_beta_value()
-
-    if algorithm == "Algorithms/Randomwalk.py":
-        R = select_rwr_r_value()
-
-
-
-    validation = select_validation()
+    
+    # Create output file:
+    if program == "algorithm":
+        outputFile = select_output_file() + ".csv"
+    elif validation == "Validation/leaveOneOut.py":
+        outputFile = select_output_file() + ".txt"
 
 
     # Confirm user selections
     resetScreen()
-    print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}" + colored("\n  using disease genes:\t", "yellow") + "{2}" + colored("\n\nValidating with:\t", "yellow") + "{3}").format(algorithm, ppiDataset, diseaseGeneFile, validation))
-    input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
+    if program == "algorithm":
+        cprint("----Algorithm----", "green")
+        print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}" + colored("\n  using disease genes:\t", "yellow") + "{2}").format(algorithm, ppiDataset, diseaseGeneFile))
+        print(colored("\nSaving results to:\t", "yellow") + outputFile)
+        input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
+
+    if program == "validation":
+        cprint("----Validation Test----", "green")
+        if validation == "Validation/leaveOneOut.py":
+            print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}" + colored("\n  using disease genes:\t", "yellow") + "{2}" + colored("\n\nValidating with:\t", "yellow") + "{3}").format(algorithm, ppiDataset, diseaseGeneFile, validation))
+            print(colored("\nSaving results to:\t", "yellow") + outputFile)
+            input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
+        else:
+            cprint("\nGenerating area under ROC curves", "green")
+            print(colored("\nSaving results to:\t", "yellow") + "Results folder")
+            input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
+
 
     # Run stuff
-    if algorithm == "Algorithms/DiffusionKernel.py" or algorithm == "Algorithms/PageRank.py":
-        numeric = beta
-    else:
-        numeric = R
-
-    if validation == "None":
-        cmd = "python3 {0} {1} {2} {3}".format(algorithm, ppiDataset, diseaseGeneFile, numeric)
+    if program == "algorithm":
+        cmd = "python3 {0} {1} {2} {3} {4}".format(algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
+        os.system(cmd)
+    elif validation == "Validation/leaveOneOut.py":
+        cmd = "python3 {0} {1} {2} {3} {4} {5}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
         os.system(cmd)
     else:
-        cmd = "python3 {0} {1} {2} {3} {4}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric)
+        cmd = "cd Validation ; python3 {0} {1}".format(validation, ppiDataset)
         os.system(cmd)
 
 
