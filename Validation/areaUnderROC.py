@@ -73,7 +73,7 @@ def main():
             protein = line.rstrip('\n')
             if protein not in ground_truth_vec:
                 ground_truth_vec.append(protein)
-        file_contents.close()
+        gene_file.close()
         print(ground_truth_vec)
         # building start and priors vector
 
