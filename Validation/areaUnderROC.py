@@ -66,12 +66,12 @@ def main():
             for line in input:
                 protein = line.rstrip('\n')
                 ground_truth_vec.append(protein)
-        with open(file_paths[i], 'r') as input:
-            input = input.readLines()
-            for line in input:
-                protein = line.rstrip('\n')
-                if protein not in ground_truth_vec:
-                    ground_truth_vec.append(protein)
+        gene_file = open(file_paths[i], 'r')
+        file_contents = gene_file.readLines()
+        for line in input:
+            protein = line.rstrip('\n')
+            if protein not in ground_truth_vec:
+                ground_truth_vec.append(protein)
         print(ground_truth_vec)
         # building start and priors vector
 
