@@ -55,7 +55,7 @@ def main():
     PPI_Network = loader.load_graph(pathToPPINetworkFile)  # load network
     ground_truth_files = ['../Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', '../Data/MalaCard-protein-ischaemic-stroke.diseasegenes.tsv','../Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
     file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
-    prior_paths = ['../Data/endometriosis-proteins-priors.diseasegenes.tsv','../Data/lymphoma-proteins-priors.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins-priors.diseasegenes.tsv']
+    prior_paths = ['../Data/endometriosis-proteins.priors.tsv','../Data/lymphoma-proteins.priors.tsv', '../Data/ischaemic-stroke-proteins.priors.tsv']
     names = ['endometriosis', 'lymphoma', 'ischaemic-stroke']
 
     for i in range(3):
@@ -68,6 +68,7 @@ def main():
                 ground_truth_vec.append(protein)
         gene_file = open(file_paths[i], 'r')
         file_contents = list(gene_file.read())
+        print(file_contents)
         for line in file_contents:
             protein = line.rstrip('\n')
             if protein not in ground_truth_vec:
