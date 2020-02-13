@@ -302,7 +302,7 @@ def select_validation():
     print("\n\n")
 
     validations = {
-        1:"areaUnderROC.py", #no folder because pwd gets changed for ROC
+        1:"Validation/areaUnderROC.py",
         2:"Validation/leaveOneOut.py"
     }
 
@@ -397,7 +397,7 @@ def main():
         cmd = "python3 {0} {1} {2} {3} {4} {5}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
         os.system(cmd)
     else:
-        cmd = "cd Validation ; python3 {0} {1}".format(validation, ppiDataset)
+        cmd = "python3 {0} {1}".format(validation, ppiDataset)
         os.system(cmd)
 
 

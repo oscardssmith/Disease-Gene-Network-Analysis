@@ -3,9 +3,8 @@ AUROC analysis
 '''
 
 import sys
-sys.path.insert(1, '../Algorithms/')
 sys.path.insert(1, 'Algorithms/')
-sys.path.insert(1, '../Imports/')
+sys.path.insert(1, 'Imports/')
 import RandomWalk as rwr
 import DiffusionKernel as dk
 import PageRank as pr
@@ -35,7 +34,7 @@ def roc_curve(result_vec, ground_truth_vec, name):
     file_path = name + '2.png'
     area = np.trapz(TPR, FPR)
 
-    file_path = "../Results/" + name + '.png'
+    file_path = "Results/" + name + '.png'
     c = 'b'
     if 'pr' in name:
         c = 'r'
@@ -46,16 +45,17 @@ def roc_curve(result_vec, ground_truth_vec, name):
     plt.show()
 
 def main():
+    print("Starting AUROC..")
     #Get file path choices
-    #pathToPPINetworkFile = "../" + sys.argv[1]
-    pathToPPINetworkFile = '../Data/9606.protein.links.v11.0.txt'
+    pathToPPINetworkFile = sys.argv[1]
+    #pathToPPINetworkFile = 'Data/9606.protein.links.v11.0.txt'
 
     # Get output vectors from each algorithm
 
     PPI_Network = loader.load_graph(pathToPPINetworkFile)  # load network
-    ground_truth_files = ['../Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', '../Data/MalaCard-protein-ischaemic-stroke.diseasegenes.tsv','../Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
-    file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
-    prior_paths = ['../Data/endometriosis-proteins.priors.tsv','../Data/lymphoma-proteins.priors.tsv', '../Data/ischaemic-stroke-proteins.priors.tsv']
+    ground_truth_files = ['Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', 'Data/MalaCard-protein-ischaemic-stroke.diseasegenes.tsv','Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
+    file_paths = ['Data/endometriosis-proteins.diseasegenes.tsv','Data/lymphoma-proteins.diseasegenes.tsv', 'Data/ischaemic-stroke-proteins.diseasegenes.tsv']
+    prior_paths = ['Data/endometriosis-proteins.priors.tsv','Data/lymphoma-proteins.priors.tsv', 'Data/ischaemic-stroke-proteins.priors.tsv']
     names = ['endometriosis', 'lymphoma', 'ischaemic-stroke']
 
     for i in range(3):
@@ -68,7 +68,7 @@ def main():
                 ground_truth_vec.append(protein)
         gene_file = open(file_paths[i], 'r')
         file_contents = list(gene_file.readlines())
-        print(file_contents)
+        # print(file_contents)
         for line in file_contents:
             protein = line.rstrip('\n')
             if protein not in ground_truth_vec:
@@ -114,7 +114,7 @@ def main():
         roc_curve(output_DK, ground_truth_vec, name)
         end_time = time.time()
         print("time for roc curve, dk:", end_time - start_time)
-        file_path = '../Results/' + names[i] + 'roc_curve.png'
+        file_path = 'Results/' + names[i] + 'roc_curve.png'
         plt.savefig(file_path) #moved from roc_curve
         plt.clf() #moved from roc_curve
         print(colored("Done. ", "green") + "Plots have been saved as png files in the Results folder.")
