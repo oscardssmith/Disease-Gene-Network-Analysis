@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     print("loading data from files..")
     ppiGraph = compute_if_not_cached(
-        loader.load_graph, pathToPPINetworkFile, fileName="ppiGraph")
+        loader.load_graph, pathToPPINetworkFile, fileName=pathToPPINetworkFile)
     diseaseGenes = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
     results = diffusion_kernel(ppiGraph, diseaseGenes, beta)

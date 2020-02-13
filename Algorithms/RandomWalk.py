@@ -97,7 +97,7 @@ def main():
     outputFile = sys.argv[4]
 
     print("loading data from files..")
-    ppiGraph = compute_if_not_cached(loader.load_graph, pathToPPINetworkFile, fileName="ppiGraph")
+    ppiGraph = compute_if_not_cached(loader.load_graph, pathToPPINetworkFile, fileName=pathToPPINetworkFile)
     diseaseGenes = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
 
     results = random_walk(ppiGraph, diseaseGenes, R)

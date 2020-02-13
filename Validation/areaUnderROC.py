@@ -52,7 +52,7 @@ def main():
 
     # Get output vectors from each algorithm
 
-    PPI_Network = loader.load_graph(pathToPPINetworkFile)  # load network
+    PPI_Network = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName=pathToPPINetworkFile)
     ground_truth_files = ['../Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', '../Data/MalaCard-protein-ischaemic-stroke.diseasegenes.tsv','../Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
     file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
     prior_paths = ['../Data/endometriosis-proteins.priors.tsv','../Data/lymphoma-proteins.priors.tsv', '../Data/ischaemic-stroke-proteins.priors.tsv']

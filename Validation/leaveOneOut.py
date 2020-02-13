@@ -127,7 +127,7 @@ def main():
     # outputFile = sys.argv[5]
 
     print("loading data from files..")
-    ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName="ppiGraph")
+    ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName=pathToPPINetworkFile)
 
     #uncommment after graph (kate)
     # if algorithm == "Algorithms/DiffusionKernel.py":
