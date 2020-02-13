@@ -1,3 +1,4 @@
+#!/usr/local/bin/python3
 # This script is intended to be the one-stop-shop for running any of our algorithms/tests, on any valid dataset.
 # It presents the user with a clean command line menu interface for selecting the algorithm/validation method they want to run, as well as the datasets to use.
 

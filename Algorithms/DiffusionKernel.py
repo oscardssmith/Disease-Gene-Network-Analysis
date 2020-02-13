@@ -19,7 +19,7 @@ def diffusion_kernel_core(ppiGraph, genes, beta):
     # Compute matrix exponential with eigen decomposition
     # Faster since it uses the fact that the matrix is real, symetric
 
-    vals, vecs = compute_if_not_cached(symmetric_eigen_from_graph, ppiGraph)
+    vals, vecs = compute_if_not_cached(symmetric_eigen_from_graph, ppiGraph, fileName=ppiGraph.name)
     result = np.dot(np.dot(np.dot(genes, np.transpose(vecs)),
                            np.diag(np.exp(-beta*vals))), vecs)
     result = np.array(result).flatten()

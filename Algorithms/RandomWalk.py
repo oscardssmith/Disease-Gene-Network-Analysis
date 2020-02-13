@@ -76,7 +76,7 @@ def random_walk(graph, startVector, r=0.4):
 
     print("creating matrix")
 
-    matrix = compute_if_not_cached(create_normalized_matrix, graph, fileName="rwr_normalized_matrix")
+    matrix = compute_if_not_cached(create_normalized_matrix, graph, fileName=graph.name)
 
     probabilityVector = random_walk_matrix(matrix, startVector, r, maxIterations, normThreshold)
 

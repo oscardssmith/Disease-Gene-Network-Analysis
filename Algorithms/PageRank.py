@@ -24,7 +24,7 @@ def rank_genes(graph, startingVector, priorBias, beta):
     print("Starting PageRank")
 
     # Load matrix from pickled object if exists to save time converting file.
-    matrix = compute_if_not_cached(compute_matrix, graph)
+    matrix = compute_if_not_cached(compute_matrix, graph, fileName=graph.name)
 
     d = float('inf')
     prevVector = np.copy(startingVector)

@@ -19,7 +19,8 @@ def compute_if_not_cached(f, *args, fileName=None):
         # This should happen automatically, but apparently may not
         os.chmod(cacheFolder, FULL_PERMISSIONS)
     if fileName is None:
-        fileName = f.__name__
+        fileName = ''
+    fileName += f.__name__
     filePath = os.path.join(cacheFolder, fileName + ".pickle")
     if os.path.isfile(filePath):
         print("pickled file {0} exists, loading data from file".format(fileName))

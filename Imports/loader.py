@@ -6,7 +6,8 @@ def load_graph(path):
     """
     Loads data from TSV file pointed to by path into a networkx graph
     """
-    graph = nx.Graph()
+    graph = nx.Graph(name=path)
+    print(graph.name)
     with open(path, 'r') as input_file:
         input_file.readline()
         for line in input_file:
