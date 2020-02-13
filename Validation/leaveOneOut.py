@@ -114,10 +114,11 @@ def find_priors_file(diseaseGeneFilePath):
 
 
 def main():
-    file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
-    prior_paths = ['../Data/endometriosis-proteins-priors.diseasegenes.tsv','../Data/lymphoma-proteins-priors.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins-priors.diseasegenes.tsv']
+    #remove after graph is made
+    file_paths = ['Data/endometriosis-proteins.diseasegenes.tsv','Data/lymphoma-proteins.diseasegenes.tsv', 'Data/ischaemic-proteins.diseasegenes.tsv']
+    prior_paths = ['Data/endometriosis-proteins.priors.tsv','/lymphoma-proteins.priors.tsv', 'Data/ischaemic-proteins.priors.tsv']
     names = ['endometriosis', 'lymphoma', 'ischaemic-stroke']
-    pathToPPINetworkFile = '../Data/9606.protein.links.v11.0.txt'
+    pathToPPINetworkFile = 'Data/9606.protein.links.v11.0.txt'
 
     #uncomment when graph is made (kate)
     # algorithm = sys.argv[1]
