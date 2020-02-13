@@ -21,7 +21,6 @@ from CacheUtils import compute_if_not_cached
 from loader import load_graph, load_start_vector
 import time
 import numpy as np
-import networkx as nx
 
 
 

@@ -1,4 +1,5 @@
 import numpy as np
+import StringNameConverter as snc
 
 
 def normalize_adjacency_matrix(adjacency_matrix):
@@ -10,6 +11,11 @@ def normalize_adjacency_matrix(adjacency_matrix):
 
 def format_output(graph, raw_output_vector):
     # format probabilityVector into usable output
-    output = list(zip(graph.nodes(), raw_output_vector))
-    output.sort(key=lambda tup: tup[1], reverse=True)
+    l = list(zip(graph.nodes(), raw_output_vector))
+    l.sort(key=lambda tup: tup[1], reverse=True)
+    table = snc.load_lookup_table()
+    output = []
+    for tup in l:
+        pair = [snc.string_to_name(table, tup[0]), tup[1]]
+        output.append(pair)
     return output

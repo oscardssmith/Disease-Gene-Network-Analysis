@@ -29,31 +29,35 @@ def roc_curve(result_vec, ground_truth_vec, name):
                 fn += 1
             else:
                 tn += 1
-                
+
         TPR.append(tp/(tp + fn))
         FPR.append(fp/(fp + tn))
     file_path = name + '2.png'
     area = np.trapz(TPR, FPR)
 
     file_path = "../Results/" + name + '.png'
-    plt.plot(FPR, TPR)
-    
+    c = 'b'
+    if 'pr' in name:
+        c = 'r'
+    elif 'dk' in name:
+        c = 'g'
+    plt.plot(FPR, TPR, c)
+
     plt.show()
-    plt.savefig(file_path)
-    plt.clf()
 
 def main():
     #Get file path choices
-    pathToPPINetworkFile = "../" + sys.argv[1]
+    #pathToPPINetworkFile = "../" + sys.argv[1]
+    pathToPPINetworkFile = '../Data/9606.protein.links.v11.0.txt'
 
     # Get output vectors from each algorithm
 
     PPI_Network = loader.load_graph(pathToPPINetworkFile)  # load network
     ground_truth_files = ['../Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', '../Data/MalaCard-protein-ischaemic-stroke.diseasegenes.tsv','../Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
     file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv','../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins.diseasegenes.tsv']
-    prior_paths = ['../Data/endometriosis-proteins-priors.diseasegenes.tsv','../Data/lymphoma-proteins-priors.diseasegenes.tsv', '../Data/ischaemic-stroke-proteins-priors.diseasegenes.tsv']
+    prior_paths = ['../Data/endometriosis-proteins.priors.tsv','../Data/lymphoma-proteins.priors.tsv', '../Data/ischaemic-stroke-proteins.priors.tsv']
     names = ['endometriosis', 'lymphoma', 'ischaemic-stroke']
-    
+
     for i in range(3):
         # building ground truth
         ground_truth_vec = []
@@ -62,9 +66,17 @@ def main():
             for line in input:
                 protein = line.rstrip('\n')
                 ground_truth_vec.append(protein)
+        gene_file = open(file_paths[i], 'r')
+        file_contents = list(gene_file.readlines())
+        print(file_contents)
+        for line in file_contents:
+            protein = line.rstrip('\n')
+            if protein not in ground_truth_vec:
+                ground_truth_vec.append(protein)
+        gene_file.close()
         print(ground_truth_vec)
         # building start and priors vector
-        
+
         start_vector = loader.load_start_vector(file_paths[i], PPI_Network)
         priors_vector = pr.load_priors(prior_paths[i], PPI_Network)
 
@@ -82,7 +94,7 @@ def main():
         output_DK = dk.diffusion_kernel(PPI_Network, start_vector)
         end_time = time.time()
         print("time for dk:", end_time - start_time)
-        
+
         #building roc curves
 
         start_time = time.time()
@@ -102,7 +114,9 @@ def main():
         roc_curve(output_DK, ground_truth_vec, name)
         end_time = time.time()
         print("time for roc curve, dk:", end_time - start_time)
-
+        file_path = '../Results/' + names[i] + 'roc_curve.png'
+        plt.savefig(file_path) #moved from roc_curve
+        plt.clf() #moved from roc_curve
         print(colored("Done. ", "green") + "Plots have been saved as png files in the Results folder.")
 
 

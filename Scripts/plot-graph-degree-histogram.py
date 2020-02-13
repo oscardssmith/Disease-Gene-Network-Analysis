@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from loader import load_graph
 import sys
-import os
 
 if len(sys.argv) != 2:
     print("Usage: python3 plot-graph-degree-histogram.py path-to-ppi-network")

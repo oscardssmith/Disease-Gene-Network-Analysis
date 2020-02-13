@@ -324,8 +324,6 @@ def select_output_file():
     print("\n----OUTPUT----\n")
     print("Please enter a name for your output file - this file will appear in the Results directory.\n\n")
     name = input("Name: >>").strip()
-    if len(name.split('.')) == 1:
-        name = name + ".csv"
     return "Results/" + name
 
 
