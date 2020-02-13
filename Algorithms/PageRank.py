@@ -11,7 +11,7 @@ from scipy.spatial import distance
 import GraphUtils
 from CacheUtils import compute_if_not_cached
 
-BETA = 0.3
+BETA = 0.4
 EPSILON = .000001  # 10^(-6)
 
 def compute_matrix(graph):
