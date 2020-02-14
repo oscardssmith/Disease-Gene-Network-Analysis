@@ -49,7 +49,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
 
         # find the skip gene in the start vector, make it zero
         index = graph_nodes.index(skipGene)
-        node_degree = graph_nodes.degree(skipGene) #remove after graph is made (kate)
+        node_degree = PPI_Network.degree(skipGene) #remove after graph is made (kate)
         degree_list.append(node_degree) #remove after graph is made (kate)
         startVector[index] = 0
         priors_vector = np.zeros(PPI_Network.number_of_nodes())
@@ -75,23 +75,28 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
             if output[i][0] == skipGene:
                 foundGene = True
                 print("Found the gene: ", skipGene, "at rank: ", i)
-                in_out_list.append(2) #remove after graph is made (kate)
+                in_out_list.append(1) #remove after graph is made (kate)
                 break
         if not foundGene:
             numGenesNotFound +=1
-            in_out_list.append(1) #remove after graph is made (kate)
+            in_out_list.append(-1) #remove after graph is made (kate)
 
         endTime = time.time()
-
-    # remove after graph is made
-    c = 'b'
+    
+    # write the results of leave one out to a file
+    disease_name = diseaseGeneFilePath.split(".")[0]
+    output_name = "leave_one_out_" + disease_name
     if function == pr.page_rank:
-        c = 'r'
+        output_name = output_name + "_pr.tsv"
     elif function == dk.diffusion_kernel:
-        c = 'g'
-    plt.scatter(degree_list, in_out_list, c) #remove after graph is made (kate)
-    plt.show() #remove after graph is made (kate)
-
+        output_name = output_name + "_dk.tsv"
+    elif function == rwr.random_walk:
+        output_name = output_name + "_rwr.tsv"
+    with open(output_name, "w") as output:
+        for i in range(len(allDiseaseGenes)):
+            output_string = allDiseaseGenes[i] + "\t" + degree_list[i] + "\t" + in_out_list[i]
+            output.write(output_string)
+    
     print("------------------------\nFinished running algorithm with all disease genes left out\nCalculating mean squared difference")
     print("Num genes not found for this run of leave one out: ", numGenesNotFound)
     #Find average of all squared differences
@@ -114,50 +119,41 @@ def find_priors_file(diseaseGeneFilePath):
 
 
 def main():
-    #remove after graph is made
-    file_paths = ['Data/endometriosis-proteins.diseasegenes.tsv','Data/lymphoma-proteins.diseasegenes.tsv', 'Data/ischaemic-proteins.diseasegenes.tsv']
-    prior_paths = ['Data/endometriosis-proteins.priors.tsv','/lymphoma-proteins.priors.tsv', 'Data/ischaemic-proteins.priors.tsv']
-    names = ['endometriosis', 'lymphoma', 'ischaemic-stroke']
-    pathToPPINetworkFile = 'Data/9606.protein.links.v11.0.txt'
 
-    #uncomment when graph is made (kate)
-    # algorithm = sys.argv[1]
-    # pathToPPINetworkFile = sys.argv[2]
-    # pathToDiseaseGeneFile = sys.argv[3]
-    # param = float(sys.argv[4])
-    # outputFile = sys.argv[5]
+    algorithm = sys.argv[1]
+    pathToPPINetworkFile = sys.argv[2]
+    pathToDiseaseGeneFile = sys.argv[3]
+    param = float(sys.argv[4])
+    outputFile = sys.argv[5]
 
     print("loading data from files..")
     ppiGraph = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName=pathToPPINetworkFile)
+    run_all = False
+    if algorithm == "Algorithms/DiffusionKernel.py":
+        function = dk.diffusion_kernel
+    elif algorithm == "Algorithms/PageRank.py":
+        function = pr.page_rank
+    elif algorithm == "Algorithms/RandomWalk.py":
+        function = rwr.random_walk
+    elif algorithm == "All":
+        run_all = True
+    else:
+        function = None
+    
+    if run_all:
+        print("Starting leave one out for all three algorithms")
+        leave_one_out(rwr.random_walk, pathToDiseaseGeneFile, ppiGraph, param)
+        leave_one_out(pr.page_rank, pathToDiseaseGeneFile, ppiGraph, param)
+        leave_one_out(dk.diffusion_kernel, pathToDiseaseGeneFile, ppiGraph, param)
+        print("Finished leave one out for all three algorithms")
+    else:
+        result = leave_one_out(function, pathToDiseaseGeneFile, ppiGraph, param)
 
-    #uncommment after graph (kate)
-    # if algorithm == "Algorithms/DiffusionKernel.py":
-    #     function = dk.diffusion_kernel
-    # elif algorithm == "Algorithms/PageRank.py":
-    #     function = pr.page_rank
-    # elif algorithm == "Algorithms/RandomWalk.py":
-    #     function = rwr.random_walk
-    # else:
-    #     function = None
-    #
-    #
-    # result = leave_one_out(function, pathToDiseaseGeneFile, ppiGraph, param)
 
+    print("Saving results to:", outputFile)
+    with open(outputFile, "w") as of:
+        of.write("Leave-one-out Validation Results:\n\nAlgorithm:\t\t{0}\nPPI Graph:\t\t{1}\nDisease Genes:\t\t{2}\nPercentage Correctly Found Genes:\t\t{3}%\n\n".format(algorithm, pathToPPINetworkFile, pathToDiseaseGeneFile, result*100))
 
-    # print("Saving results to:", outputFile)
-    # with open(outputFile, "w") as of:
-    #     of.write("Leave-one-out Validation Results:\n\nAlgorithm:\t\t{0}\nPPI Graph:\t\t{1}\nDisease Genes:\t\t{2}\nPercentage Correctly Found Genes:\t\t{3}%\n\n".format(algorithm, pathToPPINetworkFile, pathToDiseaseGeneFile, result*100))
-
-    for i in range(3):
-        print("starting Random Walk")
-        rwr_result = leave_one_out(rwr.random_walk, file_paths[i], ppiGraph, 0.4)
-        print("starting page rank")
-        pr_result = leave_one_out(pr.page_rank, file_paths[i], ppiGraph, 0.4)
-        print("starting diffusion kernel")
-        dk_result = leave_one_out(dk.diffusion_kernel, file_paths[i], ppiGraph, 0.4)
-        plt.savefig('../Result/' + name[i] + '-degree_vs_prediction.png')
-        print('saved image')
-        plt.clf()
 
 if __name__ == '__main__':
     main()
