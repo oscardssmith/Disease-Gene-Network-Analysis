@@ -14,6 +14,7 @@ import loader
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+from CacheUtils import compute_if_not_cached
 
 def roc_curve(result_vec, ground_truth_vec, name):
     TPR = []
@@ -35,16 +36,19 @@ def roc_curve(result_vec, ground_truth_vec, name):
         FPR.append(fp/(fp + tn))
     file_path = name + '2.png'
     area = np.trapz(TPR, FPR)
-
+    area = str(round(area, 6))
     file_path = "Results/" + name + '.png'
-    c = 'b'
+    c = 'blue'
+    label = "rwr: " + area
     if 'pr' in name:
-        c = 'r'
+        c = 'red'
+        label = "pr: " + area
     elif 'dk' in name:
-        c = 'g'
-    plt.plot(FPR, TPR, c)
-
+        c = 'green'
+        label = "dk: " + area
+    curve, = plt.plot(FPR, TPR, color=c,label=label)
     plt.show()
+    return curve
 
 def main():
     print("Starting AUROC..")
@@ -54,7 +58,7 @@ def main():
 
     # Get output vectors from each algorithm
 
-    PPI_Network = lompute_if_not_cached(load_graph, pathToPPINetworkFile, fileName=pathToPPINetworkFile)
+    PPI_Network = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName=pathToPPINetworkFile)
     ground_truth_files = ['Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', 'Data/MalaCard-protein-ischaemic-stroke.diseasegenes.tsv','Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
     file_paths = ['Data/endometriosis-proteins.diseasegenes.tsv','Data/lymphoma-proteins.diseasegenes.tsv', 'Data/ischaemic-stroke-proteins.diseasegenes.tsv']
     prior_paths = ['Data/endometriosis-proteins.priors.tsv','Data/lymphoma-proteins.priors.tsv', 'Data/ischaemic-stroke-proteins.priors.tsv']
@@ -101,22 +105,27 @@ def main():
 
         start_time = time.time()
         name = "rwr-" + names[i]
-        roc_curve(output_RWR, ground_truth_vec, name)
+        rwr_curve = roc_curve(output_RWR, ground_truth_vec, name)
         end_time = time.time()
         print("time for roc curve, rwr:", end_time -start_time)
+
         start_time = time.time()
         name = "pr-" + names[i]
-        roc_curve(output_PR, ground_truth_vec, name)
+        pr_curve = roc_curve(output_PR, ground_truth_vec, name)
         end_time = time.time()
         print("time for roc curve, pr:", end_time - start_time)
         start_time = time.time()
 
         start_time = time.time()
         name = "dk-" + names[i]
-        roc_curve(output_DK, ground_truth_vec, name)
+        dk_curve = roc_curve(output_DK, ground_truth_vec, name)
         end_time = time.time()
         print("time for roc curve, dk:", end_time - start_time)
         file_path = 'Results/' + names[i] + 'roc_curve.png'
+        plt.ylabel('TPR')
+        plt.xlabel('FPR')
+        plt.title(names[i])
+        plt.legend(loc='lower right')
         plt.savefig(file_path) #moved from roc_curve
         plt.clf() #moved from roc_curve
         print(colored("Done. ", "green") + "Plots have been saved as png files in the Results folder.")
