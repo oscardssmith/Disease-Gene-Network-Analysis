@@ -20,6 +20,8 @@ def compute_if_not_cached(f, *args, fileName=None):
         os.chmod(cacheFolder, FULL_PERMISSIONS)
     if fileName is None:
         fileName = ''
+    if fileName.find("/") > -1:
+        fileName = fileName.split("/")[-1]
     fileName += f.__name__
     filePath = os.path.join(cacheFolder, fileName + ".pickle")
     if os.path.isfile(filePath):
