@@ -32,7 +32,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
     diseaseGeneFile = open(diseaseGeneFilePath, 'r')
     allDiseaseGenes = diseaseGeneFile.read().splitlines()
     diseaseGeneFile.close()
-
+   # print(allDiseaseGenes)
     numDiseaseGenes = len(allDiseaseGenes)
     rankThreshhold = 150
 
@@ -43,7 +43,8 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
 
     graph_nodes = list(PPI_Network.nodes())
     startVector = load_start_vector(diseaseGeneFilePath, PPI_Network)
-    startVector = (numDiseaseGenes/(numDiseaseGenes - 1)) * startVector
+    startVector = (numDiseaseGenes/(numDiseaseGenes - 1)) * startVector # uncomment this setion after test
+    print("sum of start vector", sum(startVector))
     # skipping
     for index, skipGene in enumerate(allDiseaseGenes):
 
@@ -51,7 +52,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
         index = graph_nodes.index(skipGene)
         node_degree = PPI_Network.degree(skipGene) #remove after graph is made (kate)
         degree_list.append(node_degree) #remove after graph is made (kate)
-        startVector[index] = 0
+        startVector[index] = 0 # uncomment this sectino after test (sam)
         priors_vector = np.zeros(PPI_Network.number_of_nodes())
         if function == pr.page_rank:
             priors_file_path = find_priors_file(diseaseGeneFilePath)
@@ -64,6 +65,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
         if function == pr.page_rank:
             output = function(PPI_Network, startVector, priors_vector, param)
         else:
+            print("sum of start vector:", np.sum(startVector))
             output = function(PPI_Network, startVector, param)
         endTime = time.time()
         print("finished algorithm. Time elapsed:", endTime - startTime)
@@ -78,6 +80,12 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
                 in_out_list.append(1) #remove after graph is made (kate)
                 break
         if not foundGene:
+            index = -1
+            for i in range(len(output)):
+                if output[i][0] == foundGene:
+                    index = i
+                    break
+            print("Not found gene index at", index)
             numGenesNotFound +=1
             in_out_list.append(-1) #remove after graph is made (kate)
 
@@ -85,7 +93,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
     
     # write the results of leave one out to a file
     disease_name = diseaseGeneFilePath.split(".")[0]
-    output_name = "leave_one_out_" + disease_name
+    output_name = "leave_one_out_" + disease_name[5:]
     if function == pr.page_rank:
         output_name = output_name + "_pr.tsv"
     elif function == dk.diffusion_kernel:
@@ -94,7 +102,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
         output_name = output_name + "_rwr.tsv"
     with open(output_name, "w") as output:
         for i in range(len(allDiseaseGenes)):
-            output_string = allDiseaseGenes[i] + "\t" + degree_list[i] + "\t" + in_out_list[i]
+            output_string = allDiseaseGenes[i] + "\t" +str(degree_list[i]) + "\t" +str(in_out_list[i]) + "\n"
             output.write(output_string)
     
     print("------------------------\nFinished running algorithm with all disease genes left out\nCalculating mean squared difference")
@@ -112,9 +120,10 @@ def get_files_in_directory(path):
 def find_priors_file(diseaseGeneFilePath):
     targetName = diseaseGeneFilePath.split(".")[0]
     for f in get_files_in_directory("Data/"):
+        f = "Data/" + f
         if 'priors' in f.split('.') and targetName in f.split('.'):
             return f
-    cprint("No priors file exists for your specified disease gene set.\nCannot run leave-one-out with PageRank on this disease gene set.", "red")
+    print("No priors file exists for your specified disease gene set.\nCannot run leave-one-out with PageRank on this disease gene set.", targetName)
     sys.exit(0)
 
 

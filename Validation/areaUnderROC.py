@@ -58,11 +58,11 @@ def main():
 
     # Get output vectors from each algorithm
 
-    PPI_Network = compute_if_not_cached(load_graph, pathToPPINetworkFile, fileName=pathToPPINetworkFile)
-    ground_truth_files = ['Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', 'Data/MalaCard-protein-ischaemic-stroke.diseasegenes.tsv','Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
-    file_paths = ['Data/endometriosis-proteins.diseasegenes.tsv','Data/lymphoma-proteins.diseasegenes.tsv', 'Data/ischaemic-stroke-proteins.diseasegenes.tsv']
-    prior_paths = ['Data/endometriosis-proteins.priors.tsv','Data/lymphoma-proteins.priors.tsv', 'Data/ischaemic-stroke-proteins.priors.tsv']
-    names = ['endometriosis', 'lymphoma', 'ischaemic-stroke']
+    PPI_Network = compute_if_not_cached(loader.load_graph, pathToPPINetworkFile, fileName=pathToPPINetworkFile)
+    ground_truth_files = ['Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', 'Data/MalaCard-protein-ischaemic.diseasegenes.tsv','Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
+    file_paths = ['Data/endometriosis-proteins.diseasegenes.tsv','Data/lymphoma-proteins.diseasegenes.tsv', 'Data/ischaemic-proteins.diseasegenes.tsv']
+    prior_paths = ['Data/endometriosis-proteins.priors.tsv','Data/lymphoma-proteins.priors.tsv', 'Data/ischaemic-proteins.priors.tsv']
+    names = ['endometriosis', 'lymphoma', 'ischaemic']
 
     for i in range(3):
         # building ground truth
