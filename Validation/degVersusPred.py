@@ -18,8 +18,6 @@ def unpack_output(file):
 def main():
 	# for each file
 		#pred_in, pred_out = unpack_output(file)
-		#fig1, ax = plt.subplots()
-		#ax.boxplot([pred_in, pred_out])
 	pred_in = [5, 4, 5, 6, 2, 3]
 	pred_out = [10, 11, 29, 2]
 	fig1, ax = plt.subplots()
