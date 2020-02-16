@@ -16,6 +16,6 @@ def format_output(graph, raw_output_vector):
     table = snc.load_lookup_table()
     output = []
     for tup in l:
-        pair = [snc.string_to_name(table, tup[0]), tup[1]]
+        pair = [tup[0], snc.string_to_name(table, tup[0]), tup[1]]
         output.append(pair)
     return output
