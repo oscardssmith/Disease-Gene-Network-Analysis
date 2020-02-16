@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-import numpy as np 
+import numpy as np
+import random
 
 
 def unpack_output(file):
@@ -16,12 +17,23 @@ def unpack_output(file):
 
 def main():
 	# for each file
-		#in, out = unpack_output(file)
-		#fig, ax = plt.subplots()
-		#ax.boxplot([in, out])
+		#pred_in, pred_out = unpack_output(file)
+		#fig1, ax = plt.subplots()
+		#ax.boxplot([pred_in, pred_out])
 	pred_in = [5, 4, 5, 6, 2, 3]
 	pred_out = [10, 11, 29, 2]
-	fig, ax = plt.subplots()
+	fig1, ax = plt.subplots()
 	ax.boxplot([pred_in, pred_out])
+	rand_x_in = []
+	for i in range(len(pred_in)):
+		rand_x_in.append(random.uniform(0.95, 1.05))
+	ax.scatter(rand_x_in, pred_in, marker = ".", alpha = 0.7)
+	rand_x_out = []
+	for i in range(len(pred_out)):
+		rand_x_out.append(random.uniform(1.95, 2.05))
+	ax.scatter(rand_x_out, pred_out, marker = ".", alpha = 0.7)
+	plt.ylabel("Degree")
+	plt.xticks([1, 2], ("In", "Out"))
 	plt.show()
 	return 0
+main()
