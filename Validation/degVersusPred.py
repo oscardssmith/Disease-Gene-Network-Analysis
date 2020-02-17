@@ -15,12 +15,7 @@ def unpack_output(file):
 				predicted_in.append(int(line[1]))
 	return predicted_in, predicted_out
 
-def main():
-	# for each file
-		#pred_in, pred_out = unpack_output(file)
-	pred_in, pred_out = unpack_output("Validation/leave_one_out_endometriosis-proteins_rwr.tsv")
-	#pred_in = [5, 4, 5, 6, 2, 3]
-	#pred_out = [10, 11, 29, 2]
+def boxplot_jitter(pred_in, pred_out):
 	fig1, ax = plt.subplots()
 	ax.boxplot([pred_in, pred_out])
 	rand_x_in = []
@@ -34,5 +29,17 @@ def main():
 	plt.ylabel("Degree")
 	plt.xticks([1, 2], ("In", "Out"))
 	plt.show()
-	return 0
+
+def violin_plot(pred_in, pred_out):
+	fig1, ax = plt.subplots()
+	ax.violinplot([pred_in, pred_out])
+	plt.ylabel("Degree")
+	plt.xticks([1, 2], ("In", "Out"))
+	plt.show()
+
+def main():
+	pred_in, pred_out = unpack_output("Validation/leave_one_out_endometriosis-proteins_pr.tsv")
+	#boxplot_jitter(pred_in, pred_out)
+	violin_plot(pred_in, pred_out)
+
 main()
