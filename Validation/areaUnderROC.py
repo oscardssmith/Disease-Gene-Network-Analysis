@@ -23,6 +23,7 @@ def roc_curve(result_vec, ground_truth_vec, name):
         tp = fp = fn = tn = 0
         for i in range(len(result_vec)):
             item = result_vec[i][0]
+            print(item)
             if i <= threshhold and item in ground_truth_vec:
                 tp += 1
             elif i <= threshhold and item not in ground_truth_vec:
@@ -67,9 +68,9 @@ def main():
     for i in range(3):
         # building ground truth
         ground_truth_vec = []
-        with open(ground_truth_files[i], 'r') as input:
-            input = input.readlines()
-            for line in input:
+        with open(ground_truth_files[i], 'r') as input_file:
+            input_file = input_file.readlines()
+            for line in input_file:
                 protein = line.rstrip('\n')
                 ground_truth_vec.append(protein)
         gene_file = open(file_paths[i], 'r')
