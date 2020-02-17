@@ -198,7 +198,7 @@ def select_program():
 
 
 
-def select_algorithm():
+def select_algorithm(all=False):
     resetScreen()
     print("\n\nSelect the algorithm you'd like to run:\n\n")
 
@@ -206,6 +206,8 @@ def select_algorithm():
     print("\t- " + colored("1", "cyan") + ": Diffusion kernel")
     print("\t- " + colored("2", "cyan") + ": PageRank")
     print("\t- " + colored("3", "cyan") + ": Random walk with restart")
+    if all:
+        print("\t- " + colored("4", "cyan") + ": All algorithms")
 
     print("\n\n")
     
@@ -215,6 +217,8 @@ def select_algorithm():
         2:"Algorithms/PageRank.py",
         3:"Algorithms/RandomWalk.py"
     }
+    if all:
+        algorithms[4] = "All"
 
     choice = 0
     while choice == 0:
@@ -234,6 +238,9 @@ def select_algorithm():
 
     if algorithms[choice] == "Algorithms/RandomWalk.py":
         numeric = select_rwr_r_value()
+
+    if algorithms[choice] == "All":
+        numeric = select_rwr_r_value(all=True)
 
     return algorithms[choice], numeric
 
@@ -274,10 +281,14 @@ def select_pr_beta_value():
     return choice
 
 
-def select_rwr_r_value():
+def select_rwr_r_value(all=False):
     resetScreen()
     print("\nRandom Walk with Restart allows you to specify an R value that sets the probability of restarting from a known disease gene.\nA value of 0 means the algorithm will never 'restart', while a value of 1 means that the algorithm will only ever visit known disease genes. (always restart)\nWe have found through ROC analysis that an r value around .4 yields the best results.")
+    if all:
+        print(colored("\n\t-- ", "red") + "leave-one-out validation will use this value as the numeric value for all algorithms.")
     print("\nPlease enter an R value between " + colored("0", "cyan") + " and " + colored("1", "cyan") + ".")
+
+    
 
     choice = float("inf")
     while choice < 0 or choice > 1:
@@ -356,7 +367,7 @@ def main():
     if program == "validation":
         validation = select_validation()
         if validation == "Validation/leaveOneOut.py":
-            algorithm, numeric = select_algorithm()
+            algorithm, numeric = select_algorithm(all=True)
             ppiDataset = select_dataset()
             diseaseGeneFile = select_disease_gene_file()
         else:
