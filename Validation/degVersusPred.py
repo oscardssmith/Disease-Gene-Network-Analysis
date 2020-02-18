@@ -38,8 +38,8 @@ def violin_plot(pred_in, pred_out):
 	plt.show()
 
 def main():
-	pred_in, pred_out = unpack_output("Validation/leave_one_out_ischaemic-proteins_pr.tsv")
-	boxplot_jitter(pred_in, pred_out)
-	#violin_plot(pred_in, pred_out)
+	pred_in, pred_out = unpack_output("Validation/leave_one_out_lymphoma-proteins_pr.tsv")
+	#boxplot_jitter(pred_in, pred_out)
+	violin_plot(pred_in, pred_out)
 
 main()
