@@ -23,7 +23,7 @@ def roc_curve(result_vec, ground_truth_vec, name):
         tp = fp = fn = tn = 0
         for i in range(len(result_vec)):
             item = result_vec[i][0]
-            print(item)
+      #      print('item', item)
             if i <= threshhold and item in ground_truth_vec:
                 tp += 1
             elif i <= threshhold and item not in ground_truth_vec:
@@ -35,7 +35,6 @@ def roc_curve(result_vec, ground_truth_vec, name):
 
         TPR.append(tp/(tp + fn))
         FPR.append(fp/(fp + tn))
-    file_path = name + '2.png'
     area = np.trapz(TPR, FPR)
     area = str(round(area, 6))
     file_path = "Results/" + name + '.png'
@@ -60,12 +59,12 @@ def main():
     # Get output vectors from each algorithm
 
     PPI_Network = compute_if_not_cached(loader.load_graph, pathToPPINetworkFile, fileName=pathToPPINetworkFile)
-    ground_truth_files = ['Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', 'Data/MalaCard-protein-ischaemic.diseasegenes.tsv','Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
+    ground_truth_files = ['Data/MalaCard-protein-Endometriosis.diseasegenes.tsv', 'Data/MalaCard-protein-ischaemic-stroke.diseasegenes.tsv','Data/MalaCard-protein-lymphoma.diseasegenes.tsv']
     file_paths = ['Data/endometriosis-proteins.diseasegenes.tsv','Data/lymphoma-proteins.diseasegenes.tsv', 'Data/ischaemic-proteins.diseasegenes.tsv']
     prior_paths = ['Data/endometriosis-proteins.priors.tsv','Data/lymphoma-proteins.priors.tsv', 'Data/ischaemic-proteins.priors.tsv']
     names = ['endometriosis', 'lymphoma', 'ischaemic']
 
-    for i in range(3):
+    for i in range(1,3):
         # building ground truth
         ground_truth_vec = []
         with open(ground_truth_files[i], 'r') as input_file:
@@ -129,7 +128,7 @@ def main():
         plt.legend(loc='lower right')
         plt.savefig(file_path) #moved from roc_curve
         plt.clf() #moved from roc_curve
-        print(colored("Done. ", "green") + "Plots have been saved as png files in the Results folder.")
+        print("Plots have been saved as png files in the Results folder.")
 
 
 if __name__ == '__main__':

@@ -69,18 +69,19 @@ def page_rank(graph, startVector, priorBias, beta=BETA):
 
 
 def main():
-
+    
     pathToPPINetworkFile = sys.argv[1]
     pathToDiseaseGeneFile = sys.argv[2]
-    beta = float(sys.argv[3])
-    outputFile = sys.argv[4]
+    pathToPriorBiasFile = sys.argv[3]
+    beta = float(sys.argv[4])
+    outputFile = sys.argv[5]
 
     print("loading data from files..")
     ppiGraph = compute_if_not_cached(
         loader.load_graph, pathToPPINetworkFile, fileName=pathToPPINetworkFile)
     diseaseGenes = loader.load_start_vector(pathToDiseaseGeneFile, ppiGraph)
-
-    results = page_rank(ppiGraph, diseaseGenes, beta)
+    priorBias = load_priors(pathToPriorBiasFile, ppiGraph)
+    results = page_rank(ppiGraph, diseaseGenes,priorBias, beta)
 
     print("Saving results to", outputFile)
     with open(outputFile, "w", newline='') as of:
