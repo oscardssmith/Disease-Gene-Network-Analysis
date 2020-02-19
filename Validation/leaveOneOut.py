@@ -43,8 +43,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
 
     graph_nodes = list(PPI_Network.nodes())
     startVector = load_start_vector(diseaseGeneFilePath, PPI_Network)
-    startVector = (numDiseaseGenes/(numDiseaseGenes - 1)) * startVector # uncomment this setion after test
-    print("sum of start vector", sum(startVector))
+    startVector = (numDiseaseGenes/(numDiseaseGenes - 1)) * startVector
     # skipping
     for index, skipGene in enumerate(allDiseaseGenes):
 
@@ -52,7 +51,9 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
         index = graph_nodes.index(skipGene)
         node_degree = PPI_Network.degree(skipGene) #remove after graph is made (kate)
         degree_list.append(node_degree) #remove after graph is made (kate)
-        startVector[index] = 0 # uncomment this sectino after test (sam)
+        newStartVector = startVector.copy()
+        newStartVector[index] = 0
+     #   startVector[index] = 0 
         priors_vector = np.zeros(PPI_Network.number_of_nodes())
         if function == pr.page_rank:
             priors_file_path = find_priors_file(diseaseGeneFilePath)
@@ -63,10 +64,10 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
         startTime = time.time()
         output= []
         if function == pr.page_rank:
-            output = function(PPI_Network, startVector, priors_vector, param)
+            output = function(PPI_Network, newStartVector, priors_vector, param)
         else:
             print("sum of start vector:", np.sum(startVector))
-            output = function(PPI_Network, startVector, param)
+            output = function(PPI_Network, newStartVector, param)
         endTime = time.time()
         print("finished algorithm. Time elapsed:", endTime - startTime)
 
@@ -80,12 +81,6 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
                 in_out_list.append(1) #remove after graph is made (kate)
                 break
         if not foundGene:
-            index = -1
-            for i in range(len(output)):
-                if output[i][0] == foundGene:
-                    index = i
-                    break
-            print("Not found gene index at", index)
             numGenesNotFound +=1
             in_out_list.append(-1) #remove after graph is made (kate)
 
