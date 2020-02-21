@@ -20,11 +20,9 @@ ppiGraph = compute_if_not_cached(load_graph, path_to_ppi, fileName=path_to_ppi)
 
 for i in range(3):
 	print("----------------------- DISEASE GENE FILE IS:", all_dg_file_paths[i], "---------------------------------")
-	for j in range(3):
-		print("------------------------FOR PARAMETER:", params[j], "--------------------------------------")
-		result_rwr = leave_one_out(rwr.random_walk, all_dg_file_paths[i], ppiGraph, params[j])
-		print("PERCENTAGE OF GENES FOUND FOR RANDOM WALK: ", result_rwr)
-		result_pr = leave_one_out(pr.random_walk, all_dg_file_paths[i], ppiGraph, params[j])
-		print("PERCENTAGE OF GENES FOUND FOR PAGERANK: ", result_pr)
-		result_dk = leave_one_out(dk.diffusion_kernel, all_dg_file_paths[i], ppiGraph, params[j])
-		print("PERCENTAGE OF GENES FOUND FOR DIFFUSION KERNEL:", result_dk)
+	result_rwr = leave_one_out(rwr.random_walk, all_dg_file_paths[i], ppiGraph, 0.4)
+	print("PERCENTAGE OF GENES FOUND FOR RANDOM WALK: ", result_rwr)
+	result_pr = leave_one_out(pr.random_walk, all_dg_file_paths[i], ppiGraph, 0.4)
+	print("PERCENTAGE OF GENES FOUND FOR PAGERANK: ", result_pr)
+	result_dk = leave_one_out(dk.diffusion_kernel, all_dg_file_paths[i], ppiGraph, 0.4)
+	print("PERCENTAGE OF GENES FOUND FOR DIFFUSION KERNEL:", result_dk)

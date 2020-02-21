@@ -88,7 +88,7 @@ def leave_one_out(function, diseaseGeneFilePath, PPI_Network, param):
     
     # write the results of leave one out to a file
     disease_name = diseaseGeneFilePath.split(".")[0]
-    output_name = "leave_one_out_" + disease_name[5:]
+    output_name = "leave_one_out_1" + disease_name[5:]
     if function == pr.page_rank:
         output_name = output_name + "_pr.tsv"
     elif function == dk.diffusion_kernel:
