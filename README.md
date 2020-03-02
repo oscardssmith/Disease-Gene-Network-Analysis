@@ -5,7 +5,7 @@ Disease Gene Prioritization with Algorithms
 ## PROJECT DESCRIPTION
  A gene is a sequence of DNA that codes for a protein that is associated with a particular biological function (you can think of genes and proteins as having a 1-1 relationship). A mutation, or aberration, that occurs in a gene and disrupts the normal function is called a disease gene.
 
- In our project, we run three graph algorithms: page rank, random walk with restart, and diffusion kernel. Each algorithm takes a set of known disease genes and uses this information to predict which other genes are associated with a given disease.
+ In our project, we run three graph algorithms: PageRank, random walk with restart, and diffusion kernel. Each algorithm takes a set of known disease genes and uses this information to predict which other genes are associated with a given disease.
 
 ## GETTING STARTED
  In order to use our software package, first clone the GitHub repository onto your development environment. Open your terminal/command prompt and use the following command
