@@ -5,6 +5,7 @@
 
 from signal import signal, SIGINT
 import subprocess
+import platform
 import sys
 import os
 try:
@@ -22,8 +23,10 @@ except ImportError:
 # Interface Utility Functions
 
 def resetScreen():
-    os.system("clear")
-    # Print some nice/standard header here so users stay oriented within our project?
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
 
 
 def sigint_handler(signalReceived, frame):
@@ -112,10 +115,10 @@ def get_ppi_data_files():
             ppiDataFiles.append("Data/" + f)
     return ppiDataFiles
 
-def get_disease_gene_files():
+def get_disease_gene_files(t="diseasegenes"):
     diseaseGeneFiles = []
     for f in get_files_in_directory("Data/"):
-        if 'diseasegenes' in f.split('.'):
+        if t in f.split('.'):
             diseaseGeneFiles.append("Data/" + f)
     return diseaseGeneFiles
 
@@ -245,6 +248,34 @@ def select_algorithm(all=False):
     return algorithms[choice], numeric
 
 
+def select_prior_bias():
+    resetScreen()
+    print("\n\nPageRank allows you to use a non-uniform prior bias vector.\nSelect the prior bias file you'd like to use:\n\n")
+
+    priorBiasFiles = {}
+    priorBiasFiles[1] = "None"
+    print(("\t- " + colored("1", "cyan") + ": None"))
+    for i, f in enumerate(get_disease_gene_files(t="priors"), start=2):
+        priorBiasFiles[i] = f
+        print(("\t- " + colored("{0}", "cyan") + ": {1}").format(i, f))
+
+    print("\n\n\tNot seeing your data file? Make sure it is in the Data/ directory and has '.priors' somewhere in its name.\n\n")
+
+    choice = 0
+    while choice == 0 or choice > len(priorBiasFiles):
+        try:
+            choice = int(input("Select a prior bias file: >>"))
+        except ValueError:
+            cprint("please enter a number", "red")
+        if choice > len(priorBiasFiles):
+            cprint("number must be between 1 and {0}".format(
+                len(priorBiasFiles)), "red")
+            choice = 0
+
+    return priorBiasFiles[choice]
+
+
+
 def select_beta_value():
     resetScreen()
     print("\nDiffusion kernel allows you to specify a beta value that controls the spread of the algorithm through the graph.\nA value of 0 prioritizes the disease genes (center) highest, larger values increase the influence of further nodes.")
@@ -363,6 +394,10 @@ def main():
         algorithm, numeric = select_algorithm()
         ppiDataset = select_dataset()
         diseaseGeneFile = select_disease_gene_file()
+        if algorithm == "Algorithms/PageRank.py":
+            priorBiasFile = select_prior_bias()
+            if priorBiasFile == "None":
+                priorBiasFile = diseaseGeneFile
 
     if program == "validation":
         validation = select_validation()
@@ -386,6 +421,8 @@ def main():
     if program == "algorithm":
         cprint("----Algorithm----", "green")
         print((colored("\nRunning:\t\t", "yellow") + "{0}" + colored("\n  on dataset:\t\t", "yellow") + "{1}" + colored("\n  using disease genes:\t", "yellow") + "{2}").format(algorithm, ppiDataset, diseaseGeneFile))
+        if algorithm == "Algorithms/PageRank.py":
+            print((colored("  prior bias file:\t", "yellow") + "{0}").format(priorBiasFile))
         print(colored("\nSaving results to:\t", "yellow") + outputFile)
         input(colored("\nPress enter to continue (ctrl+c to cancel)..", "green"))
 
@@ -404,6 +441,8 @@ def main():
     # Run stuff
     if program == "algorithm":
         cmd = "python3 {0} {1} {2} {3} {4}".format(algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
+        if algorithm == "Algorithms/PageRank.py":
+            cmd = "python3 {0} {1} {2} {3} {4} {5}".format(algorithm, ppiDataset, diseaseGeneFile, priorBiasFile, numeric, outputFile)
         os.system(cmd)
     elif validation == "Validation/leaveOneOut.py":
         cmd = "python3 {0} {1} {2} {3} {4} {5}".format(validation, algorithm, ppiDataset, diseaseGeneFile, numeric, outputFile)
