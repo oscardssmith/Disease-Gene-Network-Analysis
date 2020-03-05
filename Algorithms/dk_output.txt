@@ -1,4 +1,0 @@
-loading data from files..
-pickled file ppiGraph exists, loading data from file
-running diffusion kernel..
-no pickled file exists. running function <function symmetric_eigen_from_graph at 0x7efeeb63f268>

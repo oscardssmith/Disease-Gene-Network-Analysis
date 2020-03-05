@@ -1,7 +1,6 @@
 import sys
 import os
 sys.path.insert(1, '../Algorithms/')
-sys.path.insert(1, 'Algorithms/')
 sys.path.insert(1, '../Imports/')
 import RandomWalk as rwr
 import DiffusionKernel as dk
@@ -13,7 +12,7 @@ import numpy as np
 from leaveOneOut import leave_one_out
 
 path_to_ppi = sys.argv[1]
-all_dg_file_paths = ['Data/endometriosis-proteins.diseasegenes.tsv', 'Data/lymphoma-proteins.diseasegenes.tsv', 'Data/ischaemic-proteins.diseasegenes.tsv']
+all_dg_file_paths = ['../Data/endometriosis-proteins.diseasegenes.tsv', '../Data/lymphoma-proteins.diseasegenes.tsv', '../Data/ischaemic-proteins.diseasegenes.tsv']
 params = [0.2, 0.4, 0.6, 0.8, 1.0]
 print("loading data from files..")
 ppiGraph = compute_if_not_cached(load_graph, path_to_ppi, fileName=path_to_ppi)
