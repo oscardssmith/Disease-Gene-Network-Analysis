@@ -11,18 +11,18 @@ Disease Gene Prioritization with Algorithms
  In order to use our software package, first clone the GitHub repository onto your development environment. Open your terminal/command prompt and use the following command
 
  ```bash
- git clone https://github.com/oscardssmith/CompBioComps.git
+ git clone https://github.com/oscardssmith/Disease-Gene-Network-Analysis.git
  ```
 Once cloned, use the command
 
 ```bash
-cd CompBioComps
+cd Disease-Gene-Network-Analysis
 ```
 to make our repository your working directory. Now use the command
 ```bash
 python3 run.py
 ```
-to complete independencies, download appropriate files, and pull up an interface that allows you to interact with our code.
+to install dependencies, download appropriate files, and pull up an interface that allows you to interact with our code.
 
 ## INTERFACE
 The interface will first ask for the task you would like to perform.
@@ -35,7 +35,7 @@ If you choose validation, you will be asked which type of validation (ROC or lea
 You will be asked to specify the name of your output file. This will appear in the results folder. There are three cases for the output files:
 1. Running Algorithms- output file will be a csv file of protein names with probability, in descending order.
 2. Area under the ROC curve- A picture of the ROC curve as a .png image
-3. Leave one out- _________FILL ME IN__________________
+3. Leave one out- a text file containing validation results
 
 
 ## LICENSE
