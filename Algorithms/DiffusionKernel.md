@@ -4,7 +4,7 @@
 
 The diffusion kernel method ranks genes by computing the matrix exponential of a laplacian matrix. For a PPI network, the laplacian matrix L is calculated as:
 
-$$L = D - A$$
+<img src="https://render.githubusercontent.com/render/math?math=L = D - A">
 
 Where D is the diagonal matrix, and A is the adjacency matrix of the graph. We then obtain the diffusion kernel K by calculating the matrix exponential of L, multiplied by a magnitude of diffusion , a variable parameter:
 K = e(L  -)
