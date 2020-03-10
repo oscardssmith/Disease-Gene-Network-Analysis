@@ -7,7 +7,7 @@ The diffusion kernel method ranks genes by computing the matrix exponential of a
 <img src="https://render.githubusercontent.com/render/math?math=L = D - A">
 
 Where D is the diagonal matrix, and A is the adjacency matrix of the graph. We then obtain the diffusion kernel K by calculating the matrix exponential of L, multiplied by a magnitude of diffusion , a variable parameter:
-K = e(L  -)
+<img src="https://render.githubusercontent.com/render/math?math=K = e^{L \times -\beta}">
 To calculate the matrix exponential, we used eigenvector decomposition. Where:
 L=PDP-1 
 where P’s columns are the eigenvectors of L, and D is a diagonal matrix who’s entries are the eigenvalues of L. Since our graph is symmetric, the eigenvalues and eigenvectors are real, and can be efficiently calculated by BLAS. Furthermore, P is a normal matrix, so P-1=PT.Once we have done the decomposition, we can compute 
