@@ -25,9 +25,22 @@ With this method, we perform the same calculation, but with a much faster run ti
 ## Implementation
 
 ### symmetric_eigen_from_graph()
+Computes the laplacian of the input PPI graph and returns its eigenvalues and eigenvectors.
 
-## diffusion_kernel_core()
+### diffusion_kernel_core()
+Performs the actual computation of the diffusion kernel and returns a sorted, formatted output vector containing each gene and its score.
 
 ### diffusion_kernel()
+Takes three parameters:
+
+- ppiGraph:
+A networkx matrix representation of the PPI network to compute the diffusion kernel of.
+
+- diseaseGenes:
+A 1 x N vector (numpy array), where N is the number of genes in the PPI network. The value of the entry of each gene from the disease gene set is 1/number of genes in the disease gene set. Thus, each disease all share an equal probability.
+
+- beta:
+The magnitude of diffusion. Default value is 1.
 
 ### main()
+The main method allows the wrapper method diffusion_kernel() to be run from the run.py in the command line. Command line arguments are parsed and passed to diffusion_kernel() and the output of diffusion_kernel() is written to a .csv file that is saved to the given file path.
